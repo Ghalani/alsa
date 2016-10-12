@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   root to: "static_pages#index"
+  get 'dashboard' => 'static_pages#dashboard'
+  resources :organizations
 
   # => SESSION
   resources :sessions, only:[:new, :create, :destroy]
@@ -12,7 +14,7 @@ Rails.application.routes.draw do
   resources :users
 
   # modules
-  get 'dashboard' => 'modules#index'
+  #get 'dashboard' => 'modules#index'
 
   # modules end
 

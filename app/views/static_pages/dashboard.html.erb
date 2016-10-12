@@ -1,0 +1,8 @@
+<h1>Dashboard</h1>
+<% if @user.admin? %>
+	<div>Admin panel</div>
+	<%= link_to "View users", users_path %>
+<% end %>
+<div>Organization list</div>
+<%= link_to 'Log out', "/logout" %>
+<%= link_to "View all organizations", organizations_path %>

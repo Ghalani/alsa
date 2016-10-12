@@ -11,4 +11,8 @@ FactoryGirl.define do
     end
 
 	end
+
+	factory :organization do
+
+	end
 end
