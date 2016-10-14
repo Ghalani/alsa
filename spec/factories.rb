@@ -8,11 +8,13 @@ FactoryGirl.define do
 
 		trait :admin do
   		role "admin"
+  		organizations { build_list :organization, 3 }
     end
 
 	end
 
 	factory :organization do
+		name "org#{Random.rand(1000..9999)}"
 
 	end
 end

@@ -10,7 +10,7 @@ feature 'Dashboard module list', :feature do
 		expect(page).to have_content 'Organization list'
 		expect(page).not_to have_content 'Admin panel'
 	end
-	
+
 	context "As an Admin" do 
 		before do
 			login_as(admin)
@@ -27,9 +27,14 @@ feature 'Dashboard module list', :feature do
 			expect(current_path).to eq '/users'
 		end
 
-		it "User can go to Organization index / dashboard" do
+		it "User can go to Organization index / List" do
 			click_link 'View all organizations' 
 			expect(current_path).to eq '/organizations'
+		end
+
+		it "User can go to Organization show / dashboard" do
+			visit organization_path(admin.organizations.first)
+			expect(current_path).to eq organization_path(admin.organizations.first)
 		end
 	end
 end

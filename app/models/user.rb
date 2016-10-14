@@ -8,13 +8,16 @@ class User < ActiveRecord::Base
   # before_save   :reset_activation_digest
   # after_save :clear_password
 
+  has_many :organizations
+  has_many :memberships
+
   enum role: [:user, :team_leader, :area_planner, 
               :labour_coodinator, :technical_coordinator, :planning, 
               :operations, :program_manager, :admin]
               
 
   validates :email, presence: true, uniqueness: true
-  validates :password, presence: true, allow_blank: false
+  # validates :encrypted_password, presence: true, allow_blank: false
 
   def set_default_role
     self.role ||= :user
@@ -34,6 +37,12 @@ class User < ActiveRecord::Base
     #return true
   end
 
+  def get_member_orgs
+    org = (Organization.where(user_id: self.id) + 
+                Membership.where(user_id: self.id).collect{ |mem|
+                  mem.organization
+                }).flatten.uniq
+  end
 
   # -------------
 

@@ -4,7 +4,11 @@ class OrganizationsController < ApplicationController
   # GET /organizations
   # GET /organizations.json
   def index
-    @organizations = Organization.all
+    if current_user.admin?
+      @organizations = Organization.all
+    else
+      @organizations = current_user.get_member_orgs
+    end
   end
 
   # GET /organizations/1
@@ -15,6 +19,7 @@ class OrganizationsController < ApplicationController
   # GET /organizations/new
   def new
     @organization = Organization.new
+    authorize @organization
   end
 
   # GET /organizations/1/edit
@@ -25,14 +30,14 @@ class OrganizationsController < ApplicationController
   # POST /organizations.json
   def create
     @organization = Organization.new(organization_params)
+    @organization.user = current_user
+    authorize @organization
 
     respond_to do |format|
       if @organization.save
-        format.html { redirect_to @organization, notice: 'Organization was successfully created.' }
-        format.json { render :show, status: :created, location: @organization }
+        format.html { redirect_to organizations_path, notice: 'Organization was successfully created.' }
       else
         format.html { render :new }
-        format.json { render json: @organization.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -41,6 +46,7 @@ class OrganizationsController < ApplicationController
   # PATCH/PUT /organizations/1.json
   def update
     respond_to do |format|
+      authorize @organization
       if @organization.update(organization_params)
         format.html { redirect_to @organization, notice: 'Organization was successfully updated.' }
         format.json { render :show, status: :ok, location: @organization }
@@ -54,6 +60,7 @@ class OrganizationsController < ApplicationController
   # DELETE /organizations/1
   # DELETE /organizations/1.json
   def destroy
+    authorize @organization
     @organization.destroy
     respond_to do |format|
       format.html { redirect_to organizations_url, notice: 'Organization was successfully destroyed.' }
@@ -69,6 +76,6 @@ class OrganizationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def organization_params
-      params.fetch(:organization, {})
+      params.require(:organization).permit(:name, :bio)
     end
 end

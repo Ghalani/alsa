@@ -1,8 +1,25 @@
-<h1>Dashboard</h1>
 <% if @user.admin? %>
-	<div>Admin panel</div>
-	<%= link_to "View users", users_path %>
+	<div>
+		<h2>Admin panel</h2>
+		<%= link_to "View users", users_path %>
+	</div>
 <% end %>
-<div>Organization list</div>
+<h1>Dashboard</h1>
+<hr>
+<div id="orgs">
+	<div>Organization list</div>
+	<div v-if="organizations">
+		<h2>You have no organizations</h2>
+		<%= link_to "new", new_organization_path %>
+	</div>
+	<div v-else="">		
+		<div v-for="osd in organizations">
+		  <p>{{osd.name}}</p>
+		</div>
+	</div>
+</div>
 <%= link_to 'Log out', "/logout" %>
 <%= link_to "View all organizations", organizations_path %>
+<script type="text/javascript">
+
+</script>

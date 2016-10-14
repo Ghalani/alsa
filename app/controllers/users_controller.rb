@@ -5,7 +5,8 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     @users = User.all
-    authorize User
+    puts current_user.role
+    authorize current_user
   end
 
   # GET /users/1
