@@ -11,7 +11,89 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161013093754) do
+ActiveRecord::Schema.define(version: 20161018100510) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "categories", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "type"
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "categories_farmers", id: false, force: :cascade do |t|
+    t.integer "category_id"
+    t.integer "farmer_id"
+  end
+
+  create_table "certifications", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "countries", force: :cascade do |t|
+    t.string   "iso"
+    t.string   "name"
+    t.string   "nicename"
+    t.string   "iso3"
+    t.string   "numcode"
+    t.string   "phonecode"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "districts", force: :cascade do |t|
+    t.integer  "organization_id"
+    t.string   "name"
+    t.integer  "lat"
+    t.integer  "lon"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  create_table "farmer_certifications", force: :cascade do |t|
+    t.integer  "farmer_id"
+    t.integer  "certification_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  create_table "farmer_id_cards", force: :cascade do |t|
+    t.integer  "farmer_id"
+    t.integer  "id_card_id"
+    t.string   "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "farmers", force: :cascade do |t|
+    t.string   "fname"
+    t.string   "lname"
+    t.string   "phone"
+    t.integer  "gender"
+    t.date     "dob"
+    t.integer  "educational_level"
+    t.integer  "village_id"
+    t.boolean  "caa_id"
+    t.string   "kcl_district_id"
+    t.boolean  "certified"
+    t.integer  "marital_status"
+    t.integer  "num_of_sharecroppers"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  create_table "id_cards", force: :cascade do |t|
+    t.string   "type"
+    t.integer  "length"
+    t.integer  "level"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "memberships", force: :cascade do |t|
     t.integer  "user_id"
@@ -26,9 +108,11 @@ ActiveRecord::Schema.define(version: 20161013093754) do
     t.text     "bio"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "country_id"
   end
 
-  add_index "organizations", ["user_id"], name: "index_organizations_on_user_id"
+  add_index "organizations", ["country_id"], name: "index_organizations_on_country_id", using: :btree
+  add_index "organizations", ["user_id"], name: "index_organizations_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -46,8 +130,17 @@ ActiveRecord::Schema.define(version: 20161013093754) do
     t.datetime "updated_at",                          null: false
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["phone"], name: "index_users_on_phone", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["phone"], name: "index_users_on_phone", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "villages", force: :cascade do |t|
+    t.integer  "district_id"
+    t.string   "name"
+    t.integer  "lat"
+    t.integer  "lon"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
 
 end

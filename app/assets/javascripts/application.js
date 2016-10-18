@@ -12,5 +12,13 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
-//= require_tree .
+//= require_tree ./shared
+
+function showModal(){
+	$('.ui.modal').modal('show');
+}
+
+function appendModal(html){
+	$("#modal").html(html)
+	showModal();
+}

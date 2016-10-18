@@ -9,12 +9,17 @@ class OrganizationPolicy
   def index?
     #@current_user.admin?
   end
+
   def new?
     @current_user.admin?
   end
 
+  def create?
+    @current_user.admin?
+  end
+
   def show?
-  	@current_user.admin? or (Membership.where(user: @current_user, organization: @org))
+  	@current_user.admin? or (Membership.where(user: @current_user, organization: @org).size > 0)
   end
 
   def update?
@@ -22,6 +27,6 @@ class OrganizationPolicy
   end
 
   def destroy?
-  	(@org.memberships < 1) && @current_user.admin?
+  	(@org.memberships.size < 1) && @current_user.admin?
   end
 end

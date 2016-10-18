@@ -1,25 +1,39 @@
-<% if @user.admin? %>
-	<div>
-		<h2>Admin panel</h2>
-		<%= link_to "View users", users_path %>
-	</div>
-<% end %>
 <h1>Dashboard</h1>
 <hr>
-<div id="orgs">
-	<div>Organization list</div>
-	<div v-if="organizations">
-		<h2>You have no organizations</h2>
-		<%= link_to "new", new_organization_path %>
-	</div>
-	<div v-else="">		
-		<div v-for="osd in organizations">
-		  <p>{{osd.name}}</p>
+<div class="ui two column divided grid">
+	<div class="stretched row">
+		<% if @user.admin? %>
+			<div class="column">
+				<h2>Users in system</h2>
+				<% @users.each do |u| %>
+					<div class="ui segment">
+		        <%= u.email %>
+		      </div>					
+				<% end %>
+				<%= link_to "View users", users_path %>
+			</div>
+		<% end %>
+		<div class="column">			
+			<div id="orgs">
+				<h3>Organizations you work with</h3>
+				<div v-if="organizations.length < 1">
+					<h2>You have no organizations</h2>
+					<%= link_to "new", new_organization_path %>
+				</div>
+				<div>		
+					<div v-for="osd in organizations">
+						<a :href="'organizations/' + osd.id">							
+							<div class="ui segment">
+								<p>{{osd.name}}</p>
+							</div>
+						</a>
+					  
+					</div>
+				</div>
+				<%= link_to "View all organizations", organizations_path %>
+
+			</div>
 		</div>
 	</div>
 </div>
 <%= link_to 'Log out', "/logout" %>
-<%= link_to "View all organizations", organizations_path %>
-<script type="text/javascript">
-
-</script>

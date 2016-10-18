@@ -10,6 +10,32 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *= require_tree .
+ *= require_tree ./shared
  *= require_self
  */
+
+.alert{
+	position: absolute;
+  right: 5px;
+  padding: 5px 20px;
+  background: #0e4e1b;
+  border-radius: 5px;
+  top: 10px;
+  color: #eee;
+  box-shadow: 0px 4px 20px -3px #000;
+}
+.alert-info{
+	color: #eeefff;
+	.alicon{
+		background: orange !important;
+	}
+}
+
+.circle{ border-radius: 50%; }
+.square{ 
+	background: #eee;
+	display:block;
+	min-width: 25px;
+	min-height: 25px;
+	width: 25px; 
+}

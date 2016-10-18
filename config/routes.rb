@@ -1,7 +1,14 @@
 Rails.application.routes.draw do
+  resources :districts
+  resources :farmers
   root to: "static_pages#index"
   get 'dashboard' => 'static_pages#dashboard'
-  resources :organizations
+
+  resources :organizations do
+    post 'add_member' => 'organizations#add_member'
+    get 'farm_and_labour' => 'organizations#farm_and_labour'
+  end
+  
 
   # => SESSION
   resources :sessions, only:[:new, :create, :destroy]

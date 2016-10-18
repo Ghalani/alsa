@@ -5,8 +5,20 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     @users = User.all
-    puts current_user.role
     authorize current_user
+    respond_to do |format|
+      format.html
+      format.json{        
+        if params[:organization_id]
+          org = Organization.find(params[:organization_id])
+          members = org.members
+          non_members = User.all - members
+          render json: {members: members, non_members: non_members}
+        else  
+          render json: {error: "Unable to process request"}
+        end
+      }
+    end
   end
 
   # GET /users/1

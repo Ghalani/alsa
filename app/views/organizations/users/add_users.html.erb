@@ -1,0 +1,67 @@
+<h1>Appended</h1>
+<div id="add-users" class="ui equal width grid">
+	<div class="column">
+		<div>Non Members <br>
+			<span>Click to add to member list</span>
+		</div>
+		<div v-for="(m, i) in users.nonMembers" >
+			<div v-on:click="addMember(i)">{{
+			m.fname}} {{m.email}}</div>
+		</div>
+	</div>
+	<div class="column">
+		<div>Members</div>
+		<div v-for="m in users.members">
+			<div>{{m.fname}} {{m.email}}</div>
+		</div>		
+	</div>
+</div>
+
+<script>
+	org_num = <%= @organization.id %>
+	addUsers = new Vue({
+		el: '#add-users',
+		data: {
+			users: {
+		    nonMembers: [],
+		    members: []	  		
+	  	}
+		},
+		methods: {
+			removeNomMember: function(key) {
+				console.log("dfdkfjdhfjdfhdjhdfjhf")
+			  Vue.delete(this.users.nonMembers, key);
+			},
+			getUsers: function(){
+	  		var that;
+		    that = this;
+		    $.ajax({
+		      url: '/users.json?organization_id='+org_num,
+		      success: function(res) {
+		        that.users.members = res.members;
+		        that.users.nonMembers = res.non_members;
+		      }
+		    });
+	  	},
+	  	addMember: function(pos){
+	  		var that = this;
+	  		var user = this.users.nonMembers[pos]
+	  		$.post({
+	  			url: '/organizations/'+org_num +'/add_member.json',
+	  			type: "post",
+	  			data: {user_id: user.id},
+	  			success: function(res){
+	  				that.users.nonMembers.splice(pos, 1);
+	  				/*$.grep(that.users.nonMembers, function(e){ 
+						  return e != user; 
+						});*/
+						that.users.members.push(user);
+	  			}
+	  		})
+  			.done()
+	      .fail(function(res){ console.log("Unable to add user "+res)});
+	  	}
+		}
+	})
+	addUsers.getUsers();
+</script>

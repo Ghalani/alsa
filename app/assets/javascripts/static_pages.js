@@ -1,19 +1,26 @@
+var dashboard;
 $(document).on('ready page:change', function() {
-var dashboard = new Vue({
+	dashboard = new Vue({
 	  el: '#orgs',
 	  data: {
-	    organizations: [
+	    organizations: [{name:"dfjdfhdjfhdjfhdfjh"},
 	    ],
 	  },
+	  methods:{
+	  	getOrgs: function(){
+	  		var that;
+		    that = this;
+		    $.ajax({
+		      url: '/dashboard.json',
+		      success: function(res) {
+		        that.organizations = res.organizations;
+		      }
+		    });
+	  	}
+	  },
 	  ready: function() {
-	    var that;
-	    that = this;
-	    $.ajax({
-	      url: '/dashboard.json',
-	      success: function(res) {
-	        that.organizations += res.organizations;
-	      }
-	    });
+	    getOrgs();
 	  }
 	});
+	dashboard.getOrgs();
 });

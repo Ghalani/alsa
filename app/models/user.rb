@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
 
   has_many :organizations
   has_many :memberships
+  has_many :member_organizations, as: :organizations, through: :memberships, source: :organization
 
   enum role: [:user, :team_leader, :area_planner, 
               :labour_coodinator, :technical_coordinator, :planning, 

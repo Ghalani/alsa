@@ -13,6 +13,14 @@
     <%= f.text_field :name %>
   </div>
   <div class="form-group">
+    <%= f.select(
+      :country_id,
+      @countries.collect{|c| [ c.name, c.id ] },
+      {},
+      {multiple: false})
+    %>
+  </div>
+  <div class="form-group">
     <%= f.text_area :bio %>
   </div>
   <div class="actions">

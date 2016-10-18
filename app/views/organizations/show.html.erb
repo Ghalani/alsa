@@ -1,9 +1,15 @@
-<p id="notice"><%= notice %></p>
+<div id="organization-show">
+	<div>
+	  <%= @organization.members.size %> users in organization (<%= @organization.name %>)
+	  <%= link_to edit_organization_path(@organization, page: "add_users") do %>
+	  Add users
+	  <% end %>
+	</div>
 
-<%= link_to 'Edit', edit_organization_path(@organization) %> |
-<%= link_to 'Back', organizations_path %>
-
-<h2>Module list</h2>
-<div>
-	module 1
+	<h2>Module list</h2>
+	<div class="card-module">
+		<%= link_to organization_farm_and_labour_path(@organization) do %>
+			Farmer and labour management
+		<% end %>
+	</div>
 </div>
