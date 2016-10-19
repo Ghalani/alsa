@@ -1,15 +1,25 @@
 class FarmersController < ApplicationController
   before_action :set_farmer, only: [:show, :edit, :update, :destroy]
+  before_action :set_organization
 
   # GET /farmers
   # GET /farmers.json
   def index
-    @farmers = Farmer.all
+    #@organization = Organization.find_by(id: params[:organization_id])
+    if @organization
+      @farmers = @organization.farmers
+      respond_to do |format|
+        format.json{render json: @farmers}
+      end
+    else
+      @farmers = Farmer.all
+    end
   end
 
   # GET /farmers/1
   # GET /farmers/1.json
   def show
+    # @organization is already set
   end
 
   # GET /farmers/new
@@ -25,15 +35,19 @@ class FarmersController < ApplicationController
   # POST /farmers.json
   def create
     @farmer = Farmer.new(farmer_params)
-
-    respond_to do |format|
-      if @farmer.save
-        format.html { redirect_to @farmer, notice: 'Farmer was successfully created.' }
-        format.json { render :show, status: :created, location: @farmer }
-      else
-        format.html { render :new }
-        format.json { render json: @farmer.errors, status: :unprocessable_entity }
+    if @organization
+      respond_to do |format|
+        @farmer.organization = @organization
+        if @farmer.save
+          format.html { redirect_to [@organization, @farmer], notice: 'Farmer was successfully created.' }
+          format.json { render :show, status: :created, location: @farmer }
+        else
+          format.html { render :new }
+          format.json { render json: @farmer.errors, status: :unprocessable_entity }
+        end
       end
+    else
+      redirect_to '/', notice: "You have to add a user through an organization"
     end
   end
 
@@ -67,8 +81,14 @@ class FarmersController < ApplicationController
       @farmer = Farmer.find(params[:id])
     end
 
+    def set_organization
+      @organization = Organization.find_by(id: params[:organization_id])
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def farmer_params
-      params.fetch(:farmer, {})
+      params.require(:farmer).permit(:fname,:lname,:phone,:gender,
+        :dob,:educational_level,:village,:caa_id,
+        :kcl_district_id,:certified,:marital_status,:num_of_sharecroppers)
     end
 end

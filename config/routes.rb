@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :organizations do
     post 'add_member' => 'organizations#add_member'
     get 'farm_and_labour' => 'organizations#farm_and_labour'
+    resources :farmers
   end
   
 

@@ -1,0 +1,10 @@
+<div v-if="Boolean(farmerInfo.phone)" class="overlay">
+	<div class="ui segment w500 side-card float-right">
+		<div v-on:click="clearFarmerInfo()"><i class="ui delete icon float-right"></i></div>
+		<h2>Farmer information</h2>
+		<div>{{farmerInfo.fname}} {{farmerInfo.lname}}</div>
+		<div>{{farmerInfo.phone}}</div>
+		<div>{{farmerInfo.gender}}</div>
+		<div>{{farmerInfo.organization_id}}</div>
+	</div>
+</div>

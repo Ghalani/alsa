@@ -39,3 +39,19 @@
 	min-height: 25px;
 	width: 25px; 
 }
+
+.overlay{
+	position: absolute;
+	background: rgba(0,0,0,0.3);
+	height: 100%;
+	width: 100%;	
+	top: 0;
+}
+
+.float-right{	float: right;}
+.side-card{  }
+.w500{width: 500px;}
+
+.form-group{
+	padding: 10px;
+}

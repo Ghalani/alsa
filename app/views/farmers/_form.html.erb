@@ -1,4 +1,4 @@
-<%= form_for(@farmer) do |f| %>
+<%= form_for [@organization, @farmer] do |f| %>
   <% if @farmer.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@farmer.errors.count, "error") %> prohibited this farmer from being saved:</h2>
@@ -10,7 +10,33 @@
       </ul>
     </div>
   <% end %>
-
+  <div class="form-group">
+    <label>First name</label><br>
+    <%= f.text_field :fname %>
+  </div>
+  <div class="form-group">
+    <label>Last name</label><br>
+    <%= f.text_field :lname %>
+  </div>
+  <div class="form-group">
+    <label>Phone</label><br>
+    <%= f.text_field :phone %>
+  </div>
+  <div class="form-group">
+    <label>Gender</label><br>
+    <%= f.radio_button :gender, :female, checked: @farmer.gender? %> 
+    <%= f.label :gender, "Female" %>
+    <%= f.radio_button :gender, :male, checked: @farmer.gender? %> 
+    <%= f.label :gender, "Male" %>
+  </div>
+  <div class="form-group">
+    <label>Hightest education</label><br>
+    <%= f.text_field :educational_level %>
+  </div>
+  <div class="form-group">
+    <label>Number of sharecropper on his/her land</label><br>
+    <%= f.text_field :num_of_sharecroppers %>
+  </div>
   <div class="actions">
     <%= f.submit %>
   </div>
