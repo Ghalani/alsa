@@ -13,5 +13,9 @@ module Features
 	  def login_as(user)
 	  	login(user.email, user.password)
 	  end
+
+	  def random_email
+	  	"foo#{Random.rand(1000..9999)}@exam#{Random.rand(1000..9999)}ple.com"
+	  end
 	end
 end

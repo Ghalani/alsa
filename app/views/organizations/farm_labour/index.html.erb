@@ -1,41 +1,45 @@
 <div id="farm-labour">
 	<div class="ui secondary pointing menu">
-	  <a class="item">
-	    Home
-	  </a>
-	  <a class="item">
-	    Messages
-	  </a>
-	  <a class="item active">
-	    Friends
-	  </a>
+	  <a class="item">Home</a>
+	  <a class="item">Messages</a>
+	  <a class="item active">Friends</a>
 	  <div class="right menu">
-	    <a class="ui item">
-	      Logout
-	    </a>
+	    <a class="ui item">Logout </a>
 	  </div>
 	</div>
 	<div class="ui grid">
 		<div class="six wide column">
 			<div class="ui segment">
 				<div class="ui vertical fluid tabular menu">
-					<a class="active item">
+					<a class="item" v-bind:class="{active: showFarmers}" v-on:click="showFarmers = true">
 	        	Farmers
 		      </a>
-		      <a class="item">
+		      <a class="item" v-bind:class="{active: !showFarmers}" v-on:click="showFarmers = false">
 		        Labourers
 		      </a>
 				</div>
 			</div>
 		</div>
 		<div class="ten wide column">
-			<div class="ui segment">
-				<div v-if="!Boolean(farmers.length)">sdsdsdcsdcsdcsdcsdc</div>
-				<%= link_to new_organization_farmer_path(@organization) do %>
-					<button class="ui button">Create new farmer</button>
-				<% end %>
-			</div>
-			<table-farmer :farmers="farmers"></table-farmer>
+			<transition name="bounce">
+				<div id="farmer-list" v-if="showFarmers">
+					<div class="ui segment">
+						<%= link_to new_organization_farmer_path(@organization) do %>
+							<button class="ui button">Create new farmer</button>
+						<% end %>
+					</div>
+					<table-farmer :farmers="farmers"></table-farmer>					
+				</div>
+			</transition>
+			<transition name="bounce">
+				<div id="labourer-list" v-if="!showFarmers">
+					<div class="ui segment">
+						<%= link_to new_organization_labourer_path(@organization) do %>
+							<button class="ui button">Create new labourer</button>
+						<% end %>
+					</div>				
+				</div>			
+			</transition>
 		</div>
 	</div>
 	<%= render "organizations/farm_labour/farmer_info" %>
@@ -51,8 +55,10 @@
 		  </tr>
 	  </thead>
 	  <tbody>
-			<tr v-for="farmer in farmers" @click.prevent="requestSetFarmerInfo(farmer)">
-			  <td><a :href="'/organizations/'+ farmer.organization_id +'/farmers/' + farmer.id">{{farmer.fname}} {{farmer.lname}}</a></td>
+			<tr v-for="farmer in farmers">
+			  <td>
+			  	<a :href="'/organizations/'+ farmer.organization_id +'/farmers/' + farmer.id">{{farmer.fname}} {{farmer.lname}}</a> <i class="ui eye icon float-right" @click.prevent="requestSetFarmerInfo(farmer)"></i>
+			  </td>
 			  <td>{{farmer.phone}}</td>
 			  <td>{{farmer.gender}}</td>
 			</tr>
@@ -77,10 +83,7 @@
 		</tfoot>
 	</table>
 </script>
-<!-- <script>
-  export default {
-    
-</script> -->
+ 
 <script>
 		Vue.component('table-farmer', {
 		  props: ['farmers'],
@@ -98,13 +101,14 @@
 				farmers: [],
 				labourers: [],
 				farmerInfo: {},
-				labourerInfo: {}
+				labourerInfo: {},
+				showFarmers: true
 			},
 			methods: {
 				getFarmers: function(){
 					var that = this;
 					$.ajax({
-		  			url: '/farmers.json?organization_id=<%= @organization.id %>',
+		  			url: '/organizations/<%= @organization.id %>/farmers.json',
 		  			success: function(res){
 		  				that.farmers = res
 		  			}

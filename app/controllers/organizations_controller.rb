@@ -11,12 +11,14 @@ class OrganizationsController < ApplicationController
     else
       @organizations = current_user.get_member_orgs
     end
+    authorize Organization
   end
 
   # GET /organizations/1
   # GET /organizations/1.json
   def show
     @organization = Organization.find(params[:id])
+    authorize @organization
   end
 
   # GET /organizations/new

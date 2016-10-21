@@ -1,0 +1,36 @@
+<%= form_for [@organization, @labourer] do |f| %>
+  <% if @labourer.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@labourer.errors.count, "error") %> prohibited this labourer from being saved:</h2>
+
+      <ul>
+      <% @labourer.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <label>First name</label><br>
+    <%= f.text_field :fname %>
+  </div>
+  <div class="form-group">
+    <label>Last name</label><br>
+    <%= f.text_field :lname %>
+  </div>
+  <div class="form-group">
+    <label>Phone</label><br>
+    <%= f.text_field :phone %>
+  </div>
+  <div class="form-group">
+    <label>Gender</label><br>
+    <%= f.radio_button :gender, :female, checked: @labourer.gender? %> 
+    <%= f.label :gender, "Female" %>
+    <%= f.radio_button :gender, :male, checked: @labourer.gender? %> 
+    <%= f.label :gender, "Male" %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

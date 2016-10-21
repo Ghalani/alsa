@@ -5,7 +5,8 @@ class FarmersController < ApplicationController
   # GET /farmers
   # GET /farmers.json
   def index
-    #@organization = Organization.find_by(id: params[:organization_id])
+    authorize Farmer
+
     if @organization
       @farmers = @organization.farmers
       respond_to do |format|
@@ -20,21 +21,27 @@ class FarmersController < ApplicationController
   # GET /farmers/1.json
   def show
     # @organization is already set
+    authorize @farmer
   end
 
   # GET /farmers/new
   def new
     @farmer = Farmer.new
+    authorize Farmer
+
   end
 
   # GET /farmers/1/edit
   def edit
+    authorize @farmer
   end
 
   # POST /farmers
   # POST /farmers.json
   def create
     @farmer = Farmer.new(farmer_params)
+    authorize @farmer
+
     if @organization
       respond_to do |format|
         @farmer.organization = @organization
@@ -54,6 +61,8 @@ class FarmersController < ApplicationController
   # PATCH/PUT /farmers/1
   # PATCH/PUT /farmers/1.json
   def update
+    authorize @farmer
+
     respond_to do |format|
       if @farmer.update(farmer_params)
         format.html { redirect_to @farmer, notice: 'Farmer was successfully updated.' }
@@ -68,6 +77,8 @@ class FarmersController < ApplicationController
   # DELETE /farmers/1
   # DELETE /farmers/1.json
   def destroy
+    authorize @farmer
+
     @farmer.destroy
     respond_to do |format|
       format.html { redirect_to farmers_url, notice: 'Farmer was successfully destroyed.' }

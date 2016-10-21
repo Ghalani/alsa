@@ -1,13 +1,13 @@
-class OrganizationPolicy
+class LabourerPolicy
 	attr_reader :current_user, :model
 
 	def initialize(current_user, model)
     @current_user = current_user
-    @org = model
+    @labouer = model
   end
 
   def index?
-    @current_user
+    @current_user or @current_user.is_member?(@labouer.organization)
   end
 
   def new?
@@ -19,7 +19,7 @@ class OrganizationPolicy
   end
 
   def show?
-  	@current_user.admin? or @current_user.is_member?(@org)
+  	@current_user.admin? or @current_user.is_member?(@labouer.organization)
   end
 
   def update?
@@ -27,6 +27,6 @@ class OrganizationPolicy
   end
 
   def destroy?
-  	(@org.memberships.size < 1) && @current_user.admin?
+  	@current_user.admin?
   end
 end

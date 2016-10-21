@@ -45,6 +45,9 @@ class User < ActiveRecord::Base
                 }).flatten.uniq
   end
 
+  def is_member?(org)
+    self.member_organizations.include? org
+  end
   # -------------
 
   # def authenticated?(attribute, token)

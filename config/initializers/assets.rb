@@ -11,7 +11,7 @@ Rails.application.config.assets.version = '1.0'
 # Rails.application.config.assets.precompile += %w( search.js )
 # Rails.application.config.assets.precompile += %w( static_pages.js )
 # Rails.application.config.assets.precompile += %w( static_pages.scss )
-%w( users static_pages sessions organizations farmers ).each do |controller|
+%w( users static_pages sessions organizations farmers labourers ).each do |controller|
 	# Rails.application.config.assets.precompile += %w( static_pages.js )
 	# Rails.application.config.assets.precompile += %w( static_pages.scss )
   Rails.application.config.assets.precompile += ["#{controller}.js", "#{controller}.scss"]

@@ -1,4 +1,7 @@
-<h1>Dashboard</h1>
+<% if @user.admin? %>
+	<h1>Admin panel</h1><br>
+<% end %>
+<h2>Dashboard</h2>
 <hr>
 <div class="ui two column divided grid">
 	<div class="stretched row">
@@ -21,14 +24,18 @@
 					<%= link_to "new", new_organization_path %>
 				</div>
 				<div>		
-					<div v-for="osd in organizations">
-						<a :href="'organizations/' + osd.id">							
-							<div class="ui segment">
-								<p>{{osd.name}}</p>
-							</div>
-						</a>
-					  
-					</div>
+					<div v-for="osd in organizations" class="card">
+            <div class="card-image">
+              <img src="images/sample-1.jpg">
+              <span class="card-title">Card Title</span>
+            </div>
+            <div class="card-content">
+              <p>{{osd.name}}</p>
+            </div>
+            <div class="card-action">
+              <a :href="'organizations/' + osd.id">Enter</a>
+            </div>
+          </div>						 
 				</div>
 				<%= link_to "View all organizations", organizations_path %>
 

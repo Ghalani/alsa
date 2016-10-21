@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
-  resources :districts
-  resources :farmers
+  # resources :labourers
+  # resources :districts
+  # resources :farmers
   root to: "static_pages#index"
   get 'dashboard' => 'static_pages#dashboard'
 
@@ -8,6 +9,7 @@ Rails.application.routes.draw do
     post 'add_member' => 'organizations#add_member'
     get 'farm_and_labour' => 'organizations#farm_and_labour'
     resources :farmers
+    resources :labourers
   end
   
 

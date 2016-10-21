@@ -7,7 +7,7 @@ feature 'Dashboard module list', :feature do
 	scenario 'user should not see the admin panel on the main Dashboard' do
 		login_as(user)
 		expect(page).to have_content 'Dashboard'
-		expect(page).to have_content 'Organization list'
+		expect(page).to have_content 'Organizations you work'
 		expect(page).not_to have_content 'Admin panel'
 	end
 
@@ -18,7 +18,7 @@ feature 'Dashboard module list', :feature do
 
 		scenario 'Admin user should see the admin panel on the main Dashboard' do
 			expect(page).to have_content 'Dashboard'
-			expect(page).to have_content 'Organization list'
+			expect(page).to have_content 'Organizations you work'
 			expect(page).to have_content 'Admin panel'
 		end
 
