@@ -1,46 +1,70 @@
-<% if @user.admin? %>
-	<h1>Admin panel</h1><br>
-<% end %>
-<h2>Dashboard</h2>
-<hr>
-<div class="ui two column divided grid">
-	<div class="stretched row">
+<div class="green-bg full-height">
+	<%= render "nav" %>
+	<div class="stat-bar">
+		<% if @user.admin? %>
+			<h1>Admin panel</h1><br>
+		<% end %>
+		<h2>Dashboard</h2>
+		<hr>
+	</div>
+	<div class="ui equal width grid">
 		<% if @user.admin? %>
 			<div class="column">
-				<h2>Users in system</h2>
-				<% @users.each do |u| %>
-					<div class="ui segment">
-		        <%= u.email %>
-		      </div>					
-				<% end %>
-				<%= link_to "View users", users_path %>
+				<div class="card hover raise-1 hover-raise center">
+					<div class="card-head">Users in system</div>
+					<hr>
+					<div class="card-body">
+						<% @users.each do |u| %>
+							<div class="list-item ripple ui grid">
+								<div class="w50 three wide column"><%= image_tag 'man32.png' %></div> 
+								<div class="twelve wide column">
+									<div class="theme-text1"><%= u.email %></div>
+									<div><%= u.role %></div>
+								</div>
+							</div>					
+						<% end %>
+					</div>					
+					<div class="text-center">
+						<%= link_to "See all", users_path %>
+					</div>
+				</div>
+
+				
 			</div>
 		<% end %>
-		<div class="column">			
+		<div class="column">
 			<div id="orgs">
-				<h3>Organizations you work with</h3>
-				<div v-if="organizations.length < 1">
-					<h2>You have no organizations</h2>
-					<%= link_to "new", new_organization_path %>
-				</div>
-				<div>		
-					<div v-for="osd in organizations" class="card">
-            <div class="card-image">
-              <img src="images/sample-1.jpg">
-              <span class="card-title">Card Title</span>
-            </div>
-            <div class="card-content">
-              <p>{{osd.name}}</p>
-            </div>
-            <div class="card-action">
-              <a :href="'organizations/' + osd.id">Enter</a>
-            </div>
-          </div>						 
-				</div>
-				<%= link_to "View all organizations", organizations_path %>
+					<div class="title">Organizations you work with</div>
+					<hr>
+					<div v-if="organizations.length < 1">
+						<h3 >You have no organizations</h3>
+						<hr>
+						<%= link_to "new", new_organization_path %>
+					</div>
+					<div class="ui grid container">	
+						<div v-for="osd in organizations" class="eight wide column">
+							<a :href="'organizations/' + osd.id">
+								<div class="card raise-2 w200 text-center org-card hover-raise">
+									<div class="card-image">
+										<%= image_tag 'cocoa.jpg' %>
+									</div>
+									<div class="card-content">
+										<p class="theme-text1">{{osd.name}}</p>
+										<p class="theme-text1">{{osd.country}}</p>
+									</div>
+								</div>			
+							</a>				
+						</div>
+						<div class="six wide column">
+							<div class="h200 w200 extra">
+								<div class="text-center">ADD</div>							
+							</div>
+						</div>		 
+					</div>
+					<%= link_to "View all organizations", organizations_path, class:"btn ripple" %>
 
-			</div>
+				</div>
 		</div>
+		
 	</div>
 </div>
-<%= link_to 'Log out', "/logout" %>
