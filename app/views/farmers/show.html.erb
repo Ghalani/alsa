@@ -1,4 +1,21 @@
-<p id="notice"><%= notice %></p>
+<div id="farmer-show" >
+	<%= render "static_pages/nav" %>
+  <div class="stat-bar green-bg ui grid">
+    <div class="four wide column ui grid">
+      <div class="four wide column">
+        <%= image_tag "farmer64.png" %>
+      </div>
+      <div class="four wide column">
+        <div><%= @farmer.fname %> <%= @farmer.lname %></div>
+        <div><%= @farmer.phone %></div>
+        <div>Village name</div>
+      </div>
+    </div>
+    <div class="twelve wide column">
+      <div id="farmer-card" class="card raise-1">dfhdjhdjhfjhdfjh</div>
+    </div>
+  </div>
+</div>
 
-<%= link_to 'Edit', edit_farmer_path(@farmer) %> |
+<%= link_to 'Edit', edit_organization_farmer_path(@organization, @farmer) %> |
 <%= link_to 'Back', organization_farm_and_labour_path(@organization) %>

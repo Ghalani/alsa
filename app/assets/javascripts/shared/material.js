@@ -1,6 +1,6 @@
 $(document).on('ready', function(){
   $('.ripple').on('click', function (event) {
-    event.preventDefault();
+    //event.preventDefault();
     console.log("ripple")
     var $div = $('<div/>'),
         btnOffset = $(this).offset(),
@@ -14,6 +14,7 @@ $(document).on('ready', function(){
     
     $ripple.css("height", $(this).height());
     $ripple.css("width", $(this).height());
+    
     $div
       .css({
         top: yPos - ($ripple.height()/2),

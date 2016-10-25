@@ -1,52 +1,60 @@
 <div id="farm-labour">
-	<div class="ui secondary pointing menu">
-	  <a class="item">Home</a>
-	  <a class="item">Messages</a>
-	  <a class="item active">Friends</a>
-	  <div class="right menu">
-	    <a class="ui item">Logout </a>
-	  </div>
+	<%= render "static_pages/nav" %>
+	<div class="stat-bar green-bg">
+		<div class="ui container padb100">
+			<div class="text15"><%= @organization.name %></div><br>
+			<div class="text2">Farmer and labour management</div>
+		</div>
 	</div>
-	<div class="ui grid">
-		<div class="six wide column">
-			<div class="ui segment">
-				<div class="ui vertical fluid tabular menu">
-					<a class="item" v-bind:class="{active: showFarmers}" v-on:click="showFarmers = true">
-	        	Farmers
-		      </a>
-		      <a class="item" v-bind:class="{active: !showFarmers}" v-on:click="showFarmers = false">
-		        Labourers
-		      </a>
+	<div class="top-neg-marg100">
+		<div class="ui centered container grid">
+			<div class="three wide column row computer only">
+				<div class="card raise-2 w90p">
+						<div class="list-item" v-bind:class="{active: showFarmers}" v-on:click="showFarmers = true">
+							Farmers
+						</div>
+						<div class="list-item" v-bind:class="{active: !showFarmers}" v-on:click="showFarmers = false">
+							Labourers
+						</div>
 				</div>
 			</div>
-		</div>
-		<div class="ten wide column">
-			<transition name="bounce">
-				<div id="farmer-list" v-if="showFarmers">
-					<div class="ui segment">
-						<%= link_to new_organization_farmer_path(@organization) do %>
-							<button class="ui button">Create new farmer</button>
-						<% end %>
+			<!--<div class="one wide column tablet mobile only">
+				Three dots
+			</div>-->
+			<div class="w100p eleven wide column row">
+				<transition name="bounce">
+					<div id="farmer-list" v-if="showFarmers" class="card center raise-2 w100p">
+						<div class="row" style="text-align: right;">
+							<span><input class="rounded-input" name="" placeholder="Filter by">
+							<input class="rounded-input" name=""></span>
+							<hr>
+						</div>
+						<table-farmer :farmers="farmers"></table-farmer>					
+						<div class="fab fab-br raise-3 ripple">
+							<%= link_to new_organization_farmer_path(@organization) do %>
+								<!--<button class="ui button">Create new farmer</button>-->
+								<i class="ui add icon"></i>
+							<% end %>
+						</div>
 					</div>
-					<table-farmer :farmers="farmers"></table-farmer>					
-				</div>
-			</transition>
-			<transition name="bounce">
-				<div id="labourer-list" v-if="!showFarmers">
-					<div class="ui segment">
-						<%= link_to new_organization_labourer_path(@organization) do %>
-							<button class="ui button">Create new labourer</button>
-						<% end %>
-					</div>				
-				</div>			
-			</transition>
+				</transition>
+				<transition name="bounce">
+					<div id="labourer-list" v-if="!showFarmers">
+						<div class="ui segment">
+							<%= link_to new_organization_labourer_path(@organization) do %>
+								<button class="ui button">Create new labourer</button>
+							<% end %>
+						</div>				
+					</div>			
+				</transition>
+			</div>
 		</div>
 	</div>
 	<%= render "organizations/farm_labour/farmer_info" %>
 </div>
 
 <script type="text/x-template" id="table-farmer">
-	<table class="ui selectable celled table">
+	<table class="ui selectable table">
 	  <thead>
 	    <tr>
 	    	<th>Name</th>
@@ -63,24 +71,6 @@
 			  <td>{{farmer.gender}}</td>
 			</tr>
 		</tbody>
-		<tfoot>
-		  <tr>
-		    <th colspan="3">
-		      <div class="ui right floated pagination menu">
-		        <a class="icon item">
-		          <i class="left chevron icon"></i>
-		        </a>
-		        <a class="item">1</a>
-		        <a class="item">2</a>
-		        <a class="item">3</a>
-		        <a class="item">4</a>
-		        <a class="icon item">
-		          <i class="right chevron icon"></i>
-		        </a>
-		      </div>
-		    </th>
-		  </tr>
-		</tfoot>
 	</table>
 </script>
  

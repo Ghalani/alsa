@@ -1,9 +1,14 @@
 $theme-color: #39b54a;
 $theme-color-dark: #00a651;
-$grey-highlight: #ededed;
+$theme-white: #edffe6;
 
-.green-bg{  background: $theme-color;}
+$grey-highlight: #ededed;
+$theme-accent: #0176ff;
+
+.green-bg{  background: $theme-color; color: $theme-white;}
 .dark-green-bg{  background: $theme-color-dark;}
+.accent-bg{  background: $theme-accent;}
+
 .stat-bar{
   padding: 1rem;
   color: #e6fcdd;
@@ -18,7 +23,7 @@ $grey-highlight: #ededed;
   height: auto;
   margin: 1rem;
   position: relative;
-  width: 300px;
+  width: auto;
   transition: all 0.3s ease-in-out;
   padding: 10px;
 
@@ -59,9 +64,14 @@ $grey-highlight: #ededed;
     margin: 2px !important;
     padding: 5px 0;
     transition: all 0.3s ease-in-out;
+    cursor: pointer;
     &:hover{
       background: $grey-highlight;
     }
+
+  }
+  .active{
+    background: $grey-highlight;
   }
 }
 
@@ -93,12 +103,20 @@ $grey-highlight: #ededed;
 .btn{
   position: relative;
   border: none;
-  outline:none;
+  outline: none;
   cursor: pointer;
   color: white;
-  padding: 18px 60px;
-  border-radius: 2px;
+  padding: 10px 15px;
+  border-radius: 3px;
   font-size: 22px;
+
+  &:hover{
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);    
+  }
+  &:active{
+    //background: #0651aa;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  }
 }
 
 .ripple{
@@ -175,4 +193,37 @@ $grey-highlight: #ededed;
 .title{
   color: #edffe6;
   font-size: 1.5em;
+}
+
+.fab{
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  color: #fff;
+  font-size: 2em;
+  cursor: pointer;
+  background: $theme-accent;
+  text-align: center;
+  padding: 0.6em 0 0 0;
+  a{color: #fff;}
+  i{margin: 0 !important;}
+  transition: all 0.3s ease-in-out;
+  &:hover{
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  }
+  &:active{
+    background: #0651aa;
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+  }
+}
+
+.fab-br{  
+  position: absolute;
+  right: 0;
+  bottom: 10px;
+}
+.fab-tr{  
+  position: absolute;
+  right: 0;
+  top: 0;
 }

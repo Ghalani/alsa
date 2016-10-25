@@ -10,17 +10,17 @@
       </ul>
     </div>
   <% end %>
-  <div class="form-group">
+  <div class="form-group w100p-rounded">
     <label>First name</label><br>
-    <%= f.text_field :fname %>
+    <%= f.text_field :fname, "v-model":"fname" %>
   </div>
-  <div class="form-group">
+  <div class="form-group w100p-rounded">
     <label>Last name</label><br>
-    <%= f.text_field :lname %>
+    <%= f.text_field :lname, "v-model":"lname" %>
   </div>
-  <div class="form-group">
+  <div class="form-group w100p-rounded">
     <label>Phone</label><br>
-    <%= f.text_field :phone %>
+    <%= f.text_field :phone, "v-model":"phone" %>
   </div>
   <div class="form-group">
     <label>Gender</label><br>
@@ -29,15 +29,15 @@
     <%= f.radio_button :gender, :male, checked: @farmer.gender? %> 
     <%= f.label :gender, "Male" %>
   </div>
-  <div class="form-group">
+  <div class="form-group w100p-rounded">
     <label>Hightest education</label><br>
     <%= f.text_field :educational_level %>
   </div>
-  <div class="form-group">
+  <div class="form-group w100p-rounded">
     <label>Number of sharecropper on his/her land</label><br>
     <%= f.text_field :num_of_sharecroppers %>
   </div>
-  <div class="actions">
-    <%= f.submit %>
+  <div class="actions form-group">
+    <%= f.submit "Create farmer", class:"btn ripple accent-bg raise-1" %>
   </div>
 <% end %>
