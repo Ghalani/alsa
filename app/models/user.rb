@@ -8,6 +8,9 @@ class User < ActiveRecord::Base
   # before_save   :reset_activation_digest
   # after_save :clear_password
 
+  has_attached_file :image, styles: { large: "600X600#", medium: "300x300#", thumb: "100x100#" }, default_url: '/images/:style/user.png'
+  validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
+
   has_many :organizations
   has_many :memberships
   has_many :member_organizations, as: :organizations, through: :memberships, source: :organization

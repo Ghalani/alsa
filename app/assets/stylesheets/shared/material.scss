@@ -6,7 +6,7 @@ $grey-highlight: #ededed;
 $theme-accent: #0176ff;
 
 .green-bg{  background: $theme-color; color: $theme-white;}
-.dark-green-bg{  background: $theme-color-dark;}
+.dark-green-bg{  background: $theme-color-dark !important;}
 .accent-bg{  background: $theme-accent;}
 
 .stat-bar{
@@ -109,6 +109,7 @@ $theme-accent: #0176ff;
   padding: 10px 15px;
   border-radius: 3px;
   font-size: 22px;
+  transition: all 0.3s ease-in-out;  
 
   &:hover{
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);    
@@ -175,7 +176,7 @@ $theme-accent: #0176ff;
 .menu{
   border-radius: 0 !important;
   border: none !important;
-  background: $theme-color-dark !important;
+  //background: $theme-color-dark !important;
   box-shadow: 0 !important;
   color: #fff;
   padding: 5px 1px;

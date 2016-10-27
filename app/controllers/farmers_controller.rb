@@ -22,6 +22,7 @@ class FarmersController < ApplicationController
   def show
     # @organization is already set
     authorize @farmer
+    @farm = Farm.new
   end
 
   # GET /farmers/new
@@ -100,6 +101,6 @@ class FarmersController < ApplicationController
     def farmer_params
       params.require(:farmer).permit(:fname,:lname,:phone,:gender,
         :dob,:educational_level,:village,:caa_id,
-        :kcl_district_id,:certified,:marital_status,:num_of_sharecroppers)
+        :kcl_district_id,:certified,:marital_status,:num_of_sharecroppers, :image)
     end
 end

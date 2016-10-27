@@ -18,6 +18,10 @@ class FarmerPolicy
     @current_user.admin?
   end
 
+  def edit?
+    @current_user.admin?
+  end
+
   def show?
   	@current_user.admin? or @current_user.is_member?(@farmer.organization)
   end

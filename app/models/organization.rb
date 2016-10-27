@@ -6,5 +6,5 @@ class Organization < ActiveRecord::Base
 	has_many		:labourers
 	belongs_to 	:user
 	belongs_to	:country
-	
+	has_many		:farms
 end

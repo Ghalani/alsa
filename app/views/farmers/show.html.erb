@@ -1,21 +1,104 @@
 <div id="farmer-show" >
 	<%= render "static_pages/nav" %>
   <div class="stat-bar green-bg ui grid">
-    <div class="four wide column ui grid">
+    <div class="four wide column row">
       <div class="four wide column">
-        <%= image_tag "farmer64.png" %>
+        <%= image_tag @farmer.image.url(:thumb), class:"circle" %>
+        <!--<%= image_tag "farmer64.png", class:"wmax100 circle" %>-->
       </div>
-      <div class="four wide column">
-        <div><%= @farmer.fname %> <%= @farmer.lname %></div>
-        <div><%= @farmer.phone %></div>
+      <div class="twelve wide column">
+        <div class="text15"><%= @farmer.fname %> <%= @farmer.lname %></div>
+        <div class="text1"><%= @farmer.phone %></div>
         <div>Village name</div>
       </div>
     </div>
     <div class="twelve wide column">
-      <div id="farmer-card" class="card raise-1">dfhdjhdjhfjhdfjh</div>
+      <div id="farmer-card" class="card raise-1 text12 dark-text1">        
+        <div class="card-menu-tr text2"><i class="ellipsis vertical icon"></i></div>
+        <div id="farmer-holder">
+          <div class="ui top attached tabular menu">
+            <div class="active item">Info</div>
+            <div class="item">Farms</div>
+          </div>
+          <div class="ui bottom attached active tab">
+            Information
+            <p></p>
+            <p></p>
+          </div>
+          <div class="ui bottom attached active tab">
+          
+              Farms
+              <br>
+              <div v-if="farms.length < 1">This farmer has no farm</div>
+            <div id="new-farmer-but" class="fab fab-br raise-3 ripple" v-on:click="hideFabShowNewFarm">
+              <i class="ui add icon"></i>
+            </div>
+          </div>
+        </div>
+        <div id="new-farmer-space" hidden>
+          <h2>New Farm</h2>
+          <div id="new_farm_map" class="h500 col-md-7"></div>
+          <div class="form-group w100p-rounded">
+            <label>Name</label><br>
+            <input type="text" v-model="farm.name">
+          </div>
+          <div class="form-group w100p-rounded">
+            <label>Size (Acres)</label><br>
+            <input type="number" v-model="farm.size">
+          </div>
+          <button v-on:click="createNewFarmer"></button>
+        </div>
     </div>
   </div>
 </div>
 
 <%= link_to 'Edit', edit_organization_farmer_path(@organization, @farmer) %> |
 <%= link_to 'Back', organization_farm_and_labour_path(@organization) %>
+
+
+<script type="text/javascript" >
+  var farmerShow = new Vue({
+    el: "#farmer-show",
+    data: {
+      farm: {
+        name: "",
+        size: 0
+      },
+      farms: []
+    },
+    methods: {
+      getFarms: function(){
+        var that = this;
+        $.ajax({
+          url: '/organizations/<%= @organization.id %>/farms.json?farmer_id=<%= @farmer.id %>',
+          success: function(res){
+            that.farms = res;
+            //that.filteredFarms = res
+          }
+        })
+      },
+      createNewFarmer: function(){
+        $.ajax({
+          url: '/organizations/<%= @organization.id %>/farms.json',
+          success: function(res){
+            that.farms = res;
+            //that.filteredFarms = res
+          }
+        })
+      },
+      hideFabShowNewFarm: function(){
+        $('#new-farmer-space').toggle();
+        $('#farmer-holder').toggle();
+      }
+    }
+  });
+  farmerShow.getFarms();
+
+  $('.item').on('click', function(){
+    $('.item').each(function(){
+      $(this).removeClass('active')
+    });
+    $(this).addClass('active');
+  })
+</script>
+<%= render "farmers/js/map" %>

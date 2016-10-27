@@ -1,5 +1,32 @@
-<h1>New Labourer</h1>
+<div id="labourer-new" class="h100p">
+	<%= render "static_pages/nav" %>
+	<div class="ui grid">
+		<div class="eleven wide row column">
+			<div class="center">
+				<h1>New Labourer</h1>
+				<div class="card raise-1 w500 wmax95">
+					<%= link_to 'Back', organization_farm_and_labour_path(@organization) %>
+					<%= render 'form' %>
+				</div>
+			</div>
+		</div>
+		<div class="five wide column green-bg h100p text-center" style="min-height: 95vh;">
+			<div class="w200 center relative"><%= image_tag 'farmer128.png' %>
+				<div class="fab raise-3 fab-tr"><i class="ui photo icon"></i></div>
+			</div>
+			<div class="text2">{{fname}} {{lname}}</div><br>
+			<div class="text15">{{phone}}</div>
+		</div>
+	</div>
+</div>
 
-<%= render 'form' %>
-
-<%= link_to 'Back', organization_farm_and_labour_path(@organization)  %>
+<script>
+	var farmerNew = new Vue({
+		el: "#labourer-new",
+		data:{
+			fname: "",
+			lname: "",
+			phone: "",
+		},
+	})
+</script>

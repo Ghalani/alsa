@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161020163618) do
+ActiveRecord::Schema.define(version: 20161027152434) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,8 +49,8 @@ ActiveRecord::Schema.define(version: 20161020163618) do
   create_table "districts", force: :cascade do |t|
     t.integer  "organization_id"
     t.string   "name"
-    t.integer  "lat"
-    t.integer  "lon"
+    t.decimal  "lat"
+    t.decimal  "lon"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
   end
@@ -86,9 +86,26 @@ ActiveRecord::Schema.define(version: 20161020163618) do
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
     t.integer  "organization_id"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
   end
 
   add_index "farmers", ["organization_id"], name: "index_farmers_on_organization_id", using: :btree
+
+  create_table "farms", force: :cascade do |t|
+    t.integer  "farmer_id"
+    t.integer  "organization_id"
+    t.integer  "village_id"
+    t.string   "name"
+    t.decimal  "size"
+    t.jsonb    "points",          default: [],              array: true
+    t.decimal  "lat"
+    t.decimal  "lon"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+  end
 
   create_table "id_cards", force: :cascade do |t|
     t.string   "type"
@@ -106,8 +123,12 @@ ActiveRecord::Schema.define(version: 20161020163618) do
     t.string   "phone"
     t.integer  "gender"
     t.date     "dob"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
   end
 
   add_index "labourers", ["organization_id"], name: "index_labourers_on_organization_id", using: :btree
@@ -146,6 +167,10 @@ ActiveRecord::Schema.define(version: 20161020163618) do
     t.datetime "remember_created_at"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
@@ -155,8 +180,8 @@ ActiveRecord::Schema.define(version: 20161020163618) do
   create_table "villages", force: :cascade do |t|
     t.integer  "district_id"
     t.string   "name"
-    t.integer  "lat"
-    t.integer  "lon"
+    t.decimal  "lat"
+    t.decimal  "lon"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end

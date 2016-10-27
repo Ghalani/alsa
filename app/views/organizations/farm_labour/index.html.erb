@@ -9,7 +9,7 @@
 	<div class="top-neg-marg100">
 		<div class="ui centered container grid">
 			<div class="three wide column row computer only">
-				<div class="card raise-2 w90p">
+				<div class="card raise-1 w90p">
 						<div class="list-item" v-bind:class="{active: showFarmers}" v-on:click="showFarmers = true">
 							Farmers
 						</div>
@@ -23,19 +23,25 @@
 			</div>-->
 			<div class="w100p eleven wide column row">
 				<transition name="bounce">
-					<div id="farmer-list" v-if="showFarmers" class="card center raise-2 w100p">
+					<div id="farmer-list" v-if="showFarmers" class="card raise-1 w100p">
 						<div class="row" style="text-align: right;">
-							<span><input class="rounded-input" name="" placeholder="Filter by">
-							<input class="rounded-input" name=""></span>
+							<span>
+								<select id="farmer-filter1" class="rounded-input" hint="Filter by" v-model="searchBy">
+									<option v-for="option in searchKeys" v-bind:value="option">
+										{{ option }}
+									</option>
+								</select>
+								<input id="farmer-filter2" class="rounded-input" @keyup.enter="farmerFilter">
+							</span>
 							<hr>
 						</div>
-						<table-farmer :farmers="farmers"></table-farmer>					
-						<div class="fab fab-br raise-3 ripple">
-							<%= link_to new_organization_farmer_path(@organization) do %>
-								<!--<button class="ui button">Create new farmer</button>-->
-								<i class="ui add icon"></i>
-							<% end %>
-						</div>
+						<table-farmer :farmers="filteredFarmers"></table-farmer>					
+						<%= link_to new_organization_farmer_path(@organization) do %>
+							<div class="fab fab-br raise-3 ripple">
+									<!--<button class="ui button">Create new farmer</button>-->
+									<i class="ui add icon"></i>
+							</div>
+						<% end %>
 					</div>
 				</transition>
 				<transition name="bounce">
@@ -88,7 +94,10 @@
 		var farm_labour = new Vue({
 			el: '#farm-labour',
 			data: {
+				searchKeys: ["name","phone","gender"],
+				searchBy: "",
 				farmers: [],
+				filteredFarmers: [],
 				labourers: [],
 				farmerInfo: {},
 				labourerInfo: {},
@@ -101,6 +110,7 @@
 		  			url: '/organizations/<%= @organization.id %>/farmers.json',
 		  			success: function(res){
 		  				that.farmers = res
+		  				that.filteredFarmers = res
 		  			}
 		  		})
 				},
@@ -109,6 +119,26 @@
 				},
 				clearFarmerInfo: function(){
 					this.farmerInfo = {};
+				},
+				farmerFilter: function () {
+					var text = $('#farmer-filter2').val().toLowerCase();
+					var searchBy = this.searchBy;
+					if(Boolean(text)){
+						this.filteredFarmers = this.farmers.filter(function (farmer) {
+							if(searchBy == "name"){
+								return (farmer.fname.toLowerCase().indexOf(text) > -1) || (farmer.lname.toLowerCase().indexOf(text) > -1);
+							}else if(searchBy == "phone"){
+								return (farmer.phone.indexOf(text) > -1);
+							}else if(searchBy == "gender"){
+								return (farmer.gender.indexOf(text) > -1);		
+							}else{
+								return (farmer.fname.toLowerCase().indexOf(text) > -1) || (farmer.lname.toLowerCase().indexOf(text) > -1) 
+								|| (farmer.gender.indexOf(text) > -1)	|| (farmer.phone.indexOf(text) > -1);
+							}														
+						});
+					}else{
+						this.filteredFarmers = this.farmers
+					}
 				}
 			},
 	    events: {

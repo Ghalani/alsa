@@ -1,6 +1,45 @@
-<h1>Editing Farmer</h1>
+<div id="farmer-edit" class="h100p">
+	<%= render "static_pages/nav" %>
+	<div class="ui grid">
+		<div class="eleven wide row column">
+			<div class="center">
+				<h1>Edit Farmer</h1>
+				<div class="card raise-1 w500 wmax95">
+					<%= link_to 'Back', organization_farm_and_labour_path(@organization) %>
+					<%= render 'form' %>
+				</div>
+			</div>
+		</div>
+		<div class="five wide column green-bg h100p text-center" style="min-height: 95vh;">
+			<div class="w200 center relative"><%= image_tag 'farmer128.png', id:"uploadPreview", class:"circle w128 h128" %>
+				<div class="fab raise-3 fab-tr" v-on:click="addImage"><i class="ui photo icon"></i></div>
+			</div>
+			<div class="text2">{{fname}} {{lname}}</div><br>
+			<div class="text15">{{phone}}</div>
+		</div>
+	</div>
+</div>
 
-<%= render 'form' %>
+<script>
+	function previewImage() {
+    var oFReader = new FileReader();
+    oFReader.readAsDataURL(document.getElementById("uploadImage").files[0]);
+    oFReader.onload = function (oFREvent) {
+        document.getElementById("uploadPreview").src = oFREvent.target.result;
+    };
+  };
 
-<%= link_to 'Show', @farmer %> |
-<%= link_to 'Back', farmers_path %>
+	var farmerEdit = new Vue({
+		el: "#farmer-edit",
+		data:{
+			fname: "",
+			lname: "",
+			phone: "",
+		},
+		methods: {
+			addImage: function(){
+				$('#uploadImage').click();
+			}
+		}
+	});
+</script>

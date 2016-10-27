@@ -15,6 +15,7 @@ $grey-highlight: #ededed;
 $theme-accent: #0176ff;
 
 .grey-hr1{border: 1px solid #ebebeb;}
+.dark-text1{color: #333 !important;}
 .full-height{ height: 100%}
 .text-center{text-align: center;}
 
@@ -27,11 +28,13 @@ body{background: #f5f5f5;}
 .text05{font-size: 0.5em;}
 .text07{font-size: 0.7em;}
 .text08{font-size: 0.8em;}
+.text12{font-size: 1.2em;}
 .text15{font-size: 1.5em;}
 .text2{font-size: 2em;}
 .text3{font-size: 3em;}
 
 .w50{width: 50px;}
+.w128{width: 128px;}
 .w200{width: 200px;}
 .w500{width: 500px;}
 .w600{width: 600px;}
@@ -44,6 +47,7 @@ body{background: #f5f5f5;}
 }
 .wmax95{max-width: 95%;}
 
+.h128{height: 128px;}
 .h200{height: 200px;}
 .w100p{ width: 100% !important;}
 
@@ -171,4 +175,11 @@ body{background: #f5f5f5;}
   max-width: 90%;
   margin-top: 0px;
   color: #eee;
+}
+
+.card-menu-tr{  
+  position: absolute;
+  right: 0rem;
+  top: 1rem;
+  color: #898989;
 }

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  # resources :farms
   # resources :labourers
   # resources :districts
   # resources :farmers
@@ -10,6 +11,7 @@ Rails.application.routes.draw do
     get 'farm_and_labour' => 'organizations#farm_and_labour'
     resources :farmers
     resources :labourers
+    resources :farms  
   end
   
 

@@ -11,8 +11,8 @@
 			</div>
 		</div>
 		<div class="five wide column green-bg h100p text-center" style="min-height: 95vh;">
-			<div class="w200 center relative"><%= image_tag 'farmer128.png' %>
-				<div class="fab raise-3 fab-tr"><i class="ui photo icon"></i></div>
+			<div class="w200 center relative"><%= image_tag 'farmer128.png', id:"uploadPreview", class:"circle w128 h128" %>
+				<div class="fab raise-3 fab-tr" v-on:click="addImage"><i class="ui photo icon"></i></div>
 			</div>
 			<div class="text2">{{fname}} {{lname}}</div><br>
 			<div class="text15">{{phone}}</div>
@@ -21,6 +21,14 @@
 </div>
 
 <script>
+	function previewImage() {
+    var oFReader = new FileReader();
+    oFReader.readAsDataURL(document.getElementById("uploadImage").files[0]);
+    oFReader.onload = function (oFREvent) {
+        document.getElementById("uploadPreview").src = oFREvent.target.result;
+    };
+  };
+
 	var farmerNew = new Vue({
 		el: "#farmer-new",
 		data:{
@@ -28,5 +36,10 @@
 			lname: "",
 			phone: "",
 		},
-	})
+		methods: {
+			addImage: function(){
+				$('#uploadImage').click();
+			}
+		}
+	});
 </script>
