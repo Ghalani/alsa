@@ -1,1 +1,0 @@
-json.partial! "labourers/labourer", labourer: @labourer

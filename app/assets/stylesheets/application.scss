@@ -49,6 +49,7 @@ body{background: #f5f5f5;}
 
 .h128{height: 128px;}
 .h200{height: 200px;}
+
 .w100p{ width: 100% !important;}
 
 .h100p{ height: 100% !important;}
@@ -183,3 +184,9 @@ body{background: #f5f5f5;}
   top: 1rem;
   color: #898989;
 }
+
+.item{
+  cursor: pointer;
+}
+
+.absolute{position: absolute;}

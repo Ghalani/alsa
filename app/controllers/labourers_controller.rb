@@ -6,6 +6,9 @@ class LabourersController < ApplicationController
     authorize Labourer
     if @organization
       @labourers = @organization.labourers
+      respond_to do |format|
+        format.json{render json: @labourers}
+      end
     else
       @labourers = Labourer.all      
     end
@@ -22,7 +25,7 @@ class LabourersController < ApplicationController
 
   def edit
     authorize @labourer
-  end
+  end 
 
   def create
     @labourer = Labourer.new(labourer_params)

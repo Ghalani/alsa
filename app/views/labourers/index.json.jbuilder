@@ -1,1 +1,0 @@
-json.array! @labourers, partial: 'labourers/labourer', as: :labourer

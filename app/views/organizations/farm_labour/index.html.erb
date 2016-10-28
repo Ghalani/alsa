@@ -10,143 +10,70 @@
 		<div class="ui centered container grid">
 			<div class="three wide column row computer only">
 				<div class="card raise-1 w90p">
-						<div class="list-item" v-bind:class="{active: showFarmers}" v-on:click="showFarmers = true">
+					<div class="ui vertical fluid tabular menu">
+						<a class="item side-menu-item active" name='farmer-item'>
 							Farmers
-						</div>
-						<div class="list-item" v-bind:class="{active: !showFarmers}" v-on:click="showFarmers = false">
+						</a>
+						<a class="item side-menu-item" name='farm-item'>
+							Farms
+						</a>
+						<a class="item side-menu-item" name='labourer-item'>
 							Labourers
-						</div>
+						</a>
+					</div>
 				</div>
 			</div>
 			<!--<div class="one wide column tablet mobile only">
 				Three dots
 			</div>-->
 			<div class="w100p eleven wide column row">
-				<transition name="bounce">
-					<div id="farmer-list" v-if="showFarmers" class="card raise-1 w100p">
-						<div class="row" style="text-align: right;">
-							<span>
-								<select id="farmer-filter1" class="rounded-input" hint="Filter by" v-model="searchBy">
-									<option v-for="option in searchKeys" v-bind:value="option">
-										{{ option }}
-									</option>
-								</select>
-								<input id="farmer-filter2" class="rounded-input" @keyup.enter="farmerFilter">
-							</span>
-							<hr>
-						</div>
-						<table-farmer :farmers="filteredFarmers"></table-farmer>					
-						<%= link_to new_organization_farmer_path(@organization) do %>
-							<div class="fab fab-br raise-3 ripple">
-									<!--<button class="ui button">Create new farmer</button>-->
-									<i class="ui add icon"></i>
+					<div class="card raise-1 w100p">
+						<div id="farmer-item-panel" class="ui active tab">
+							<div class="row" style="text-align: right;">
+								<span>
+									<select id="farmer-filter1" class="rounded-input" hint="Filter by" v-model="searchBy">
+										<option v-for="option in searchKeys" v-bind:value="option">
+											{{ option }}
+										</option>
+									</select>
+									<input id="farmer-filter2" class="rounded-input" @keyup.enter="farmerFilter">
+								</span>
+								<hr>
 							</div>
-						<% end %>
-					</div>
-				</transition>
-				<transition name="bounce">
-					<div id="labourer-list" v-if="!showFarmers">
-						<div class="ui segment">
-							<%= link_to new_organization_labourer_path(@organization) do %>
-								<button class="ui button">Create new labourer</button>
+							<table-farmer :farmers="filteredFarmers"></table-farmer>					
+							<%= link_to new_organization_farmer_path(@organization) do %>
+								<div class="fab fab-br raise-3 ripple">
+										<i class="ui add icon"></i>
+								</div>
 							<% end %>
-						</div>				
-					</div>			
-				</transition>
+						</div>
+						<div id="labourer-item-panel" class="ui tab">
+							<div class="">
+								<table-labourer :labourers="filteredLabourers"></table-labourer>								
+								<%= link_to new_organization_labourer_path(@organization) do %>
+									<div class="fab fab-br raise-3 ripple">
+										<i class="ui add icon"></i>
+								</div>
+								<% end %>
+							</div>				
+						</div>
+						<div id="farm-item-panel" class="ui tab">
+							<div class="">
+								<table-farm :farms="filteredFarms"></table-farm>
+								<%= link_to new_organization_farm_path(@organization) do %>
+									<div class="fab fab-br raise-3 ripple">
+										<i class="ui add icon"></i>
+								</div>
+								<% end %>
+							</div>				
+						</div>
+					</div>
+
 			</div>
 		</div>
 	</div>
-	<%= render "organizations/farm_labour/farmer_info" %>
+	<%= render "organizations/farm_labour/farmer_info_modal" %>
+	<%= render "organizations/farm_labour/labourer_info_modal" %>
+	<%= render "organizations/farm_labour/farm_info_modal" %>
 </div>
-
-<script type="text/x-template" id="table-farmer">
-	<table class="ui selectable table">
-	  <thead>
-	    <tr>
-	    	<th>Name</th>
-		    <th>Phone</th>
-		    <th>Gender</th>
-		  </tr>
-	  </thead>
-	  <tbody>
-			<tr v-for="farmer in farmers">
-			  <td>
-			  	<a :href="'/organizations/'+ farmer.organization_id +'/farmers/' + farmer.id">{{farmer.fname}} {{farmer.lname}}</a> <i class="ui eye icon float-right" @click.prevent="requestSetFarmerInfo(farmer)"></i>
-			  </td>
-			  <td>{{farmer.phone}}</td>
-			  <td>{{farmer.gender}}</td>
-			</tr>
-		</tbody>
-	</table>
-</script>
- 
-<script>
-		Vue.component('table-farmer', {
-		  props: ['farmers'],
-		  template: '#table-farmer',
-		  methods:{
-	      requestSetFarmerInfo(farmer) {
-	      	this.$parent.setFarmerInfo(farmer);
-	      }
-	    } 
-		});
-
-		var farm_labour = new Vue({
-			el: '#farm-labour',
-			data: {
-				searchKeys: ["name","phone","gender"],
-				searchBy: "",
-				farmers: [],
-				filteredFarmers: [],
-				labourers: [],
-				farmerInfo: {},
-				labourerInfo: {},
-				showFarmers: true
-			},
-			methods: {
-				getFarmers: function(){
-					var that = this;
-					$.ajax({
-		  			url: '/organizations/<%= @organization.id %>/farmers.json',
-		  			success: function(res){
-		  				that.farmers = res
-		  				that.filteredFarmers = res
-		  			}
-		  		})
-				},
-				setFarmerInfo: function(farmer){
-					this.farmerInfo = farmer;
-				},
-				clearFarmerInfo: function(){
-					this.farmerInfo = {};
-				},
-				farmerFilter: function () {
-					var text = $('#farmer-filter2').val().toLowerCase();
-					var searchBy = this.searchBy;
-					if(Boolean(text)){
-						this.filteredFarmers = this.farmers.filter(function (farmer) {
-							if(searchBy == "name"){
-								return (farmer.fname.toLowerCase().indexOf(text) > -1) || (farmer.lname.toLowerCase().indexOf(text) > -1);
-							}else if(searchBy == "phone"){
-								return (farmer.phone.indexOf(text) > -1);
-							}else if(searchBy == "gender"){
-								return (farmer.gender.indexOf(text) > -1);		
-							}else{
-								return (farmer.fname.toLowerCase().indexOf(text) > -1) || (farmer.lname.toLowerCase().indexOf(text) > -1) 
-								|| (farmer.gender.indexOf(text) > -1)	|| (farmer.phone.indexOf(text) > -1);
-							}														
-						});
-					}else{
-						this.filteredFarmers = this.farmers
-					}
-				}
-			},
-	    events: {
-	     ' setFarmerRequested': function(farmer){
-	        this.setFarmerInfo(farmer);
-	      }
-	    }
-		});
-		farm_labour.getFarmers();
-
-</script>
+<%= render 'organizations/farm_labour/scripts' %>

@@ -1,17 +1,27 @@
-<%= form_for [@organization, @farm] do |f| %>
-  <% if @farm.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@farm.errors.count, "error") %> prohibited this farm from being saved:</h2>
+<div class="card raise-3 float-right w500">
+  <%= form_for [@organization, @farm] do |f| %>
+    <% if @farm.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@farm.errors.count, "error") %> prohibited this farm from being saved:</h2>
 
-      <ul>
-      <% @farm.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+        <ul>
+        <% @farm.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div class="form-group">
+      <%= f.label :name %><br>      
+      <%= f.text_field :name, class:"rounded-input w100p" %>
+    </div>
+    <div class="form-group">
+      <%= f.label :size %> (in acres)<br>            
+      <%= f.number_field :size, class:"rounded-input w100p" %>      
+    </div>
+    <div class="actions">
+      <%= f.submit %>
     </div>
   <% end %>
+</div>
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>

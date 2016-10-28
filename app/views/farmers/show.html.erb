@@ -17,19 +17,22 @@
         <div class="card-menu-tr text2"><i class="ellipsis vertical icon"></i></div>
         <div id="farmer-holder">
           <div class="ui top attached tabular menu">
-            <div class="active item">Info</div>
-            <div class="item">Farms</div>
+            <div id="item1" class="active item">Info</div>
+            <div id="item2" class="item">Farms</div>
           </div>
-          <div class="ui bottom attached active tab">
+          <div id="item1-panel" class="ui bottom attached active tab">
             Information
             <p></p>
             <p></p>
           </div>
-          <div class="ui bottom attached active tab">
-          
-              Farms
-              <br>
-              <div v-if="farms.length < 1">This farmer has no farm</div>
+          <div id="item2-panel" class="ui bottom attached tab">
+            Farms
+            <br>
+            <div v-if="farms.length < 1">This farmer has no farm</div>
+            <div class="card raise-1" v-for="farm in farms">              
+              <div>{{farm.name}}</div>
+              <div>{{farm.size}} Acres</div>
+            </div>
             <div id="new-farmer-but" class="fab fab-br raise-3 ripple" v-on:click="hideFabShowNewFarm">
               <i class="ui add icon"></i>
             </div>
@@ -46,7 +49,7 @@
             <label>Size (Acres)</label><br>
             <input type="number" v-model="farm.size">
           </div>
-          <button v-on:click="createNewFarmer"></button>
+          <button v-on:click="createNewFarmer">Submit</button>
         </div>
     </div>
   </div>
@@ -61,6 +64,7 @@
     el: "#farmer-show",
     data: {
       farm: {
+        farmer_id: <%= @farmer.id %>,
         name: "",
         size: 0
       },
@@ -78,11 +82,15 @@
         })
       },
       createNewFarmer: function(){
+        var that = this;
         $.ajax({
           url: '/organizations/<%= @organization.id %>/farms.json',
+          method: 'POST',
+          data: {farm: this.farm},
           success: function(res){
-            that.farms = res;
-            //that.filteredFarms = res
+            console.log(res);
+            that.farms.push(res)
+            that.hideFabShowNewFarm();
           }
         })
       },
@@ -96,9 +104,12 @@
 
   $('.item').on('click', function(){
     $('.item').each(function(){
-      $(this).removeClass('active')
+      $(this).removeClass('active');
+      $("#"+$(this).attr('id')+"-panel").removeClass('active');      
     });
+
     $(this).addClass('active');
+    $("#"+$(this).attr('id')+"-panel").addClass('active');
   })
 </script>
 <%= render "farmers/js/map" %>

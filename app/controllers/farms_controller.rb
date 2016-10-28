@@ -12,12 +12,12 @@ class FarmsController < ApplicationController
         else
           @farms = @organization.farms
         end
+
+        format.html
+        format.json{ render json: @farms}
       else
         @farms = Farm.all
       end
-
-      format.html
-      format.json{ render json: @farms}
     end
   end
 
@@ -39,11 +39,12 @@ class FarmsController < ApplicationController
   # POST /farms.json
   def create
     @farm = Farm.new(farm_params)
+    @farm.organization = @organization
 
     respond_to do |format|
       if @farm.save
-        format.html { redirect_to @farm, notice: 'Farm was successfully created.' }
-        format.json { render :show, status: :created, location: @farm }
+        format.html { redirect_to [@organization, @farm], notice: 'Farm was successfully created.' }
+        format.json { render json: @farm, status: :created }
       else
         format.html { render :new }
         format.json { render json: @farm.errors, status: :unprocessable_entity }
@@ -87,6 +88,6 @@ class FarmsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def farm_params
-      params.fetch(:farm, {})
+      params.require(:farm).permit(:name, :size, :lat, :lon, :village_id, :farmer_id, points:[])
     end
 end
