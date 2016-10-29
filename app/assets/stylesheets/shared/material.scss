@@ -18,14 +18,14 @@ $theme-accent: #0176ff;
 }
 .card {
   background: #fff;
-  border-radius: 2px;
+  border-radius: 3px;
   display: inline-block;
   height: auto;
   margin: 1rem;
   position: relative;
   width: auto;
   transition: all 0.3s ease-in-out;
-  padding: 10px;
+  padding: 1rem;
 
   .grid{ margin: -1rem 0 !important; }
   a{ color: $theme-color; }
@@ -33,16 +33,24 @@ $theme-accent: #0176ff;
   hr{
     border: 1px solid#f8f8f8;
   }
-  
   .card-head{
     color: $theme-color-dark;
     font-weight: 600;
   }
 
+  .card-top{
+    border-radius: 3px 3px 0;
+    &.theme-bg{
+      background: $theme-color;
+      color: #fff;
+      margin: -1rem -1rem 1rem -1rem !important;
+    }
+  }
+
   .card-image{
     margin: -10px;
     overflow: hidden;
-    border-radius: 2px 2px 0;
+    border-radius: 3px 3px 0;
     img{
       width: 100%;
     }

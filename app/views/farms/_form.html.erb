@@ -1,4 +1,4 @@
-<div class="card raise-3 float-right w500">
+
   <%= form_for [@organization, @farm] do |f| %>
     <% if @farm.errors.any? %>
       <div id="error_explanation">
@@ -19,9 +19,23 @@
       <%= f.label :size %> (in acres)<br>            
       <%= f.number_field :size, class:"rounded-input w100p" %>      
     </div>
-    <div class="actions">
-      <%= f.submit %>
+    <div class="form-group">
+      <label for="">Please select the pin tool and pin the farm's location</label>
+      <%= f.number_field :lat %> <%= f.number_field :lng %>
+    </div>
+    <div class="form-group">
+      <label for="">Draw out the shape of your farm by selecting the polygon tool and clicking the edges of your farm.</label>
+      <div class="grey-border" >
+        <button onclick="clearShape(); return false;">Clear shape</button>
+        <div v-for="point in farmShape" class="ui equal width grid">
+          <input id="business_loc" multiple="multiple" name="farm[points][]" type="hidden" style="color: rgb(175, 175, 175); " v-model="point">
+          <div class="column">Lat: {{point.lat}} </div>
+          <div class="column">Lng: {{point.lng}} </div>          
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.submit 'Create farm', class:"btn ripple accent-bg" %>
     </div>
   <% end %>
-</div>
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161027152434) do
+ActiveRecord::Schema.define(version: 20161029184701) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 20161027152434) do
     t.integer  "organization_id"
     t.string   "name"
     t.decimal  "lat"
-    t.decimal  "lon"
+    t.decimal  "lng"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
   end
@@ -102,7 +102,7 @@ ActiveRecord::Schema.define(version: 20161027152434) do
     t.decimal  "size"
     t.jsonb    "points",          default: [],              array: true
     t.decimal  "lat"
-    t.decimal  "lon"
+    t.decimal  "lng"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
   end
@@ -181,7 +181,7 @@ ActiveRecord::Schema.define(version: 20161027152434) do
     t.integer  "district_id"
     t.string   "name"
     t.decimal  "lat"
-    t.decimal  "lon"
+    t.decimal  "lng"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
