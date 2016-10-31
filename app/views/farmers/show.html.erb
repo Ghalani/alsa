@@ -9,11 +9,12 @@
       <div class="twelve wide column">
         <div class="text15"><%= @farmer.fname %> <%= @farmer.lname %></div>
         <div class="text1"><%= @farmer.phone %></div>
-        <div>Village name</div>
+        <div>Village name</div>       
+        <div @click.prevent="openEditModal()"><i class="ui write icon"></i> Edit</div>
       </div>
     </div>
     <div class="twelve wide column">
-      <div id="farmer-card" class="card raise-1 text12 dark-text1">        
+      <div id="farmer-card" class="overlap card raise-1 text12 dark-text1">        
         <div class="card-menu-tr text2"><i class="ellipsis vertical icon"></i></div>
         <div id="farmer-holder">
           <div class="ui top attached tabular menu">
@@ -52,6 +53,13 @@
           <button v-on:click="createNewFarmer">Submit</button>
         </div>
     </div>
+  </div>
+</div>
+
+<div id="edit_form" class="ui modal w500">
+  <div class="center">
+    <h3>Edit Labourer</h3>
+    <%= render "form" %>
   </div>
 </div>
 
@@ -97,6 +105,9 @@
       hideFabShowNewFarm: function(){
         $('#new-farmer-space').toggle();
         $('#farmer-holder').toggle();
+      },
+      openEditModal: function(){
+        $('#edit_form.modal').modal("show");
       }
     }
   });

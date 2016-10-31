@@ -1,8 +1,16 @@
 <div id="labourer-info-modal" class="ui modal">
-	<div class="ui segment w500 side-card float-right">
-		<h2>Farmer information</h2>
-		<div>{{labourerInfo.fname}} {{labourerInfo.lname}}</div>
-		<div>{{labourerInfo.phone}}</div>
-		<div>{{labourerInfo.gender}}</div>
+	<div class="ui equal width grid">
+		<div class="column text-center">
+			<img :src="labourerInfo.image_url.medium" alt="labourer image" class="circle shad">
+		</div>
+		<div class="column text12">
+			<h2>labourer information</h2>
+			<div class="text2">{{labourerInfo.fname}} {{labourerInfo.lname}}</div><br>
+			<div><i class="ui phone icon"></i> {{labourerInfo.phone}}</div><br>
+			<div>
+				<i v-if="labourerInfo.gender == 'female' "class="ui female icon"></i>
+				<i v-if="labourerInfo.gender == 'male' "class="ui male icon"></i> {{labourerInfo.gender}}
+			</div>
+		</div>
 	</div>
 </div>

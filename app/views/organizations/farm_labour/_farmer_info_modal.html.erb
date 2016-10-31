@@ -1,9 +1,16 @@
 <div id="farmer-info-modal" class="ui modal">
-	<div class="ui segment w500 side-card float-right">
-		<h2>Farmer information</h2>
-		<div>{{farmerInfo.fname}} {{farmerInfo.lname}}</div>
-		<div>{{farmerInfo.phone}}</div>
-		<div>{{farmerInfo.gender}}</div>
-		<div>{{farmerInfo.organization_id}}</div>
+	<div class="ui equal width grid">
+		<div class="column text-center">
+			<img :src="farmerInfo.image_url.medium" alt="Farmer image" class="circle shad">
+		</div>
+		<div class="column text12">
+			<h2>Farmer information</h2>
+			<div class="text2">{{farmerInfo.fname}} {{farmerInfo.lname}}</div><br>
+			<div><i class="ui phone icon"></i> {{farmerInfo.phone}}</div><br>
+			<div>
+				<i v-if="farmerInfo.gender == 'female' "class="ui female icon"></i>
+				<i v-if="farmerInfo.gender == 'male' "class="ui male icon"></i> {{farmerInfo.gender}}
+			</div>
+		</div>
 	</div>
 </div>

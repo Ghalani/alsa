@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :location_types
+  resources :locations
   # resources :farms
   # resources :labourers
   # resources :districts

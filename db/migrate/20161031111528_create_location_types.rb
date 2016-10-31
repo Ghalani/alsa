@@ -1,11 +1,9 @@
-class CreateFarms < ActiveRecord::Migration
+class CreateLocationTypes < ActiveRecord::Migration
   def change
-    create_table :farms do |t|
-      t.references  :farmer
-      t.references  :organization
-      t.references  :village
+    create_table :location_types do |t|
       t.string      :name
-      t.decimal     :size
+      t.references  :organization
+      t.references  :location_type
       t.jsonb       :points, array: true, default: []
       t.decimal     :lat
       t.decimal     :lon

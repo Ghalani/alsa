@@ -11,15 +11,15 @@
     </div>
   <% end %>
 
-  <div class="form-group">
+  <div class="form-group w100p-rounded ">
     <label>First name</label><br>
     <%= f.text_field :fname %>
   </div>
-  <div class="form-group">
+  <div class="form-group w100p-rounded ">
     <label>Last name</label><br>
     <%= f.text_field :lname %>
   </div>
-  <div class="form-group">
+  <div class="form-group w100p-rounded ">
     <label>Phone</label><br>
     <%= f.text_field :phone %>
   </div>
@@ -30,7 +30,7 @@
     <%= f.radio_button :gender, :male, checked: @labourer.gender? %> 
     <%= f.label :gender, "Male" %>
   </div>
-  <div class="actions">
-    <%= f.submit "Create labourer", class:"btn ripple accent-bg" %>
+  <div class="form-group">
+    <%= f.submit "Submit", class:"btn ripple accent-bg" %>
   </div>
 <% end %>

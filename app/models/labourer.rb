@@ -6,4 +6,11 @@ class Labourer < ActiveRecord::Base
 
 	enum gender: [:male, :female]
 
+	def image_url
+    url = Hash.new
+    url[:thumb] = image.url(:thumb)
+    url[:medium] = image.url(:medium)
+    url[:large] = image.url(:large)
+    url
+  end
 end

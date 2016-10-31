@@ -1,4 +1,55 @@
-<p id="notice"><%= notice %></p>
+<div id="farm-show" class="green-bg h100p">
+  <div id="map" class="w100p h500"></div>
+  <div class="pad-lr-20p">
+    <div class="card neg-marg-top100 w100p raise-2">
+      <h2>Farm Information</h2>
+      <div class="text2"><%= @farm.name %></div>
+      djdfkjdfkjdfk <br>
+      djdfkjdfkjdfk <br>
+    </div>
+  </div>
+</div>
 
-<%= link_to 'Edit', edit_organization_farm_path(@organization, @farm) %> |
-<%= link_to 'Back', organization_farms_path(@organization)  %>
+<script>
+  var map;
+  var shape;
+  function clearShape(){
+    if (Boolean(shape)){
+      shape.setMap(null);
+      farmNew.farmShape = [];
+    }
+  }
+
+  function createPolygon(shapeArray){
+    new google.maps.Polygon({
+      map: map,
+      paths: shapeArray,
+      strokeColor: '#00FF00',
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: '#00FF00',
+      fillOpacity: 0.35
+    });
+  }
+
+  function initMap() {
+    var coord = Boolean(farmNew.farm.points[0]) ? farmNew.farm.points[0] : {lat: -4, lng: 0};
+    var zoom = (Boolean(farmNew.farm.points[0]) ? 8 : 3);
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: coord,
+      scrollwheel: false,
+      zoom: zoom
+    });
+    createPolygon(farmNew.farm.points);
+  }
+
+  var farmNew = new Vue({
+    el: "#farm-show",
+    data: {
+      farm: <%= @farm.to_json.html_safe %>
+    }
+  })
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2NxLOf_zTbaq0pyoeRLfBFTX4Q55KWuo&libraries=drawing&callback=initMap"
+async defer></script>

@@ -1,4 +1,57 @@
-<p id="notice"><%= notice %></p>
+<div id="labourer_show">
+  <%= render "static_pages/nav" %>
+  <div class="stat-bar green-bg ui grid">
+    <div class="four wide column row">
+      <div class="four wide column text-center">
+        <%= image_tag @labourer.image.url(:thumb), class:"circle" %>
+        <!--<%= image_tag "labourer64.png", class:"wmax100 circle" %>-->
+      </div>
+      <div class="twelve wide column">
+        <div class="text15"><%= @labourer.fname %> <%= @labourer.lname %></div>
+        <div class="text1"><%= @labourer.phone %></div>
+        <div>Village name</div>
+        <div  @click.prevent="openEditModal()"><i class="ui write icon"></i> Edit</div>
+      </div>
+    </div>
+    <div class="twelve wide column">
+      <div id="labourer-card" class="overlap card raise-1 text12 dark-text1">        
+        <div class="card-menu-tr text2"><i class="ellipsis vertical icon"></i></div>
+        <div id="labourer-holder">
+          dfdjhfjdhfjhfd <br>
+          dfdjhfjdhfjhfd <br>
+          dfdjhfjdhfjhfd <br>
+          dfdjhfjdhfjhfd <br>
+          dfdjhfjdhfjhfd <br>
+          dfdjhfjdhfjhfd <br>
+          dfdjhfjdhfjhfd <br>
+          dfdjhfjdhfjhfd <br>
+          dfdjhfjdhfjhfd <br>
+          dfdjhfjdhfjhfd <br>
+          dfdjhfjdhfjhfd <br>
 
-<%= link_to 'Edit', edit_organization_labourer_path(@organization, @labourer) %> |
-<%= link_to 'Back', organization_farm_and_labour_path(@organization) %>
+        </div>
+    </div>
+  </div>
+  <div id="edit_form" class="ui modal w500">
+    <div class="center">
+      <h3>Edit Labourer</h3>
+      <%= render "form" %>
+    </div>
+  </div>
+
+  
+  <!--<%= link_to 'Edit', edit_organization_labourer_path(@organization, @labourer)  %> |
+  <%= link_to 'Back', organization_farm_and_labour_path(@organization) %>-->
+</div>
+<script>
+  var labourerShow = new Vue({
+    el: "#labourer_show",
+    data: {},
+    methods: {
+      openEditModal: function(){
+        $('#edit_form.modal').modal("show");
+        //return false;
+      }
+    }
+  });
+</script>
