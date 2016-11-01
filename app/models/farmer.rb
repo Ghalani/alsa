@@ -9,6 +9,10 @@ class Farmer < ActiveRecord::Base
 	has_attached_file :image, styles: { large: "600X600#", medium: "300x300#", thumb: "100x100#" }, default_url: "/images/:style/farmer.png"
   validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
 
+  def name
+    self.fname + " " + self.lname
+  end
+
 	def image_url
     url = Hash.new
     url[:thumb] = image.url(:thumb)

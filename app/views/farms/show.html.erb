@@ -2,10 +2,26 @@
   <div id="map" class="w100p h500"></div>
   <div class="pad-lr-20p">
     <div class="card neg-marg-top100 w100p raise-2">
-      <h2>Farm Information</h2>
-      <div class="text2"><%= @farm.name %></div>
-      djdfkjdfkjdfk <br>
-      djdfkjdfkjdfk <br>
+      <div id="farm-info">
+        <div class="fab fab-tr raise-3" v-on:click="showEditForm();">
+          <i class="ui write icon"></i>
+        </div>
+        <h2>Farm Information</h2>
+        <p class="text2"><%= @farm.name %></p>
+        <p class="text15"><%= @farm.size %> Acre(s)</p>
+        <% if @farm.farmer %>
+          <p><%= @farm.farmer.name %></p>
+        <% else %>
+          <h3>This farm has no farmer</h3>
+        <% end %>
+      </div>
+      <div id="farm-edit" hidden>
+        <div class="fab fab-tr raise-3" v-on:click="showEditForm();">
+          <i class="arrow left icon"></i>
+        </div>
+        <h3>Farm edit</h3>
+        <%= render 'form' %>
+      </div>
     </div>
   </div>
 </div>
@@ -47,6 +63,16 @@
     el: "#farm-show",
     data: {
       farm: <%= @farm.to_json.html_safe %>
+    },
+    methods: {
+      showEditForm: function(){
+        var first = $('#farm-edit').is(':visible') ? '#farm-edit' : '#farm-info';
+        var second = $('#farm-edit').is(':visible') ? '#farm-info' : '#farm-edit';
+        console.log('first: ' + first +", second: " + second);
+        $(first).toggle('fast', function(){
+          $(second).toggle('fast');
+        });
+      }
     }
   })
 

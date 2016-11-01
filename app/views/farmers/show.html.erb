@@ -41,15 +41,16 @@
         </div>
         <div id="new-farmer-space" hidden>
           <h2>New Farm</h2>
-          <div id="new_farm_map" class="h500 col-md-7"></div>
-          <div class="form-group w100p-rounded">
+          <div id="new_farm_map" class="h300 col-md-7"></div>
+          <%= render 'farms/form' %>
+          <!--<div class="form-group w100p-rounded">
             <label>Name</label><br>
             <input type="text" v-model="farm.name">
           </div>
           <div class="form-group w100p-rounded">
             <label>Size (Acres)</label><br>
             <input type="number" v-model="farm.size">
-          </div>
+          </div>-->
           <button v-on:click="createNewFarmer">Submit</button>
         </div>
     </div>
@@ -58,7 +59,7 @@
 
 <div id="edit_form" class="ui modal w500">
   <div class="center">
-    <h3>Edit Labourer</h3>
+    <h3>Edit Farmer</h3>
     <%= render "form" %>
   </div>
 </div>
@@ -71,6 +72,9 @@
   var farmerShow = new Vue({
     el: "#farmer-show",
     data: {
+      fname: "<%= @farmer.fname %>",
+			lname: "<%= @farmer.lname %>",
+			phone: "<%= @farmer.phone %>",
       farm: {
         farmer_id: <%= @farmer.id %>,
         name: "",
