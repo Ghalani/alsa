@@ -14,8 +14,8 @@
       </div>
     </div>
     <div class="twelve wide column">
-      <div id="labourer-card" class="overlap card raise-1 text12 dark-text1">        
-        <div class="card-menu-tr text2"><i class="ellipsis vertical icon"></i></div>
+      <div id="labourer-card" class="overlap card raise-1 text12 dark-text1">      
+        <div class="card-menu-tr text15" v-on:click="showDeleteModal();"><i class="trash icon"></i></div>  
         <div id="labourer-holder">
           dfdjhfjdhfjhfd <br>
           dfdjhfjdhfjhfd <br>
@@ -39,6 +39,18 @@
     </div>
   </div>
 
+  <div id="labourer-delete" class="ui small modal">
+    <!--<div class="header">Header</div>-->
+    <div class="content">
+      <p>Are you sure you want to delete this labourer?</p>
+      <p><h1>All data linked to this labourer will be deleted</h1></p>
+    </div>
+    <div class="actions">
+      <div class="ui green-bg button" v-on:click="deleteLabourer()" >Yes</div>
+      <div class="ui red-bg button" v-on:click="showDeleteModal()">No</div>
+    </div>
+    <p></p>
+  </div>
   
   <!--<%= link_to 'Edit', edit_organization_labourer_path(@organization, @labourer)  %> |
   <%= link_to 'Back', organization_farm_and_labour_path(@organization) %>-->
@@ -51,6 +63,23 @@
       openEditModal: function(){
         $('#edit_form.modal').modal("show");
         //return false;
+      },
+      showDeleteModal: function(){
+        $('#labourer-delete.modal').modal('toggle');
+      },
+      deleteLabourer: function(){
+        $.ajax({
+          url: '/organizations/<%= @organization.id %>/labourers/<%= @labourer.id %>.json',
+          method: "DELETE",
+          success: function(res){
+            if(Boolean(document.referrer)){
+              window.location = document.referrer;
+            }else{
+              window.history.back();
+            }
+          }, 
+          error: function(err){ console.log(err.message)}
+        });
       }
     }
   });

@@ -15,7 +15,7 @@
     </div>
     <div class="twelve wide column">
       <div id="farmer-card" class="overlap card raise-1 text12 dark-text1">        
-        <div class="card-menu-tr text2"><i class="ellipsis vertical icon"></i></div>
+        <div class="card-menu-tr text15" v-on:click="showDeleteModal();"><i class="trash icon"></i></div>
         <div id="farmer-holder">
           <div class="ui top attached tabular menu">
             <div id="item1" class="active item">Info</div>
@@ -54,6 +54,18 @@
           <button v-on:click="createNewFarmer">Submit</button>
         </div>
     </div>
+  </div>
+  <div id="farmer-delete" class="ui small modal">
+    <!--<div class="header">Header</div>-->
+    <div class="content">
+      <p>Are you sure you want to delete this farmer?</p>
+      <p><h1>All farms under this farmer <strong>(and data)</strong> will be deleted</h1></p>
+    </div>
+    <div class="actions">
+      <div class="ui green-bg button" v-on:click="deleteFarmer()" >Yes</div>
+      <div class="ui red-bg button" v-on:click="showDeleteModal()">No</div>
+    </div>
+    <p></p>
   </div>
 </div>
 
@@ -112,6 +124,23 @@
       },
       openEditModal: function(){
         $('#edit_form.modal').modal("show");
+      },
+      showDeleteModal: function(){
+        $('#farmer-delete.modal').modal('toggle');
+      },
+      deleteFarmer: function(){
+        $.ajax({
+          url: '/organizations/<%= @organization.id %>/farmers/<%= @farmer.id %>.json',
+          method: "DELETE",
+          success: function(res){
+            if(Boolean(document.referrer)){
+              window.location = document.referrer;
+            }else{
+              window.history.back();
+            }
+          }, 
+          error: function(err){ console.log(err.message)}
+        });
       }
     }
   });

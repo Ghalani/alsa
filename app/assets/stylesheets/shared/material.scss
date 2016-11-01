@@ -5,10 +5,12 @@ $theme-white: #edffe6;
 $grey-highlight: #ededed;
 $theme-accent: #0176ff;
 $dark-green-text: #245013;
+$theme-red: #db2828;
 
-.green-bg{  background: $theme-color; color: $theme-white;}
+.green-bg{  background: $theme-color !important; color: $theme-white !important;}
 .dark-green-bg{  background: $theme-color-dark !important;}
-.accent-bg{  background: $theme-accent;}
+.accent-bg{  background: $theme-accent !important; color:#fff !important;}
+.red-bg{  background: $theme-red !important; color:#fff !important;}
 
 .stat-bar{
   padding: 1rem;
