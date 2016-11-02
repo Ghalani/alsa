@@ -1,0 +1,32 @@
+<div id="user-role">
+  <%= render "static_pages/nav" %>
+  <div class="green-bg pad1">
+    Stats
+  </div><br>
+  <div class="card raise-1 w90p hcenter">
+    <div class="ui top attached tabular menu">
+      <div id="users-tab" class="active item">Users</div>
+      <div id="roles-tab" class="item">Roles</div>
+    </div>
+    <div id="users-tab-panel" class="ui bottom attached tab active">
+      <tbody-user :users="filteredUsers"></tbody-user>       
+    </div>
+    <div id="roles-tab-panel" class="ui bottom attached tab">
+      <h3>This is where you specify the level of access of a role</h3>
+    </div>
+  </div>
+  <div id="user-info-modal" class="ui modal">
+	<div class="ui equal width grid">
+		<div class="column text-center">
+			<%= image_tag 'farm128.png', class:"circle shad", alt:"User image" %>
+		</div>
+		<div class="column text12">
+			<h2>User information</h2>
+			<div class="text2">{{userInfo.name}}</div><br>
+			<div>{{userInfo.size}}</div>
+		</div>
+	</div>
+</div>
+</div>
+
+<%= render 'organizations/user_and_role/scripts' %>

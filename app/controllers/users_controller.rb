@@ -13,7 +13,10 @@ class UsersController < ApplicationController
           org = Organization.find(params[:organization_id])
           members = org.members
           non_members = User.all - members
-          render json: {members: members, non_members: non_members}
+          render json: {
+            members: ActiveModel::Serializer::CollectionSerializer.new(members, each_serializer: UserSerializer), 
+            non_members: non_members
+          }
         else  
           render json: {error: "Unable to process request"}
         end

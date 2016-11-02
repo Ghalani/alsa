@@ -1,0 +1,65 @@
+<script type="text/x-template" id="tbody-user">
+  <table class="ui celled striped table">
+    <thead>
+      <tr><th>Name</th>
+      <th>Email</th>
+      <th>Phone</th></tr>
+    </thead>
+    <tbody>
+      <tr v-for="user in users">
+        <td>
+          <a :href="'/organizations/<%= @organization.id %>/users/' + user.id">{{user.name}}</a> <i class="ui eye icon float-right" @click.prevent="requestSetUserInfo(user)"></i>
+        </td>
+        <td>{{user.email}}</td>
+        <td>{{user.phone}}</td>
+      </tr>
+    </tbody>
+  </table>
+</script>
+ 
+<script>
+  Vue.component('tbody-user', {
+    props: ['users'],
+    template: '#tbody-user',
+    methods:{
+      requestSetUserInfo(user) {
+        this.$parent.setUserInfo(user);
+      }
+    }
+  });
+  var userRole = new Vue({
+    el: "#user-role",
+    data: {
+      users: [],
+      filteredUsers: [],
+      userInfo: {}
+    },
+    methods: {
+      getUsers: function(){
+        var that = this;
+        $.ajax({
+          url: '/organizations/<%= @organization.id %>/users.json',
+          success: function(res){
+            that.users = res.members
+            that.filteredUsers = res.members
+          }
+        });
+      }
+    },
+    setUserInfo: function(user){
+      this.userInfo = user;
+      $('#user-info-modal.modal').modal('show');
+    }
+  });
+  userRole.getUsers();
+
+  $('.item').on('click', function(){
+    $('.item').each(function(){
+      $(this).removeClass('active');
+      $("#"+$(this).attr('id') + "-panel").removeClass('active');      
+    });
+
+    $(this).addClass('active');
+    $("#"+$(this).attr('id')+"-panel").addClass('active');
+  });
+</script>

@@ -26,6 +26,9 @@ $dark-green-text: #245013;
 
 .no-bg{ background: none !important;}
 
+.hcenter { display: block; margin: 0 auto !important;}
+.vcenter { margin: auto 0 !important;}
+
 body{background: #f5f5f5;}
 
 .text05{font-size: 0.5em;}
@@ -70,6 +73,7 @@ body{background: #f5f5f5;}
 .h50p{ height: 50% !important;}
 .h100p{ height: 100% !important;}
 
+.pad1{padding: 1rem;}
 .pad-lr-20p{padding: 0 10% !important; }
 
 .neg-marg-top100{ margin: -100px 0 0 0;}

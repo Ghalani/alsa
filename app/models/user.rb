@@ -3,7 +3,8 @@ class User < ActiveRecord::Base
 	#attr_accessor :activation_token
   before_save   :encrypt_password, :if => proc{ |u| !u.password.blank? }
   before_save   :downcase_fields
-  after_initialize :set_default_role, :if => :new_record?
+  # after_initialize :set_default_role, :if => :new_record?
+  
   # before_create :create_activation_digest
   # before_save   :reset_activation_digest
   # after_save :clear_password
@@ -15,19 +16,25 @@ class User < ActiveRecord::Base
   has_many :memberships
   has_many :member_organizations, as: :organizations, through: :memberships, source: :organization
 
-  enum role: [:user, :team_leader, :area_planner, 
-              :labour_coodinator, :technical_coordinator, :planning, 
-              :operations, :program_manager, :admin]
+  has_and_belongs_to_many :roles
+
+  # enum role: [:user, :team_leader, :area_planner, 
+  #             :labour_coodinator, :technical_coordinator, :planning, 
+  #             :operations, :program_manager, :admin]
               
 
   validates :email, presence: true, uniqueness: true
   # validates :encrypted_password, presence: true, allow_blank: false
 
-  def set_default_role
-    self.role ||= :user
+  # def set_default_role
+  #   self.role ||= :user
+  # end
+
+  def org_role( org )
+    self.role.where(organization_id: org.id)
   end
 
-  def fl_name
+  def name
     "#{self.fname} #{self.lname}"
   end
 

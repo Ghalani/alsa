@@ -11,9 +11,11 @@ Rails.application.routes.draw do
   resources :organizations do
     post 'add_member' => 'organizations#add_member'
     get 'farm_and_labour' => 'organizations#farm_and_labour'
+    get 'user_and_role' => 'organizations#user_and_role'
     resources :farmers
     resources :labourers
-    resources :farms  
+    resources :farms
+    resources :users
   end
   
 

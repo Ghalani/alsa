@@ -58,8 +58,17 @@
 				<div class="card raise-1 card-module hover-raise w200 text-center ripple" data-ripple-color="#c4e5c9">
 					<%= image_tag "users64.png" %>
 					<hr>
+					<%= link_to organization_user_and_role_path(@organization) do %>
+						Users and Roles
+					<% end %>
+				</div>
+			</div>
+			<div class="four wide column">
+				<div class="card raise-1 card-module hover-raise w200 text-center ripple" data-ripple-color="#c4e5c9">
+					<%= image_tag "stock64.png" %>
+					<hr>
 					<%= link_to "#" do %>
-						Users
+						Stock management
 					<% end %>
 				</div>
 			</div>
