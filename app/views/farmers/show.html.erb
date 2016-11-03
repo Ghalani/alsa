@@ -74,7 +74,8 @@
 <%= link_to 'Edit', edit_organization_farmer_path(@organization, @farmer) %> |
 <%= link_to 'Back', organization_farm_and_labour_path(@organization) %>
 
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2NxLOf_zTbaq0pyoeRLfBFTX4Q55KWuo&libraries=drawing"
+async defer></script>
 <script type="text/javascript" >
   var farmerShow = new Vue({
     el: "#farmer-show",
@@ -159,6 +160,5 @@
       zoom: 3
     });
   }
+  initMap();
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2NxLOf_zTbaq0pyoeRLfBFTX4Q55KWuo&libraries=drawing&callback=initMap"
-async defer></script>
