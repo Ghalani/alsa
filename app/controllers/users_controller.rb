@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :add_role]
+  before_action :set_organization
 
   # GET /users
   # GET /users.json
@@ -15,7 +16,7 @@ class UsersController < ApplicationController
           non_members = User.all - members
           render json: {
             members: ActiveModel::Serializer::CollectionSerializer.new(members, each_serializer: UserSerializer), 
-            non_members: non_members
+            non_members: ActiveModel::Serializer::CollectionSerializer.new(non_members, each_serializer: UserSerializer)
           }
         else  
           render json: {error: "Unable to process request"}
@@ -80,10 +81,34 @@ class UsersController < ApplicationController
     end
   end
 
+  def add_role
+    puts "USER_ID " + @user.id.to_s  
+    oldRole = @user.org_role(@organization) 
+    newRole = Role.find(params[:role_id])
+    @user.roles.delete(oldRole) if oldRole
+    respond_to do |format|
+      if @user.roles << newRole
+        format.json{ render json: newRole, status: :ok}
+      else
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
+      if params[:user_id]
+        puts "8888888"*55
+        @user = User.find(params[:user_id])
+      else
+        puts "82"*55      
+        @user = User.find(params[:id])
+      end
+    end
+
+    def set_organization
+      @organization = Organization.find(params[:organization_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

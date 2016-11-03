@@ -16,6 +16,7 @@
 			</div>
 			<div class="text2">{{fname}} {{lname}}</div><br>
 			<div class="text15">{{phone}}</div>
+			<div class="text15">{{gender}}</div>
 		</div>
 	</div>
 </div>
@@ -35,11 +36,19 @@
 			fname: "",
 			lname: "",
 			phone: "",
+			gender: "",
+			educational_level: ""
 		},
 		methods: {
 			addImage: function(){
 				$('#uploadImage').click();
 			}
+		}
+	});
+
+	$('input[type="text"]').keyup(function() {
+		if($(this).val() != '') {
+			$('input[type="submit"]').prop('disabled', false);
 		}
 	});
 </script>

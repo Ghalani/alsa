@@ -15,7 +15,10 @@ Rails.application.routes.draw do
     resources :farmers
     resources :labourers
     resources :farms
-    resources :users
+    resources :users do
+      post 'add_role' => 'users#add_role'
+    end
+    resources :roles
   end
   
 

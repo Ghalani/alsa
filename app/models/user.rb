@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   before_save   :encrypt_password, :if => proc{ |u| !u.password.blank? }
   before_save   :downcase_fields
   # after_initialize :set_default_role, :if => :new_record?
-  
+
   # before_create :create_activation_digest
   # before_save   :reset_activation_digest
   # after_save :clear_password
@@ -31,11 +31,15 @@ class User < ActiveRecord::Base
   # end
 
   def org_role( org )
-    self.role.where(organization_id: org.id)
+    self.roles.where(organization_id: org.id).first
   end
 
   def name
     "#{self.fname} #{self.lname}"
+  end
+
+  def admin?
+    self.roles.where(name: 'admin').size > 0
   end
 
   def encrypt_password

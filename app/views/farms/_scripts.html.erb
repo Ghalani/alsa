@@ -1,0 +1,101 @@
+<script>
+  var map;
+  var shape;
+  function clearShape(){
+    if (Boolean(shape)){
+      shape.setMap(null);
+      farmNew.farmShape = [];
+    }
+  }
+
+  function createPolygon(shapeArray){
+    new google.maps.Polygon({
+      map: map,
+      paths: shapeArray,
+      strokeColor: '#FF0000',
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: '#FF0000',
+      fillOpacity: 0.35
+    });
+  }
+
+  function initMap() {
+    // Create a map object and specify the DOM element for display.
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: -4, lng: 0},
+      scrollwheel: false,
+      zoom: 3
+    });
+
+    // Define the LatLng coordinates for the polygon's path.
+    var triangleCoords = [
+      {lat: 25.774, lng: -80.190},
+      {lat: 18.466, lng: -66.118},
+      {lat: 32.321, lng: -64.757},
+      {lat: 25.774, lng: -80.190}
+    ];
+
+    createPolygon(triangleCoords);
+
+    
+    //bermudaTriangle.setMap(map);
+
+    var drawingManager = new google.maps.drawing.DrawingManager({        
+      drawingMode: google.maps.drawing.OverlayType.POLYGON,
+      drawingControl: true,
+      drawingControlOptions: {
+        position: google.maps.ControlPosition.TOP_CENTER,
+        drawingModes: ['polygon', 'marker', 'rectangle']
+      },
+      polygonOptions: {
+        editable: true
+      },
+      markerOptions: {icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'},
+    });
+    drawingManager.setMap(map);
+
+    google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
+      if (event.type == 'circle') {
+        var radius = event.overlay.getRadius();
+      }else if (event.type == 'polygon'){
+        //console.log(event.overlay.getPath().getArray());
+        clearShape();
+        farmNew.farmShape = event.overlay.getPath().getArray().map(function(obj){
+          return {
+            lat: obj.lat(),
+            lng: obj.lng()
+          };
+        });
+        console.log(farmNew.farmShape[0].lat)
+        shape = event.overlay;
+      }
+    });     
+    google.maps.event.addListener(drawingManager, 'overlaystart', function(event) {  console.log(event); });
+
+  }
+
+  var farmNew = new Vue({
+    el: '#farm-new',
+    data: {
+      farmShape: []
+    },
+    methods:{
+      getFarms: function(){
+        var that = this;
+        $.ajax({
+          url: '/organizations/<%= @organization.id %>/farms.json',
+          success: function(res){
+            res.forEach(function(obj){
+              createPolygon(obj.points);
+            })
+          }
+        })
+      },
+    }
+  });
+  farmNew.getFarms();
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2NxLOf_zTbaq0pyoeRLfBFTX4Q55KWuo&libraries=drawing&callback=initMap"
+async defer></script>

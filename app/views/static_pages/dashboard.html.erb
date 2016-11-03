@@ -27,9 +27,7 @@
 					<div class="text-center">
 						<%= link_to "See all", users_path %>
 					</div>
-				</div>
-
-				
+				</div>				
 			</div>
 		<% end %>
 		<div class="column">
@@ -68,3 +66,29 @@
 		
 	</div>
 </div>
+
+<script>
+	dashboard = new Vue({
+	  el: '#orgs',
+	  data: {
+	    organizations: [{name:"dfjdfhdjfhdjfhdfjh"},
+	    ],
+	  },
+	  methods:{
+	  	getOrgs: function(){
+	  		var that;
+		    that = this;
+		    $.ajax({
+		      url: '/dashboard.json',
+		      success: function(res) {
+		        that.organizations = res.organizations;
+		      }
+		    });
+	  	}
+	  },
+	  ready: function() {
+	    getOrgs();
+	  }
+	});
+	dashboard.getOrgs();
+</script>

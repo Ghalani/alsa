@@ -6,6 +6,8 @@ class Farmer < ActiveRecord::Base
   has_many 		:farms
 
 	enum gender: [:male, :female]
+	enum educational_level: [:illiterate, :primary, :secondary, :tertiary]
+
 	has_attached_file :image, styles: { large: "600X600#", medium: "300x300#", thumb: "100x100#" }, default_url: "/images/:style/farmer.png"
   validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
 

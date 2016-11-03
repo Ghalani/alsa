@@ -13,20 +13,80 @@
     </div>
     <div id="roles-tab-panel" class="ui bottom attached tab">
       <h3>This is where you specify the level of access of a role</h3>
+      <div class="ui equal width grid">
+        <div class="column">
+          <div v-for="role in roles" class="list-item">
+            {{role.name}}
+          </div>
+          <div class="ui button green-bg" v-on:click="toggleNewRoleModal()">
+            Add Role
+          </div>
+        </div>
+        <div class="column">Permissions</div>
+      </div>
     </div>
   </div>
   <div id="user-info-modal" class="ui modal">
-	<div class="ui equal width grid">
-		<div class="column text-center">
-			<%= image_tag 'farm128.png', class:"circle shad", alt:"User image" %>
-		</div>
-		<div class="column text12">
-			<h2>User information</h2>
-			<div class="text2">{{userInfo.name}}</div><br>
-			<div>{{userInfo.size}}</div>
-		</div>
-	</div>
-</div>
+    <div class="ui equal width grid">
+      <div class="column text-center">
+        <%= image_tag 'farm128.png', class:"circle shad", alt:"User image" %>
+      </div>
+      <div class="column text12">
+        <h2>User information</h2>
+        <div class="text2">{{userInfo.name}}</div><br>
+        <div>{{userInfo.size}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="change-role-modal" class="ui small modal">
+    <p><h3>Please choose a role</h3></p>
+    <div v-for="role in roles" class="list-item" @click.prevent="addRole(role)">
+      {{role.name}}
+    </div>
+  </div>
+
+  <div class="ui small modal" id="new-role-modal">
+    <div class="content">
+      <p><input type="text" placeholder="Role name" v-model="newRole.name"></p>
+      <hr>
+      <p>Permissions</p>
+      <p>By checking a property, you are giving a role the ability to do what is checked</p>
+      <div class="grey-border1 pad1">
+        <div class="row">Farmer and labour</div>
+        <div class="ui stackable four column grid">
+          <div class="column">
+            <div class="">
+              <input type="checkbox" id="mike" value="Mike" v-model="newRole.permissions.organizations.farm_and_labour">
+            </div>
+            <div class="">See index on farm and labour management</div>
+          </div>
+          <div class="column">
+            <div class="">
+              <input type="checkbox" v-model="newRole.permissions.farmers.new">
+            </div>
+            <div class="">Create farmer</div>
+          </div>
+          <div class="column">
+            <div class="">
+              <input type="checkbox" v-model="newRole.permissions.farms.create">
+            </div>
+            <div class="">Create farm</div>
+          </div>
+          <div class="column">
+            <div class="">
+              <input type="checkbox" v-model="newRole.permissions.labourers.create">
+            </div>
+            <div class="">Create Labourer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui button green-bg" v-on:click="createRole()">Approve</div>
+      <div class="ui cancel button red-bg">Cancel</div>
+    </div>
+  </div>
 </div>
 
 <%= render 'organizations/user_and_role/scripts' %>

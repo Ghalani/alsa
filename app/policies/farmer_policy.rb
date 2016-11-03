@@ -7,7 +7,16 @@ class FarmerPolicy
   end
 
   def index?
-    @current_user or @current_user.is_member?(@farmer.organization)
+    # role = @current_user.org_role
+    # if (role)
+    #   if (role.name == 'admin')
+    #     return true
+    #   else
+    #   end
+    # else 
+    #   return false
+    # end
+        @current_user or @current_user.is_member?(@farmer.organization)
   end
 
   def new?

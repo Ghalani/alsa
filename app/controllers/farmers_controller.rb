@@ -101,6 +101,6 @@ class FarmersController < ApplicationController
     def farmer_params
       params.require(:farmer).permit(:fname,:lname,:phone,:gender,
         :dob,:educational_level,:village,:caa_id,
-        :kcl_district_id,:certified,:marital_status,:num_of_sharecroppers, :image)
+        :kcl_district_id,:certified,:marital_status, :image)
     end
 end

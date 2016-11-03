@@ -40,18 +40,12 @@
           </div>
         </div>
         <div id="new-farmer-space" hidden>
-          <h2>New Farm</h2>
-          <div id="new_farm_map" class="h300 col-md-7"></div>
-          <%= render 'farms/form' %>
-          <!--<div class="form-group w100p-rounded">
-            <label>Name</label><br>
-            <input type="text" v-model="farm.name">
+          <div id="farm-new">
+            <h2>New Farm</h2>
+            <div id="map" class="w100p h300"></div>
+            <%= render 'farms/form' %>
+            <button v-on:click="createNewFarmer">Submit</button>
           </div>
-          <div class="form-group w100p-rounded">
-            <label>Size (Acres)</label><br>
-            <input type="number" v-model="farm.size">
-          </div>-->
-          <button v-on:click="createNewFarmer">Submit</button>
         </div>
     </div>
   </div>
@@ -75,6 +69,7 @@
     <%= render "form" %>
   </div>
 </div>
+
 
 <%= link_to 'Edit', edit_organization_farmer_path(@organization, @farmer) %> |
 <%= link_to 'Back', organization_farm_and_labour_path(@organization) %>
@@ -154,6 +149,16 @@
 
     $(this).addClass('active');
     $("#"+$(this).attr('id')+"-panel").addClass('active');
-  })
+  });
+
+  function initMap() {
+    // Create a map object and specify the DOM element for display.
+    var map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: -4, lng: 0},
+      scrollwheel: false,
+      zoom: 3
+    });
+  }
 </script>
-<%= render "farmers/js/map" %>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2NxLOf_zTbaq0pyoeRLfBFTX4Q55KWuo&libraries=drawing&callback=initMap"
+async defer></script>

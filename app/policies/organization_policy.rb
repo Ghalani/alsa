@@ -11,22 +11,47 @@ class OrganizationPolicy
   end
 
   def new?
-    @current_user.admin?
+  	verify { "new" }    
   end
 
   def create?
-    @current_user.admin?
+  	verify { "create" }
   end
 
   def show?
-  	@current_user.admin? or @current_user.is_member?(@org)
+    verify{ "show" }
   end
 
   def update?
-  	@current_user.admin?
+  	verify { "update" }
   end
 
   def destroy?
-  	(@org.memberships.size < 1) && @current_user.admin?
+  	(@org.memberships.size < 1) && (verify { "destroy" } )
+  end
+
+  def farm_and_labour
+    verify { "farm_and_labour"}
+  end
+
+  def user_and_role
+    verify { "user_and_role" }
+  end
+
+  def verify(&block)
+    role = @current_user.org_role(@org)
+    if (role)
+      if (role.name == 'admin')
+        return true
+      else
+        role.permissions &&
+        role.permissions > 0 && 
+        role.permissions['organizations'] && 
+        role.permissions['organizations'][(block.call)]
+        #block.call
+      end
+    else 
+      return false
+    end
   end
 end

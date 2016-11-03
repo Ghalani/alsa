@@ -7,7 +7,7 @@ class StaticPagesController < ApplicationController
 
 	def dashboard
 		@user = current_user
-		@users = User.all
+		@users = @user.organizations.collect{|o| o.users}.flatten
 		@orgs = @user.get_member_orgs
 		puts @orgs.to_json
 		respond_to do |f|

@@ -12,6 +12,7 @@ html,body{
 $theme-color: #39b54a;
 $theme-color-dark: #00a651;
 $grey-highlight: #ededed;
+$grey1: #ededed;
 $theme-accent: #0176ff;
 $dark-green-text: #245013;
 
@@ -77,6 +78,8 @@ body{background: #f5f5f5;}
 .pad-lr-20p{padding: 0 10% !important; }
 
 .neg-marg-top100{ margin: -100px 0 0 0;}
+
+.grey-border1 {border: 1px solid $grey1;}
 
 .rounded-input{
   border-radius: 3px;
@@ -221,3 +224,12 @@ body{background: #f5f5f5;}
 }
 
 .absolute{position: absolute;}
+
+.side-menu{
+  position: absolute;
+  background: #333;
+  color: #fff;
+  &.hidden{
+    display: none !important;
+  }
+}

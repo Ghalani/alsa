@@ -1,29 +1,45 @@
 <script type="text/x-template" id="tbody-user">
-  <table class="ui celled striped table">
-    <thead>
-      <tr><th>Name</th>
-      <th>Email</th>
-      <th>Phone</th></tr>
-    </thead>
-    <tbody>
-      <tr v-for="user in users">
-        <td>
-          <a :href="'/organizations/<%= @organization.id %>/users/' + user.id">{{user.name}}</a> <i class="ui eye icon float-right" @click.prevent="requestSetUserInfo(user)"></i>
-        </td>
-        <td>{{user.email}}</td>
-        <td>{{user.phone}}</td>
-      </tr>
-    </tbody>
-  </table>
+    <table class="ui celled striped table">
+      <thead>
+        <tr><th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Role</th></tr>
+      </thead>
+      <tbody>
+        <tr v-for="user in users">
+          <td>
+            <a :href="'/organizations/<%= @organization.id %>/users/' + user.id">{{user.name}}</a> <i class="ui eye icon float-right" @click.prevent="requestSetUserInfo(user)"></i>
+          </td>
+          <td>{{user.email}}</td>
+          <td>{{user.phone}}</td>
+          <td>{{Boolean(user.role) ? user.role.name : "none"}} <i class="ui write icon" @click.prevent="openChangeRoleModal(user)"></i></td>
+        </tr>
+      </tbody>
+    </table>
 </script>
  
 <script>
+  var roleTemplate = {
+    permissions: {
+      organizations: {},
+      farmers: {},
+      farms: {},
+      labourers: {},
+    }
+  };
+
   Vue.component('tbody-user', {
     props: ['users'],
     template: '#tbody-user',
     methods:{
       requestSetUserInfo(user) {
         this.$parent.setUserInfo(user);
+        $('#user-info-modal').modal('toggle');        
+      },
+      openChangeRoleModal: function(user){
+        this.$parent.setUserInfo(user);
+        $('#change-role-modal').modal('toggle');
       }
     }
   });
@@ -32,7 +48,9 @@
     data: {
       users: [],
       filteredUsers: [],
-      userInfo: {}
+      userInfo: {},
+      roles: [],
+      newRole: roleTemplate,
     },
     methods: {
       getUsers: function(){
@@ -40,18 +58,64 @@
         $.ajax({
           url: '/organizations/<%= @organization.id %>/users.json',
           success: function(res){
+            res.members.forEach(function(obj, i){
+              res.members[i].role = obj.roles.find(function(o){ 
+                return o.organization_id == <%= @organization.id %>
+              });
+              res.members[i].roles = {};
+            })
             that.users = res.members
             that.filteredUsers = res.members
           }
         });
+      },
+      getRoles: function(){
+        var that = this;
+        $.ajax({
+          url: '/organizations/<%= @organization.id %>/roles.json',
+          success: function(res){
+            that.roles = res
+          }
+        });
+      },
+      createRole: function(){
+        var that = this;
+        $.ajax({
+          method: 'POST',
+          data: {role: that.newRole},
+          url: '/organizations/<%= @organization.id %>/roles.json',
+          success: function(res){
+            that.roles.push(res);
+            that.toggleNewRoleModal();
+            that.newRole = roleTemplate;
+          }
+        });
+      },
+      setUserInfo: function(user){
+        this.userInfo = user;
+        //$('#user-info-modal.modal').modal('show');
+      },
+      toggleNewRoleModal: function(){
+        $('#new-role-modal.modal').modal('toggle');
+      },
+      addRole: function(role){
+        var that = this;
+        var user = this.userInfo;
+        $.ajax({
+          method: 'POST',
+          url: '/organizations/<%= @organization.id %>/users/'+user.id+'/add_role.json?role_id='+role.id,
+          success: function(res){
+            that.users.find(function(u){
+              return u == user
+            }).role = role;
+            $('#change-role-modal').modal('toggle');         
+          }
+        });
       }
-    },
-    setUserInfo: function(user){
-      this.userInfo = user;
-      $('#user-info-modal.modal').modal('show');
     }
   });
   userRole.getUsers();
+  userRole.getRoles();
 
   $('.item').on('click', function(){
     $('.item').each(function(){

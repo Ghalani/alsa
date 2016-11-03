@@ -1,78 +1,99 @@
 <div id="organization-show" >
 	<%= render "static_pages/nav" %>
-	<div class="stat-bar green-bg">
-		<i class="ui content icon"></i>
-		<div class="ui container pad-lr">
-			<div class="text15"><%= @organization.name %></div>
+	<div class="">
+		<div class="ui vertical fluid tabular menu side-menu hidden w300">
+      <a class="active item">
+        Bio
+      </a>
+      <a class="item">
+        Pics
+      </a>
+      <a class="item">
+        Companies
+      </a>
+      <a class="item">
+        Links
+      </a>
+    </div>
+		<div class="stat-bar green-bg">
+			<i class="ui content icon" onclick="toggleSideMenu()"></i>
+			<div class="ui container pad-lr">
+				<div class="text15"><%= @organization.name %></div>
+				<br>
+				<div class="ui grid text-center">
+					<div class="two wide column">
+						<span class="text3"><%= @organization.members.size %></span>
+						<p class="text08">User<%= @organization.members.size > 1 ? "s":"" %></p>
+						<!--<%= link_to edit_organization_path(@organization, page: "add_users") do %>
+							Add users
+						<% end %>-->
+					</div>			
+					<div class="two wide column">
+						<span class="text3"><%= @organization.labourers.size %></span>
+						<p class="text08">Labourer<%= @organization.labourers.size > 1 ? "s":"" %></p>
+					</div>			
+					<div class="two wide column">
+						<span class="text3"><%= @organization.farmers.size %></span>
+						<p class="text08">Farmer<%= @organization.farmers.size > 1 ? "s":"" %></p>
+					</div>			
+					<div class="two wide column">
+						<span class="text3"><%= @organization.members.size %></span>
+						<p class="text08">Farm(s)</p>
+					</div>						
+				</div>
+				<br>	
+			</div>
+		</div>
+		<div class="ui container">
 			<br>
-			<div class="ui grid text-center">
-				<div class="two wide column">
-					<span class="text3"><%= @organization.members.size %></span>
-					<p class="text08">User<%= @organization.members.size > 1 ? "s":"" %></p>
-					<!--<%= link_to edit_organization_path(@organization, page: "add_users") do %>
-						Add users
-					<% end %>-->
-				</div>			
-				<div class="two wide column">
-					<span class="text3"><%= @organization.labourers.size %></span>
-					<p class="text08">Labourer<%= @organization.labourers.size > 1 ? "s":"" %></p>
-				</div>			
-				<div class="two wide column">
-					<span class="text3"><%= @organization.farmers.size %></span>
-					<p class="text08">Farmer<%= @organization.farmers.size > 1 ? "s":"" %></p>
-				</div>			
-				<div class="two wide column">
-					<span class="text3"><%= @organization.members.size %></span>
-					<p class="text08">Farm(s)</p>
-				</div>						
+			<div class="">
+				<h4>Modules</h4>
+				<hr class="grey-hr1">
 			</div>
-			<br>	
-		</div>
-	</div>
-	<div class="ui container">
-		<br>
-		<div class="">
-			<h4>Modules</h4>
-			<hr class="grey-hr1">
-		</div>
-		<div class="ui grid container">
-			<div class="four wide column">
-				<div class="card raise-1 card-module hover-raise w200 text-center ripple" data-ripple-color="#c4e5c9">
-					<%= image_tag "farmer64.png" %>
-					<hr>
+			<div class="ui stackable four column grid container">
+				<div class="column">
 					<%= link_to organization_farm_and_labour_path(@organization) do %>
-						Farmer and labour
+						<div class="card raise-1 card-module hover-raise w200 text-center ripple" data-ripple-color="#c4e5c9">
+							<%= image_tag "farmer64.png" %>
+							<hr>
+								Farmer and labour
+						</div>
 					<% end %>
 				</div>
-			</div>
-			<div class="four wide column">
-				<div class="card raise-1 card-module hover-raise w200 text-center ripple" data-ripple-color="#c4e5c9">
-					<%= image_tag "earth-globe64.png" %>
-					<hr>
+				<div class="column">
 					<%= link_to "#" do %>
-						Location and Hierarchy
+						<div class="card raise-1 card-module hover-raise w200 text-center ripple" data-ripple-color="#c4e5c9">
+							<%= image_tag "earth-globe64.png" %>
+							<hr>
+								Location and Hierarchy
+						</div>
 					<% end %>
 				</div>
-			</div>
-			<div class="four wide column">
-				<div class="card raise-1 card-module hover-raise w200 text-center ripple" data-ripple-color="#c4e5c9">
-					<%= image_tag "users64.png" %>
-					<hr>
+				<div class="column">
 					<%= link_to organization_user_and_role_path(@organization) do %>
-						Users and Roles
+						<div class="card raise-1 card-module hover-raise w200 text-center ripple" data-ripple-color="#c4e5c9">
+							<%= image_tag "users64.png" %>
+							<hr>
+								Users and Roles
+						</div>
 					<% end %>
 				</div>
-			</div>
-			<div class="four wide column">
-				<div class="card raise-1 card-module hover-raise w200 text-center ripple" data-ripple-color="#c4e5c9">
-					<%= image_tag "stock64.png" %>
-					<hr>
+				<div class="column">
 					<%= link_to "#" do %>
-						Stock management
+						<div class="card raise-1 card-module hover-raise w200 text-center ripple" data-ripple-color="#c4e5c9">
+							<%= image_tag "stock64.png" %>
+							<hr>
+								Stock management
+						</div>
 					<% end %>
 				</div>
 			</div>
+			
 		</div>
-		
 	</div>
 </div>
+<script>
+	function toggleSideMenu(){
+		$('.side-menu').toggleClass('hidden', 'fast');
+	}
+</script>

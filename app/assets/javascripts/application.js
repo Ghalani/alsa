@@ -22,3 +22,15 @@ function appendModal(html){
 	$("#modal").html(html)
 	showModal();
 }
+
+$(document).on('ready', function(){
+	(function (){
+		if ($('.alert').length > 0){
+			setTimeout(function(){
+				$('.alert').each(function(i, obj){
+					obj.remove();
+				})
+			}, 5000)
+		}
+	}());
+});
