@@ -39,10 +39,11 @@
             </div>
           </div>
         </div>
-        <div id="new-farmer-space" hidden>
+        <div id="new-farm-space" hidden>
           <div id="farm-new">
-            <h2>New Farm</h2>
-            <div id="map" class="w100p h300"></div>
+            <div class="neg-marg1 top-rounded">
+              <div id="map" class="w100p h300"></div>
+            </div>
             <%= render 'farms/form' %>
             <button v-on:click="createNewFarmer">Submit</button>
           </div>
@@ -115,8 +116,12 @@ async defer></script>
         })
       },
       hideFabShowNewFarm: function(){
-        $('#new-farmer-space').toggle();
+        $('#new-farm-space').toggle('fast', function(){
+          if ($('#new-farm-space').is(":visible"))
+            initMap();
+        });
         $('#farmer-holder').toggle();
+        
       },
       openEditModal: function(){
         $('#edit_form.modal').modal("show");
@@ -150,8 +155,12 @@ async defer></script>
 
     $(this).addClass('active');
     $("#"+$(this).attr('id')+"-panel").addClass('active');
+
   });
 
+  /** 
+    MAPS
+  **/
   function initMap() {
     // Create a map object and specify the DOM element for display.
     var map = new google.maps.Map(document.getElementById('map'), {
@@ -159,6 +168,9 @@ async defer></script>
       scrollwheel: false,
       zoom: 3
     });
+
+    google.maps.event.addListener(map, 'click', function(event){
+      this.setOptions({scrollwheel:true});
+    });
   }
-  initMap();
 </script>

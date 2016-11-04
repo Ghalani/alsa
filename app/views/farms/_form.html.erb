@@ -13,26 +13,35 @@
     <% end %>
     <div class="form-group">
       <%= f.label :name %><br>      
-      <%= f.text_field :name, class:"rounded-input w100p" %>
+      <%= f.text_field :name, class:"rounded-input w100p", required: true %>
     </div>
     <div class="form-group">
       <%= f.label :size %> (in acres)<br>            
-      <%= f.number_field :size, class:"rounded-input w100p" %>      
+      <%= f.number_field :size, class:"rounded-input w100p", required: true %>      
     </div>
+    <hr>
     <div class="form-group">
-      <label for="">Please select the pin tool and pin the farm's location</label><br>  
-      <%= f.number_field :lat %> <%= f.number_field :lng %>
+      <label for="">Please select the marker tool <i class="ui marker icon"></i> and pin the farm's location</label><br>  
+      <%= f.number_field :lat, placeholder: "Latitude", "v-model":"farm.lat", step:"any" %> 
+      <%= f.number_field :lng, placeholder: "Longitude", "v-model":"farm.lng", step:"any" %>
     </div>
+    <hr>
     <div class="form-group">
       <label for="">Draw out the shape of your farm by selecting the polygon tool and clicking the edges of your farm.</label>
       <div class="grey-border" >
-        <button onclick="clearShape(); return false;">Clear shape</button>
-        <div v-for="point in farmShape" class="ui equal width grid">
+        <div v-for="point in farm.points" class="ui equal width grid">
           <input id="business_loc" multiple="multiple" name="farm[points][]" type="hidden" style="color: rgb(175, 175, 175); " v-model="point">
           <div class="column">Lat: {{point.lat}} </div>
           <div class="column">Lng: {{point.lng}} </div>          
         </div>
+        <button onclick="clearShape(); return false;">Clear shape</button>
       </div>
+    </div>
+    <div class="form-group ui grid grey-border" v-if="!isMarkerInPolygon()">
+      <div class="four wide column"><%= image_tag 'map-pin.png' %></div>
+      <div class="twelve wide column">
+        <h4>Make sure that the marker is inside the farm shape you drew</h4>
+      </div>      
     </div>
     <div class="form-group">
       <%= f.submit 'Submit', class:"btn ripple accent-bg" %>

@@ -1,7 +1,7 @@
 <div id="farm-show" class="green-bg h100p">
-  <div id="map" class="w100p h500"></div>
+  <div id="map" class="w100p h500 smooth"></div>
   <div class="pad-lr-20p">
-    <div class="card neg-marg-top100 w100p raise-2">
+    <div id="main-card" class="card neg-marg-top100 w100p raise-2">
       <div id="farm-info">
         <div class="fab fab-tr raise-3" v-on:click="showEditForm();">
           <i class="ui write icon"></i>
@@ -41,40 +41,21 @@
 <script>
   var map;
   var shape;
-  function clearShape(){
-    if (Boolean(shape)){
-      shape.setMap(null);
-      farmNew.farmShape = [];
-    }
-  }
+  var marker;
 
-  function createPolygon(shapeArray){
-    new google.maps.Polygon({
-      map: map,
-      paths: shapeArray,
-      strokeColor: '#00FF00',
-      strokeOpacity: 0.8,
-      strokeWeight: 2,
-      fillColor: '#00FF00',
-      fillOpacity: 0.35
-    });
-  }
+  var farmJSON = <%= @farm.to_json.html_safe %>;
+  if (Boolean(farmJSON.lat))
+    farmJSON.lat = null;
+  if (Boolean(farmJSON.lng))
+    farmJSON.lng = null;
 
-  function initMap() {
-    var coord = Boolean(farmNew.farm.points[0]) ? farmNew.farm.points[0] : {lat: -4, lng: 0};
-    var zoom = (Boolean(farmNew.farm.points[0]) ? 8 : 3);
-    map = new google.maps.Map(document.getElementById('map'), {
-      center: coord,
-      scrollwheel: false,
-      zoom: zoom
-    });
-    createPolygon(farmNew.farm.points);
-  }
-
-  var farmNew = new Vue({
+   var farmShow = new Vue({
     el: "#farm-show",
     data: {
-      farm: <%= @farm.to_json.html_safe %>
+      farm: farmJSON,
+      lat: null,
+      lng: null,
+      farmShape: []
     },
     methods: {
       showEditForm: function(){
@@ -82,11 +63,30 @@
         var second = $('#farm-edit').is(':visible') ? '#farm-info' : '#farm-edit';
         console.log('first: ' + first +", second: " + second);
         $(first).toggle('fast', function(){
-          $(second).toggle('fast');
+          $(second).toggle('fast', function(){
+            if (second == "#farm-edit"){
+              $('#map').addClass("h700");
+              createEditablePolygon(farmShow.farm.points);
+            }if (first == "#farm-edit"){
+              $('#map').removeClass("h700");
+            }
+          });
         });
       },
       showDeleteModal: function(){
         $('#farm-delete.modal').modal('toggle');
+      },
+      getFarms: function(){
+        var that = this;
+        $.ajax({
+          url: '/organizations/<%= @organization.id %>/farms.json',
+          success: function(res){
+            createPolygon(farmShow.farm.points);  
+            res.forEach(function(obj){
+              createPolygon(obj.points);
+            })
+          }
+        })
       },
       deleteFarm: function(){
         $.ajax({
@@ -98,14 +98,50 @@
             }else{
               window.history.back();
             }
-
           }, 
           error: function(err){ console.log(err.message)}
         });
+      },
+      isMarkerInPolygon: function(){
+        if (Boolean(marker) && Boolean(shape))
+          return google.maps.geometry.poly.containsLocation(marker.position, shape);
+        else
+          return true;
+      }
+    },
+    watch: {
+      'farm.lat': function (val, oldVal){
+        marker.position = new google.maps.LatLng(val, marker.position.lng());
+        marker.setMap(map);
+      },
+      'farm.lng': function (val, oldVal){
+        marker.position = new google.maps.LatLng(marker.position.lat(), val);
+        marker.setMap(map);
       }
     }
-  })
+  });
+  farmShow.getFarms();
+
+  var coord = Boolean(farmShow.farm.points[0]) ? farmShow.farm.points[0] : {lat: -4, lng: 0};
+  var zoom = (Boolean(farmShow.farm.points[0]) ? 8 : 3);
+  var vueModel = farmShow;
+  <%= render 'map' %>
+
+  $('form').submit(function() {
+    //console.log();
+    $.ajax({
+      url: '/organizations/<%= @organization.id %>/farms/<%= @farm.id %>.json',
+      data: ($('form').serializeObject()),
+      method: "PUT",
+      success: function(res){
+        location.reload();
+      }, 
+      error: function(err){ console.log(err.message)}
+    });
+    return false;
+  });
 
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2NxLOf_zTbaq0pyoeRLfBFTX4Q55KWuo&libraries=drawing&callback=initMap"
-async defer></script>
+async defer>
+</script>

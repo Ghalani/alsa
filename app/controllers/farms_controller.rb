@@ -57,8 +57,8 @@ class FarmsController < ApplicationController
   def update
     respond_to do |format|
       if @farm.update(farm_params)
-        format.html { redirect_to @farm, notice: 'Farm was successfully updated.' }
-        format.json { render :show, status: :ok, location: @farm }
+        format.html { redirect_to [@organization, @farm], notice: 'Farm was successfully updated.' }
+        format.json { render json: @farm, status: :ok }
       else
         format.html { render :edit }
         format.json { render json: @farm.errors, status: :unprocessable_entity }
