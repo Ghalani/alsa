@@ -125,12 +125,16 @@
         var that = this;
         $.ajax({
           method: 'POST',
-          data: this.newUser,
+          data: {user: this.newUser},
           url: '/organizations/<%= @organization.id %>/users.json',
           success: function(res){
             that.users.push(res);
+
           }, error: function(err){ cosole.log(err.message)}
         })
+      }, 
+      addUserAsMember: function(){
+
       }
     }
   });

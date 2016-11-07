@@ -5,6 +5,10 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
   before_filter :ensure_authenticated_user
 
+  def log_in (user)
+    session[:user_id] = user.id
+  end
+
 
 	private
     # Pundit

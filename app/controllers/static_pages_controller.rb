@@ -9,7 +9,6 @@ class StaticPagesController < ApplicationController
 		@user = current_user
 		@users = @user.organizations.collect{|o| o.users}.flatten
 		@orgs = @user.get_member_orgs
-		puts @orgs.to_json
 		respond_to do |f|
 			f.html
 			f.json {render json: {organizations: @orgs}}

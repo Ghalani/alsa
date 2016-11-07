@@ -27,7 +27,9 @@ Rails.application.routes.draw do
   get 'signup' => 'users#new'
   get 'login' => 'sessions#new'
   get 'logout' => 'sessions#destroy'
+  get 'register' => 'users#new'
   #get "reset" => "account_activations#new"
+  resources :account_activations, only: [:edit]
   # => SESSION END
 
   resources :users

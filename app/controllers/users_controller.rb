@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy, :add_role]
   before_action :set_organization
+  skip_before_filter :ensure_authenticated_user, only: [:new, :create]
 
   # GET /users
   # GET /users.json
@@ -48,8 +49,20 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        if Rails.env.production?
+          UserMailer.account_activation(@user).deliver_now
+        else
+          puts "#"*100
+          puts edit_account_activation_url(@user.activation_token, email: @user.email)
+        end
+
+        # add user as member of organization if created through org
+        if @organization
+          @organization.members << @user
+        end
+
         format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
+        format.json { render json: @user, status: :created }
       else
         format.html { render :new }
         format.json { render json: @user.errors, status: :unprocessable_entity }
@@ -82,7 +95,6 @@ class UsersController < ApplicationController
   end
 
   def add_role
-    puts "USER_ID " + @user.id.to_s  
     oldRole = @user.org_role(@organization) 
     newRole = Role.find(params[:role_id])
     @user.roles.delete(oldRole) if oldRole
@@ -99,20 +111,18 @@ class UsersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       if params[:user_id]
-        puts "8888888"*55
         @user = User.find(params[:user_id])
-      else
-        puts "82"*55      
+      else 
         @user = User.find(params[:id])
       end
     end
 
     def set_organization
-      @organization = Organization.find(params[:organization_id])
+      @organization = Organization.find_by_id(params[:organization_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:fname, :lname, :phone, :email, :password)
+      params.require(:user).permit(:fname, :lname, :phone, :email, :password, :image)
     end
 end

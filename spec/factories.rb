@@ -7,8 +7,8 @@ FactoryGirl.define do
 		#role "admin"
 
 		trait :admin do
-  		role "admin"
   		organizations { build_list :organization, 3 }
+  		#roles organizations.collect{ |org| org.roles.first } 
     end
 
 	end
@@ -16,6 +16,7 @@ FactoryGirl.define do
 	factory :organization do
 		name "org#{Random.rand(1000..9999)}"
 		farmers {build_list :farmer, 3}
+		roles {build_list :role, 1}
 	end
 
 	factory :farmer do
@@ -23,5 +24,9 @@ FactoryGirl.define do
 		lname "name"
 		phone	"#{Random.rand(1000..9999)}#{Random.rand(1000..9999)}"
 		gender "female"
+	end
+
+	factory :role do
+		name "admin"		
 	end
 end

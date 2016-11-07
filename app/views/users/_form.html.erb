@@ -11,7 +11,38 @@
     </div>
   <% end %>
 
-  <div class="actions">
-    <%= f.submit %>
+  <div class="form-group ">
+    <div class="w100p-rounded">
+      <%= f.text_field :email, class:"form-control", placeholder:"Email", required: true %>
+    </div>
+  </div>
+
+  <div class="form-group ">
+    <div class="w100p-rounded">
+      <%= f.text_field :fname, class:"form-control", placeholder:"First name", required: true %>
+    </div>
+  </div>
+
+  <div class="form-group ">
+    <div class="w100p-rounded">
+      <%= f.text_field :lname, class:"form-control", placeholder:"Last name", required: true %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="w100p-rounded">
+      <%= f.password_field :password, class: "form-control", placeholder: 'Password', id:'pwd1', required: true %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="w100p-rounded">
+      <%= f.password_field :password_confirmation, class: "form-control", placeholder: 'Confirm password', required: true, id:'pwd2' %>
+    </div>
+  </div>
+  <%= f.hidden_field :role, value: "admin" %>
+
+  <div class="form-group text-center">
+    <%= f.submit 'REGISTER', onclick:"return verPass();", class:"ui button green-bg" %>
   </div>
 <% end %>
