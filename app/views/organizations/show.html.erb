@@ -1,5 +1,8 @@
 <div id="organization-show" >
 	<%= render "static_pages/nav" %>
+	<% content_for :sub_nav do %>
+		sdsjdjshdjhs
+	<% end %>
 	<div class="">
 		<div class="ui vertical fluid tabular menu side-menu hidden w300">
       <a class="active item">
@@ -37,7 +40,7 @@
 						<p class="text08">Farmer<%= @organization.farmers.size > 1 ? "s":"" %></p>
 					</div>			
 					<div class="two wide column">
-						<span class="text3"><%= @organization.members.size %></span>
+						<span class="text3"><%= @organization.farms.size %></span>
 						<p class="text08">Farm(s)</p>
 					</div>						
 				</div>

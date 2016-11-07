@@ -51,6 +51,12 @@
       userInfo: {},
       roles: [],
       newRole: roleTemplate,
+      newUser: {
+        fname: "",
+        lname: "",
+        phone: "",
+        email: ""
+      }
     },
     methods: {
       getUsers: function(){
@@ -111,6 +117,20 @@
             $('#change-role-modal').modal('toggle');         
           }
         });
+      },
+      toggleNewUserModal: function(){
+        $('#new-user-modal').modal('toggle');
+      },
+      createUser: function(){
+        var that = this;
+        $.ajax({
+          method: 'POST',
+          data: this.newUser,
+          url: '/organizations/<%= @organization.id %>/users.json',
+          success: function(res){
+            that.users.push(res);
+          }, error: function(err){ cosole.log(err.message)}
+        })
       }
     }
   });

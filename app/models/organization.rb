@@ -16,4 +16,8 @@ class Organization < ActiveRecord::Base
 		self.roles << role
 		current_user.roles << role
 	end
+
+	def users
+	 self.members
+	end
 end

@@ -49,13 +49,18 @@
   if (Boolean(farmJSON.lng))
     farmJSON.lng = null;
 
+  window.__FORM__ = {
+    farm: farmJSON
+  }
+
    var farmShow = new Vue({
     el: "#farm-show",
     data: {
       farm: farmJSON,
       lat: null,
       lng: null,
-      farmShape: []
+      farmShape: [], 
+      estimatedAcreage: 0,
     },
     methods: {
       showEditForm: function(){
@@ -69,6 +74,7 @@
               createEditablePolygon(farmShow.farm.points);
             }if (first == "#farm-edit"){
               $('#map').removeClass("h700");
+              shape.setMap(null) 
             }
           });
         });
@@ -123,7 +129,7 @@
   farmShow.getFarms();
 
   var coord = Boolean(farmShow.farm.points[0]) ? farmShow.farm.points[0] : {lat: -4, lng: 0};
-  var zoom = (Boolean(farmShow.farm.points[0]) ? 8 : 3);
+  var zoom = (Boolean(farmShow.farm.points[0]) ? 12 : 3);
   var vueModel = farmShow;
   <%= render 'map' %>
 

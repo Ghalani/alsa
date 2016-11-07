@@ -15,9 +15,15 @@
       <%= f.label :name %><br>      
       <%= f.text_field :name, class:"rounded-input w100p", required: true %>
     </div>
-    <div class="form-group">
-      <%= f.label :size %> (in acres)<br>            
-      <%= f.number_field :size, class:"rounded-input w100p", required: true %>      
+    <div class="form-group ui equal width grid">
+      <div class="column">
+        <%= f.label :size %> (in acres)<br>            
+        <%= f.number_field :size, class:"rounded-input w100p", required: true %> 
+      </div>
+      <div class="column">
+        <label for="">Estimated acreage</label><br>
+        <input type="number" v-model="estimatedAcreage" disabled>
+      </div>     
     </div>
     <hr>
     <div class="form-group">

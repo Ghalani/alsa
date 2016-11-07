@@ -69,20 +69,7 @@ $theme-red: #db2828;
     width: 100%;
     position: absolute;
     bottom: 0;
-  }
-
-  .list-item{
-    position: relative;
-    margin: 2px !important;
-    padding: 5px 0;
-    transition: all 0.3s ease-in-out;
-    cursor: pointer;
-    &:hover{
-      background: $grey-highlight;
-    }
-
-  }
-  
+  }  
 }
 
 .card.hover-raise:hover {
@@ -194,6 +181,17 @@ $theme-red: #db2828;
   margin: 0 !important;
   a{
     color: #fff;
+    padding: 0 0.5rem;
+    transition: all 0.3s ease-in-out;
+    &:active, &:hover{
+      color: #ccc;
+      &::after{
+        content: "";
+        display: block;
+        border-bottom: 2px solid #fff;
+      }
+       
+    }
   }
   img{    height: 20px;}
   .right{

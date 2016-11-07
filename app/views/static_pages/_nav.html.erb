@@ -1,6 +1,9 @@
 <div class="ui menu dark-green-bg">
   <div class="left menu">
     <%= link_to "home", "/" %>
+    <% if @organization %>
+      <%= link_to "Org Home", @organization %>
+    <% end %>
     
   </div> 
   <div class="right menu">

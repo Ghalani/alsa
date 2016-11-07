@@ -1,15 +1,18 @@
 <div id="user-role">
   <%= render "static_pages/nav" %>
-  <div class="green-bg pad1">
+  <div class="green-bg pad1 padb3">
     Stats
   </div><br>
-  <div class="card raise-1 w90p hcenter">
+  <div class="card raise-1 w90p hcenter neg-marg-top3">
     <div class="ui top attached tabular menu">
       <div id="users-tab" class="active item">Users</div>
       <div id="roles-tab" class="item">Roles</div>
     </div>
     <div id="users-tab-panel" class="ui bottom attached tab active">
       <tbody-user :users="filteredUsers"></tbody-user>       
+      <div class="ui button green-bg" v-on:click="toggleNewUserModal()">
+        Add User
+      </div>
     </div>
     <div id="roles-tab-panel" class="ui bottom attached tab">
       <h3>This is where you specify the level of access of a role</h3>
@@ -20,6 +23,31 @@
           </div>
           <div class="ui button green-bg" v-on:click="toggleNewRoleModal()">
             Add Role
+          </div>
+          <div id="new-user-modal" class="ui modal">
+            <div class="content">              
+              <h3>New User</h3>
+              <div class="form-group w100p-rounded">
+                <label for="">First name</label><br>
+                <input type="text" v-model="newUser.fname">
+              </div>
+              <div class="form-group w100p-rounded">
+                <label for="">Last name</label>
+                <input type="text" v-model="newUser.lname">              
+              </div>
+              <div class="form-group w100p-rounded">
+                <label for="">Phone</label>
+                <input type="text" v-model="newUser.phone">              
+              </div>
+              <div class="form-group w100p-rounded">
+                <label for="">Email</label>
+                <input type="text" v-model="newUser.email">              
+              </div>
+            </div>
+            <div class="actions">
+              <div class="ui button green-bg">Add</div>
+              <div class="ui button red-bg">Cancel</div>
+            </div>
           </div>
         </div>
         <div class="column">Permissions</div>
@@ -39,7 +67,7 @@
     </div>
   </div>
 
-  <div id="change-role-modal" class="ui small modal">
+  <div id="change-role-modal" class="ui small modal pad1">
     <p><h3>Please choose a role</h3></p>
     <div v-for="role in roles" class="list-item" @click.prevent="addRole(role)">
       {{role.name}}
