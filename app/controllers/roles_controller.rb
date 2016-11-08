@@ -27,6 +27,7 @@ class RolesController < ApplicationController
     end
 
     def role_params
-      params.require(:role).permit(:name, permissions: {})
+      #params.require(:role).permit(:name, permissions: [organizations: [], farmers: [], farms: [], labourers: []])
+      params.require(:role).permit!
     end
 end

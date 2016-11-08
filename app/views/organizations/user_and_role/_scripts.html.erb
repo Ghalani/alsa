@@ -50,6 +50,9 @@
       filteredUsers: [],
       userInfo: {},
       roles: [],
+      selectedRole: {
+        permissions: {}
+      },
       newRole: roleTemplate,
       newUser: {
         fname: "",
@@ -129,12 +132,16 @@
           url: '/organizations/<%= @organization.id %>/users.json',
           success: function(res){
             that.users.push(res);
-
+            that.newUser = {};
+            that.toggleNewUserModal()
           }, error: function(err){ cosole.log(err.message)}
         })
       }, 
       addUserAsMember: function(){
 
+      },
+      selectRole: function(role){
+        this.selectedRole = role;
       }
     }
   });

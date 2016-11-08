@@ -48,7 +48,14 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
+
+  # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+  gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 end
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+group :production do
+  gem 'rails_12factor'
+  gem 'puma'
+  gem 'aws-sdk', '~> 2.3'
+  gem 'rmagick'
+end

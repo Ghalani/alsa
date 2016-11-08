@@ -18,7 +18,7 @@
       <h3>This is where you specify the level of access of a role</h3>
       <div class="ui equal width grid">
         <div class="column">
-          <div v-for="role in roles" class="list-item">
+          <div v-for="role in roles" class="list-item" v-on:click="selectRole(role)">
             {{role.name}}
           </div>
           <div class="ui button green-bg" v-on:click="toggleNewRoleModal()">
@@ -50,7 +50,16 @@
             </div>
           </div>
         </div>
-        <div class="column">Permissions</div>
+        <div class="column">
+          <p>Permissions</p>
+          <!--<p>{{selectedRole.permissions}}</p>-->
+          <div v-for="(permission, key) in selectedRole.permissions" class="grey-border1 pad1" >
+            <h3>{{key}}</h3>
+            <p>{{permission}}</p>
+
+          </div>
+        </div>
+
       </div>
     </div>
   </div>

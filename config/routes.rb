@@ -29,7 +29,8 @@ Rails.application.routes.draw do
   get 'logout' => 'sessions#destroy'
   get 'register' => 'users#new'
   #get "reset" => "account_activations#new"
-  resources :account_activations, only: [:edit]
+  resources :account_activations, only: [:edit] 
+  post "activate_with_password" => "account_activations#activate_with_password" 
   # => SESSION END
 
   resources :users
