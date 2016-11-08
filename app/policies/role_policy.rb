@@ -32,14 +32,16 @@ class RolePolicy
 
   def verify(&block)
     role = @current_user.org_role(@role.organization)
-    if (role)
-      if (role.name == 'admin')
-        return true
-      else
+    if @org.user == @current_user
+      return true
+    elsif (role)
+      # if (role.name == 'admin')
+      #   return true
+      # else
         role.permissions['organizations'][block.call]
         #role.permissions['organizations'].include?(block.call)
         #block.call
-      end
+      # end
     else 
       return false
     end

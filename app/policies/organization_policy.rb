@@ -30,26 +30,28 @@ class OrganizationPolicy
   	(@org.memberships.size < 1) && (verify { "destroy" } )
   end
 
-  def farm_and_labour
+  def farm_and_labour?
     verify { "farm_and_labour"}
   end
 
-  def user_and_role
+  def user_and_role?
     verify { "user_and_role" }
   end
 
   def verify(&block)
     role = @current_user.org_role(@org)
-    if (role)
-      if (role.name == 'admin')
-        return true
-      else
+    if @org.user == @current_user
+      return true
+    elsif (role)
+      # if (role.name == 'admin')
+      #   return true
+      # else
         role.permissions &&
         role.permissions > 0 && 
         role.permissions['organizations'] && 
         role.permissions['organizations'][(block.call)]
         #block.call
-      end
+      # end
     else 
       return false
     end

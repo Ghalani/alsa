@@ -91,10 +91,12 @@ class OrganizationsController < ApplicationController
   end
 
   def farm_and_labour
+    authorize @organization
     render 'organizations/farm_and_labour/index'
   end
 
   def user_and_role
+    authorize @organization
     render 'organizations/user_and_role/index'
   end
 
