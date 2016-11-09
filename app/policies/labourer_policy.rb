@@ -7,30 +7,47 @@ class LabourerPolicy
   end
 
   def index?
-    @current_user or @current_user.is_member?(@labouer.organization)
+    verify {"index"}
   end
 
   def new?
-    @current_user.admin?
-  end
-
-  def edit?
-    @current_user.admin?
+    verify {"new"}
   end
 
   def create?
-    @current_user.admin?
+    verify {"create"}
+  end
+
+  def edit?
+    verify {"edit"}
+
   end
 
   def show?
-  	@current_user.admin? or @current_user.is_member?(@labouer.organization)
+  	verify {"show"}
   end
 
   def update?
-  	@current_user.admin?
+    verify {"update"}
   end
 
   def destroy?
-  	@current_user.admin?
+    verify {"destroy"}
+  end
+
+  def verify(&block)
+    if (@current_user.app_role == "company")
+      return true
+    end
+    
+    role = @current_user.org_role(@labourer.organization)
+    if (role)
+      role.permissions &&
+      role.permissions > 0 && 
+      role.permissions['labourers'] && 
+      role.permissions['labourers'][(block.call)]
+    else 
+      return false
+    end
   end
 end

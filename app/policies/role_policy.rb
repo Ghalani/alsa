@@ -37,13 +37,8 @@ class RolePolicy
     
     role = @current_user.org_role(@role.organization) if @role
     if (role)
-      # if (role.name == 'admin')
-      #   return true
-      # else
-        role.permissions['organizations'][block.call]
-        #role.permissions['organizations'].include?(block.call)
-        #block.call
-      # end
+      role.permissions > 0 && 
+      role.permissions['roles'][block.call]
     else 
       return false
     end
