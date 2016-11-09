@@ -7,7 +7,7 @@ class RolePolicy
   end
 
   def index?
-    @current_user.admin?
+    verify {}
   end
 
   def new?
@@ -31,10 +31,12 @@ class RolePolicy
   end
 
   def verify(&block)
-    role = @current_user.org_role(@role.organization)
-    if @org.user == @current_user
+    if @current_user.app_role == "company"
       return true
-    elsif (role)
+    end
+    
+    role = @current_user.org_role(@role.organization) if @role
+    if (role)
       # if (role.name == 'admin')
       #   return true
       # else

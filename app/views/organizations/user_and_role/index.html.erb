@@ -9,15 +9,24 @@
       <div id="roles-tab" class="item">Roles</div>
     </div>
     <div id="users-tab-panel" class="ui bottom attached tab active">
-      <tbody-user :users="filteredUsers"></tbody-user>       
+      <div class="text-center" v-if="users.length < 1">
+        <%= image_tag 'users128.png' %>
+				<h3 >There is no user in this organizations.</h3>
+      </div>
+      <tbody-user :users="filteredUsers"  v-if="users.length > 0"></tbody-user>       
       <div class="ui button green-bg" v-on:click="toggleNewUserModal()">
         Add User
       </div>
     </div>
     <div id="roles-tab-panel" class="ui bottom attached tab">
       <h3>This is where you specify the level of access of a role</h3>
+      <hr>
       <div class="ui equal width grid">
         <div class="column">
+          <div v-if="roles.length < 1" class="text-center">
+            <%= image_tag 'users128.png' %>
+            <h3 >This organizations has no role specified.</h3><br>
+          </div>
           <div v-for="role in roles" class="list-item" v-on:click="selectRole(role)">
             {{role.name}}
           </div>

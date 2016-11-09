@@ -1,0 +1,73 @@
+<div class="ui equal width centered grid">
+			<% if @user.admin? %>
+				<div class="column">
+					<div class="card hover raise-1 hover-raise center">
+						<div class="card-head">Users in system</div>
+						<div class="card-body">
+							<% @users.each do |u| %>
+								<div class="list-item ripple ui grid">
+									<div class="w50 three wide column"><%= image_tag 'man32.png' %></div> 
+									<div class="twelve wide column">
+										<div class="text12"><%= u.name %></div>
+										<div class="theme-text1"><%= u.email %></div>
+									</div>
+								</div>					
+							<% end %>
+						</div>					
+						<div class="text-center">
+							<%= link_to "See all", users_path %>
+						</div>
+					</div>				
+				</div>
+			<% end %>
+			<div class="column">
+				<div>
+						<div class="title">Organizations you work with</div>
+						<hr>
+						<div v-if="organizations.length < 1" class="text-center">
+							<%= image_tag 'empty1.png' %>
+							<h3 >You have no organizations</h3>
+						</div>
+						<div class="ui grid container">	
+							<div v-for="organization in organizations" class="eight wide column">
+								<a :href="'organizations/' + organization.id">
+									<div class="card raise-1 w200 text-center org-card hover-raise">
+										<div class="card-image">
+											<%= image_tag 'cocoa.jpg' %>
+										</div>
+										<div class="card-content">
+											<p class="theme-text1">{{organization.name}}</p>
+											<p class="theme-text1">{{organization.country.nicename}}</p>
+										</div>
+									</div>			
+								</a>				
+							</div>		 
+						</div><br><br>
+						<div id="new-organization-modal" class="ui small modal">
+							<div class="content">
+								<div class="text-center">
+									<h3>New Organization</h3>
+								</div><hr>
+								<div class="form-group w100p-rounded">
+									<label for="">Name</label><br>
+									<input type="text" placeholder="Name" v-model="newOrganization.name">
+								</div>
+								<div class="form-group w100p-rounded">
+									<label for="">Country</label><br>
+									<select name="" id="" v-model="newOrganization.country_id">
+										<option v-for="country in countries" v-bind:value="country.id">
+											{{country.nicename}}											
+										</option>
+									</select>
+								</div>
+							</div>
+							<div class="actions">
+								<div class="ui green-bg button" v-on:click="createOrganization()" >Approve</div>
+								<div class="ui cancel button">Cancel</div>
+							</div>
+						</div>
+						<div class="ui button green-bg" v-on:click="toggleNewOrganizationModal()" >Add Organization</div>
+						<%= link_to "View all organizations", organizations_path, class:"btn ripple" %>
+					</div>
+			</div>
+		</div>

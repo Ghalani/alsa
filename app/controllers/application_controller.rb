@@ -20,7 +20,10 @@ class ApplicationController < ActionController::Base
   	# Returns 401 if the user isn't authorized
   	def ensure_authenticated_user
       #head :unauthorized unless current_user
-      if !current_user
+      if current_user && !current_user.activated
+        redirect_to '/'
+        flash[:info] = "Please check your email and activate your account"
+      elsif !current_user
         redirect_to '/'
         flash[:info] = "Please sign in"
       end

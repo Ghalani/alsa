@@ -46,8 +46,10 @@ class OrganizationsController < ApplicationController
     respond_to do |format|
       if @organization.save
         format.html { redirect_to organizations_path, notice: 'Organization was successfully created.' }
+        format.json { render json: @organization }
       else
         format.html { render :new }
+        format.json { render @organization.errors }
       end
     end
   end

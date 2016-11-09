@@ -22,9 +22,7 @@ class User < ActiveRecord::Base
 
   has_and_belongs_to_many :roles
 
-  # enum role: [:user, :team_leader, :area_planner, 
-  #             :labour_coodinator, :technical_coordinator, :planning, 
-  #             :operations, :program_manager, :admin]
+  enum app_role: [:company, :user]
               
 
   validates :email, presence: true, uniqueness: true
@@ -91,14 +89,12 @@ class User < ActiveRecord::Base
   def User.new_token
     SecureRandom.urlsafe_base64
   end
-  #----------------
-
-  
+  #----------------  
 
   private
   def downcase_fields
-    #self.fname.downcase!
-    #self.lname.downcase!
+    self.fname.downcase! if self.fname
+    self.lname.downcase! if self.lname
     self.email.downcase!
   end
 

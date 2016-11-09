@@ -1,0 +1,23 @@
+<div id="orgs">
+  <div class="title">Organizations you work with</div>
+  <hr>
+  <div v-if="organizations.length < 1" class="text-center">
+    <%= image_tag 'empty1.png' %>
+    <h3 >You have no organizations</h3>
+  </div>
+  <div class="ui grid container">	
+    <div v-for="osd in organizations" class="eight wide column">
+      <a :href="'organizations/' + osd.id">
+        <div class="card raise-1 w200 text-center org-card hover-raise">
+          <div class="card-image">
+            <%= image_tag 'cocoa.jpg' %>
+          </div>
+          <div class="card-content">
+            <p class="theme-text1">{{osd.name}}</p>
+            <p class="theme-text1">{{osd.country}}</p>
+          </div>
+        </div>			
+      </a>				
+    </div>		 
+  </div>
+</div>

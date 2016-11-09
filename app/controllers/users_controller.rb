@@ -49,19 +49,19 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        if Rails.env.production?
+        # if Rails.env.production?
           UserMailer.account_activation(@user).deliver_now
-        else
+        # else
           puts "#"*100
           puts edit_account_activation_url(@user.activation_token, email: @user.email)
-        end
+        # end
 
         # add user as member of organization if created through org
         if @organization
           @organization.members << @user
         end
 
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.html { redirect_to "/", notice: "User was successfully created. Please check your email #{@user.email} to verify account" }
         format.json { render json: @user, status: :created }
       else
         format.html { render :new }
@@ -123,6 +123,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:fname, :lname, :phone, :email, :password, :image)
+      params.require(:user).permit(:fname, :lname, :phone, :email, :password, :image, :app_role)
     end
 end
