@@ -7,10 +7,10 @@
         <!--<%= image_tag "farmer64.png", class:"wmax100 circle" %>-->
       </div>
       <div class="twelve wide column">
-        <div class="text15"><%= @farmer.fname %> <%= @farmer.lname %></div>
-        <div class="text1"><%= @farmer.phone %></div>
+        <div class="text15">{{farmer.fname}} {{farmer.lname}}</div>
+        <div class="text1">{{farmer.phone}}</div>
         <div>Village name</div>       
-        <div @click.prevent="openEditModal()"><i class="ui write icon"></i> Edit</div>
+        <div @click.prevent="toggleEditModal()" class="ui button green-bg"><i class="ui write icon"></i> Edit</div>
       </div>
     </div>
     <div class="twelve wide column">
@@ -78,15 +78,43 @@
 </div>
 
 <div id="edit_form" class="ui modal w500">
-  <div class="center">
+  <div class="content">
     <h3>Edit Farmer</h3>
-    <%= render "form" %>
+    <div>
+      <div class="form-group w100p-rounded">
+        <label for="">First name</label>
+        <input type="text" v-model="farmerCopy.fname">
+      </div>
+      <div class="form-group w100p-rounded">
+        <label for="">First name</label>
+        <input type="text" v-model="farmerCopy.lname">
+      </div>
+      <div class="form-group w100p-rounded">        
+        <label for="">Phone</label>
+        <input type="text" v-model="farmerCopy.phone">
+      </div>
+      <div class="form-group">
+        <label>Gender</label><br>
+        <%= radio_button_tag :gender, :female, "v-model":"farmerCopy.gender", required: true %> 
+        <label>Female</label>
+        <%= radio_button_tag :gender, :male, "v-model":"farmerCopy.gender", required: true %> 
+        <label>Male</label>
+      </div>
+      <div class="form-group w100p-rounded">
+        <label>Hightest education</label><br>
+        <select name="" id="" v-model="farmerCopy.educational_level">
+          <% Farmer.educational_levels.keys.to_a.map do |w| %>
+            <option value="<%= w %>"><%= w.humanize %></option>
+          <% end %>
+        </select>        
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui button green-bg" v-on:click="updateFarmer()">Update</div>
+    <div class="ui button cancel">Cancel</div>
   </div>
 </div>
-
-
-<%= link_to 'Edit', edit_organization_farmer_path(@organization, @farmer) %> |
-<%= link_to 'Back', organization_farm_and_labour_path(@organization) %>
 
 <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2NxLOf_zTbaq0pyoeRLfBFTX4Q55KWuo&libraries=drawing"
 async defer></script>-->
@@ -94,9 +122,8 @@ async defer></script>-->
   var farmerShow = new Vue({
     el: "#farmer-show",
     data: {
-      fname: "<%= @farmer.fname %>",
-			lname: "<%= @farmer.lname %>",
-			phone: "<%= @farmer.phone %>",
+      farmer: <%= @farmer.to_json.html_safe %>,
+      farmerCopy: <%= @farmer.to_json.html_safe %>,
       newFarm: {
         farmer_id: <%= @farmer.id %>,
         name: "",
@@ -134,8 +161,8 @@ async defer></script>-->
       hideFabShowNewFarm: function(){
         $('#new-farm-modal').modal('toggle');        
       },
-      openEditModal: function(){
-        $('#edit_form.modal').modal("show");
+      toggleEditModal: function(){
+        $('#edit_form.modal').modal("toggle");
       },
       showDeleteModal: function(){
         $('#farmer-delete.modal').modal('toggle');
@@ -150,6 +177,19 @@ async defer></script>-->
             }else{
               window.history.back();
             }
+          }, 
+          error: function(err){ console.log(err.message)}
+        });
+      },
+      updateFarmer: function(){
+        var that = this;
+        $.ajax({
+          url: '/organizations/<%= @organization.id %>/farmers/<%= @farmer.id %>.json',
+          data: {farmer: this.farmerCopy},
+          method: "PUT",
+          success: function(res){
+            that.farmer = that.farmerCopy;
+            that.toggleEditModal();
           }, 
           error: function(err){ console.log(err.message)}
         });
