@@ -102,6 +102,10 @@ class OrganizationsController < ApplicationController
     render 'organizations/user_and_role/index'
   end
 
+  def location_and_hierarchy
+    render 'organizations/location_and_hierarchy/index'
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_organization (id = params[:id])

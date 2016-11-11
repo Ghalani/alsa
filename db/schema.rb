@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161109093406) do
+ActiveRecord::Schema.define(version: 20161111100222) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -135,21 +135,23 @@ ActiveRecord::Schema.define(version: 20161109093406) do
   add_index "labourers", ["village_id"], name: "index_labourers_on_village_id", using: :btree
 
   create_table "location_types", force: :cascade do |t|
-    t.string   "name"
     t.integer  "organization_id"
+    t.string   "name"
+    t.integer  "location_type_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.integer  "organization_id"
+    t.string   "name"
+    t.integer  "location_id"
     t.integer  "location_type_id"
     t.jsonb    "points",           default: [],              array: true
     t.decimal  "lat"
     t.decimal  "lon"
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
-  end
-
-  create_table "locations", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "hierarchy",  default: 0
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
   end
 
   create_table "memberships", force: :cascade do |t|
