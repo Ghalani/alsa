@@ -8,7 +8,7 @@ class LocationTypesController < ApplicationController
     #@location_types = LocationType.all
     respond_to do |format|
       if @organization
-        @location_types = LocationType.org_root(@organization.id)
+        @location_types = LocationType.org_roots(@organization.id)
         format.json { render json: @location_types }
       else
         format.json { render json: {error: "Organization not found"}, status: :unprocessable_entity }

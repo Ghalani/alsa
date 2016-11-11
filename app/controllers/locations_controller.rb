@@ -1,10 +1,18 @@
 class LocationsController < ApplicationController
   before_action :set_location, only: [:show, :edit, :update, :destroy]
+  before_action :set_organization
 
   # GET /locations
   # GET /locations.json
   def index
-    @locations = Location.all
+    respond_to do |format|
+      if @organization
+        @locations = Location.org_roots(@organization.id)
+        format.json { render json: @locations }
+      else
+        format.json { render json: {error: "Organization not found"}, status: :unprocessable_entity }
+      end
+    end
   end
 
   # GET /locations/1
@@ -62,6 +70,10 @@ class LocationsController < ApplicationController
   end
 
   private
+    def set_organization
+      @organization = Organization.find_by(id: params[:organization_id])
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_location
       @location = Location.find(params[:id])

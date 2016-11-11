@@ -80,6 +80,8 @@ body{background: #f5f5f5;}
 .pad2{padding: 2rem !important;}
 .padb3{padding-bottom: 3rem !important;}
 .pad-lr-20p{padding: 0 10% !important; }
+.pad-l-half{padding-left: 0.5rem;}
+.pad-l1{padding-left: 1rem;}
 .pad-tb1{ padding: 1rem 0 !important}
 
 .neg-marg-top100{ margin: -100px 0 0 0;}
@@ -248,5 +250,13 @@ body{background: #f5f5f5;}
   cursor: pointer;
   &:hover{
     background: $grey-highlight;
+  }
+}
+
+.no-bullets{list-style-type:none;}
+.ghost{ 
+  opacity: 0.5;
+  &:hover{
+    opacity: 1;
   }
 }
