@@ -11,6 +11,8 @@ class Organization < ActiveRecord::Base
 	belongs_to	:country
 	has_many		:farms
 	has_many 		:roles
+	has_many 		:location_types
+	has_many 		:locations
 
 	validates :user_id, presence: true
 	validates :country_id, presence: true

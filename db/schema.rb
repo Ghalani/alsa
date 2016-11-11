@@ -137,15 +137,15 @@ ActiveRecord::Schema.define(version: 20161111100222) do
   create_table "location_types", force: :cascade do |t|
     t.integer  "organization_id"
     t.string   "name"
-    t.integer  "location_type_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.integer  "parent_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
   create_table "locations", force: :cascade do |t|
     t.integer  "organization_id"
     t.string   "name"
-    t.integer  "location_id"
+    t.integer  "parent_id"
     t.integer  "location_type_id"
     t.jsonb    "points",           default: [],              array: true
     t.decimal  "lat"

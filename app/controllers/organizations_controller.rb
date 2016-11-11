@@ -1,6 +1,6 @@
 class OrganizationsController < ApplicationController
   before_action :set_organization, only: [:show, :edit, :update, :destroy]
-  before_action only: [:user_and_role, :farm_and_labour, :add_member] do
+  before_action only: [:user_and_role, :farm_and_labour, :add_member, :location_and_hierarchy] do
     set_organization(params[:organization_id])
   end
   # GET /organizations

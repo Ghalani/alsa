@@ -10,14 +10,14 @@
         <hr>
         <div>
           <!-- the demo root element -->
-          <ul id="demo">
-            <item
-              class="item"
-              :model="treeData">
-            </item>
-          </ul>
+          <div class="" v-for="treeData in locationTypes">
+            <ul id="demo">
+              <item class="item" :model="treeData">
+              </item>
+            </ul>
+          </div>
         </div>
-        <div class="ui button">
+        <div class="ui button" v-on:click="addRootLocationType()">
           Add level
         </div>
       </div>
@@ -26,24 +26,30 @@
       </div>
     </div>
   </div>
+  <div id="new-child-modal" class="ui small modal">  
+    <div class="content">
+      <h3>New location level</h3><hr>
+      <div class="form-group w100p-rounded>">
+        <label>Name</label> <br>
+        <input type="text" placeholder="(e.g. District, Area, Village ...) ">
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui button green-bg" v-on:click="addSubLocationType">Add</div>
+      <div class="ui cancel button">Cancel</div>
+    </div>
+  </div>
 </div>
 <script type="text/x-template" id="item-template">
   <li>
-    <div
-      class="list-item" 
-      :class="{bold: isFolder}"
-      @click="toggle"
-      @dblclick="changeType">
+    <div class="list-item" :class="{bold: isFolder}" @click="toggle" @dblclick="changeType">
       {{model.name}}
-      <span v-if="isFolder">[{{open ? '-' : '+'}}]</span>
+      <span >[{{open ? '-' : '+'}}]</span>
     </div>
-    <ul v-show="open" v-if="isFolder">
-      <item
-        class="item"
-        v-for="model in model.children"
-        :model="model">
-      </item>
-      <li class="add" @click="addChild">+</li>
+    <ul v-show="open" >
+      <item class="item" v-for="model in model.children" :model="model"> </item>
+      <!--<li class="add" @click="addChild">+ Add child</li>-->
+      <li class="add" @click="toggleNewChildModal()">+ Add child</li>
     </ul>
   </li>
 </script>
@@ -78,6 +84,7 @@
     ]
   }
 
+  var selectedObj;
   // define the item component
   Vue.component('item', {
     template: '#item-template',
@@ -97,9 +104,9 @@
     },
     methods: {
       toggle: function () {
-        if (this.isFolder) {
+        //if (this.isFolder) {
           this.open = !this.open
-        }
+        //}
       },
       changeType: function () {
         if (!this.isFolder) {
@@ -112,20 +119,69 @@
         this.model.children.push({
           name: 'new stuff'
         })
+      },
+      toggleNewChildModal: function(){
+        $('#new-child-modal').modal('toggle');
+        selectedObj = this.model;
       }
     }
   })
 
-  var labourHierarchy = new Vue({
+  var locationHierarchy = new Vue({
     el: "#location_hierarchy",
     data: {
-      locationTypes: [],
-      treeData: data,
+      locationTypes: [
+
+      ],
+      treeData: {},
     },
     methods: {
       getLocationTypes: function(){
-
+        var that = this;
+        $.ajax({
+          url: "/organizations/<%= @organization.id %>/location_types.json",
+          success: function(res){
+            that.locationTypes = res;
+          },
+          error: function(err){
+            console.log(err.massage)
+          }
+        });
       },
+      addRootLocationType: function(){
+        selectedObj = null;
+        this.toggleNewChildModal();
+      },
+      addSubLocationType: function(){
+        var locationTypeName = $('#new-child-modal input').val();
+        var that = this;
+        $.ajax({
+          url: "/organizations/<%= @organization.id %>/location_types.json",
+          data: {
+            location_type: {
+              name: locationTypeName,
+              parent_id: Boolean(selectedObj) ? selectedObj.id : null,
+              organization_id: <%= @organization.id %>
+            }
+          },
+          method: "POST",
+          success: function(res){
+            if ( Boolean(selectedObj))
+              selectedObj.children.push(res);
+            else
+              that.locationTypes.push(res);
+            that.toggleNewChildModal();
+          },
+          error: function(err){
+            console.log(err.massage)
+          }
+        })
+      },
+      toggleNewChildModal: function(){
+        $('#new-child-modal').modal('toggle');
+      }
     }
-  })
+  });
+
+  locationHierarchy.getLocationTypes();
 </script>

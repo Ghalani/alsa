@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  resources :location_types
-  resources :locations
   # resources :farms
   # resources :labourers
   # resources :districts
@@ -20,6 +18,8 @@ Rails.application.routes.draw do
       post 'add_role' => 'users#add_role'
     end
     resources :roles
+    resources :location_types
+    resources :locations
   end
   
 

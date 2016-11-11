@@ -6,7 +6,7 @@ class DeleteLocationAndLocationTypeAndRedefine < ActiveRecord::Migration
     create_table  :locations do |t|
       t.references  :organization
       t.string      :name
-      t.references  :location
+      t.integer     :parent_id
       t.references  :location_type
       t.jsonb       :points, array: true, default: []
       t.decimal     :lat
@@ -17,7 +17,7 @@ class DeleteLocationAndLocationTypeAndRedefine < ActiveRecord::Migration
     create_table :location_types do |t|
       t.references    :organization
       t.string        :name
-      t.references  :location_type
+      t.integer       :parent_id
       t.timestamps null: false
     end
   end

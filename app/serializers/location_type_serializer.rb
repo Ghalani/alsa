@@ -1,3 +1,4 @@
 class LocationTypeSerializer < ActiveModel::Serializer
-  attributes :id
+  has_many :children
+  attributes :id, :name
 end
