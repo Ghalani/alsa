@@ -36,10 +36,10 @@ class LocationsController < ApplicationController
 
     respond_to do |format|
       if @location.save
-        format.html { redirect_to @location, notice: 'Location was successfully created.' }
-        format.json { render :show, status: :created, location: @location }
+        #format.html { redirect_to [@organization, @location], notice: 'Location was successfully created.' }
+        format.json { render json: @location, show_parent_tree: true , status: :created }
       else
-        format.html { render :new }
+        #format.html { render :new }
         format.json { render json: @location.errors, status: :unprocessable_entity }
       end
     end
@@ -50,10 +50,10 @@ class LocationsController < ApplicationController
   def update
     respond_to do |format|
       if @location.update(location_params)
-        format.html { redirect_to @location, notice: 'Location was successfully updated.' }
-        format.json { render :show, status: :ok, location: @location }
+        #format.html { redirect_to @location, notice: 'Location was successfully updated.' }
+        format.json { render json: @location, show_parent_tree: true , status: :ok}
       else
-        format.html { render :edit }
+        #format.html { render :edit }
         format.json { render json: @location.errors, status: :unprocessable_entity }
       end
     end
@@ -81,6 +81,6 @@ class LocationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def location_params
-      params.fetch(:location, {})
+      params.require(:location).permit(:name, :location_type_id, :parent_id, :organization_id, :lat, :lng, :points)
     end
 end

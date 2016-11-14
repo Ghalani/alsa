@@ -10,27 +10,52 @@
         <hr>
         <div>
           <!-- the demo root element -->
-          <div class="" v-for="treeData in locationTypes">
+          <div class="marg-bottom3" v-for="treeData in locationTypes">
             <item class="item" :model="treeData"></item>
           </div>
         </div>
-        <div class="ui button" v-on:click="addRootLocationType()">
+        <div class="ui button float-bottom" v-on:click="addRootLocationType()">
           Add level
         </div>
       </div>
       <div class="ten wide column grey-border1">
-        <h4>Locations</h4><hr>
-        <div v-if="sortedLocations.length < 1">
-          No location available
+        <div id="right1">
+          <h4>Locations</h4><hr>
+          <div v-if="sortedLocations.length < 1">
+            No location available
+          </div>
+          <div v-if="sortedLocations.length > 0" class="marg-bottom3">
+            <table class="ui celled table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th>Parent</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="location in sortedLocations">
+                  <td>{{location.name}} <i class="ui eye icon float-right ghost" @click="setCachedLocation(location); toggleLocationShow()"></i></td> 
+                  <td>{{findLocationType(location.location_type_id).name}}</td>
+                  <td v-if="location.parent_id">{{findLocation(location.parent_id).name}}</td>
+                  <td v-if="!location.parent_id">---</td>
+                  <td><i class="ui trash icon" @click="setCachedLocation(location); toggleDeleteLocationModal();"></i></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ui button green-bg float-bottom" @click="toggleNewLocationModal()">Add location</div>
         </div>
-        <div v-if="sortedLocations.length > 0">
-          Something to show
+        <div id="right2" hidden>
+          <div class="fab fab-tr raise-3" @click="toggleLocationShow()"><i class="arrow left icon"></i></div>
+          <div>{{cachedLocation.name}}</div>
         </div>
-        <div class="ui button green-bg">Add location</div>
       </div>
     </div>
+
   </div>
-  <div id="new-child-modal" class="ui small modal">  
+  <div id="new-location-type-modal" class="ui small modal">  
     <div class="content">
       <h3>New location level</h3><hr>
       <div class="form-group w100p-rounded>">
@@ -47,155 +72,38 @@
   <div id="new-location-modal" class="ui small modal">  
     <div class="content">
       <h3>New location</h3><hr>
-      <div class="form-group w100p-rounded>">
+      <div class="form-group">
         <label>Location type</label> <br>
-        <input type="text" placeholder="(e.g. District, Area, Village ...) ">
+        <select v-model="newLocation.locationType" class="classic">
+          <option v-for="lt in allLocationTypes" v-bind:value="lt">{{lt.name}}</option>
+        </select>
       </div>
-      <div class="form-group w100p-rounded>">
+      <div class="form-group" v-if="Boolean(newLocation.locationType.parent_id)">
+        Parent ({{findLocationType(newLocation.locationType.parent_id).name}}) <br>
+        <select v-model="newLocation.parent" class="classic">
+          <option v-for="location in allLocationsWithLocationType(newLocation.locationType.parent_id)" v-bind:value="location">{{location.name}}</option>
+        </select>
+      </div>
+      <div class="form-group classic">
         <label>Name</label> <br>
-        <input type="text" placeholder="(e.g. District, Area, Village ...) ">
+        <input class="classic" type="text" v-model="newLocation.name" placeholder="(e.g. District, Area, Village ...) ">
       </div>
     </div>
     <div class="actions">
-      <div class="ui button green-bg" v-on:click="addSubLocationType">Add</div>
+      <div class="ui button green-bg" v-on:click="createNewLocation">Add</div>
       <div class="ui cancel button">Cancel</div>
     </div>
   </div>
-</div>
-<script type="text/x-template" id="item-template">
-  <div>
-    <div class="list-item" :class="{bold: isFolder}" @click="toggle">
-      {{model.name}}
-      <span>
-        <i class="chevron up icon" v-show="open"></i>
-        <i class="chevron down icon" v-show="!open"></i>
-      </span>
+
+  <div id="delete-location-modal" class="ui small modal"> 
+    <div class="content">
+      <h4>Are you sure you want to delete this location ({{cachedLocation.name}})?</h4>
+      <h3>Every location under this location will be delete too...</h3>
     </div>
-    <div v-show="open" class="pad-l1">
-      <item class="item" v-for="model in model.children" :model="model"> </item>
-      <!--<li class="add" @click="addChild">+ Add child</li>-->
-      <div class="add ghost" @click="toggleNewChildModal()">+ Add child</div>
+    <div class="actions">
+      <div class="ui red-bg button" @click="deleteLocation()">Delete</div>
+      <div class="ui approve button">Cancel</div>
     </div>
   </div>
-</script>
-<script>
-  var selectedObj;
-  // define the item component
-  Vue.component('item', {
-    template: '#item-template',
-    props: {
-      model: Object
-    },
-    data: function () {
-      return {
-        open: false
-      }
-    },
-    computed: {
-      isFolder: function () {
-        return this.model.children &&
-          this.model.children.length
-      }
-    },
-    methods: {
-      toggle: function () {
-        //if (this.isFolder) {
-          this.open = !this.open
-        //}
-      },
-      addChild: function () {
-        this.model.children.push({
-          name: 'new stuff'
-        })
-      },
-      toggleNewChildModal: function(){
-        $('#new-child-modal').modal('toggle');
-        selectedObj = this.model;
-      }
-    }
-  })
-
-  var locationHierarchy = new Vue({
-    el: "#location_hierarchy",
-    data: {
-      locationTypes: [],
-      locations: [],
-      sortedLocations: [],
-    },
-    computed: function(){
-      all_location_types: function(){
-        // this.locationTypes.each(function(el){
-        //   getChildren(el)
-        // })
-      }
-    },
-    methods: {
-      getChildren: function(arr){
-        out = [];
-        arr.each(function(){
-
-        })
-      },
-      getLocationTypes: function(){
-        var that = this;
-        $.ajax({
-          url: "/organizations/<%= @organization.id %>/location_types.json",
-          success: function(res){
-            that.locationTypes = res;
-          },
-          error: function(err){
-            console.log(err.massage)
-          }
-        });
-      },
-      getLocations: function(){
-        var that = this;
-        $.ajax({
-          url: "/organizations/<%= @organization.id %>/locations.json",
-          success: function(res){
-            that.locations = res;
-            that.sortedLocations = res;
-          },
-          error: function(err){
-            console.log(err.massage);
-          }
-        });
-      },
-      addRootLocationType: function(){
-        selectedObj = null;
-        this.toggleNewChildModal();
-      },
-      addSubLocationType: function(){
-        var locationTypeName = $('#new-child-modal input').val();
-        var that = this;
-        $.ajax({
-          url: "/organizations/<%= @organization.id %>/location_types.json",
-          data: {
-            location_type: {
-              name: locationTypeName,
-              parent_id: Boolean(selectedObj) ? selectedObj.id : null,
-              organization_id: <%= @organization.id %>
-            }
-          },
-          method: "POST",
-          success: function(res){
-            if ( Boolean(selectedObj))
-              selectedObj.children.push(res);
-            else
-              that.locationTypes.push(res);
-            that.toggleNewChildModal();
-          },
-          error: function(err){
-            console.log(err.massage)
-          }
-        })
-      },
-      toggleNewChildModal: function(){
-        $('#new-child-modal').modal('toggle');
-      }
-    }
-  });
-
-  locationHierarchy.getLocationTypes();
-  locationHierarchy.getLocations();
-</script>
+</div>
+<%= render 'organizations/location_and_hierarchy/scripts' %>

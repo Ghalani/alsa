@@ -1,0 +1,225 @@
+<script type="text/x-template" id="item-template">
+  <div>
+    <div class="list-item green-left-border5 pad05" :class="{bold: isFolder}" @click="showLocationsOfType(model.id)">
+      {{model.name}}
+      <span @click="toggle" class="right-icon-grey">
+        <i class="chevron up icon" v-show="open"></i>
+        <i class="chevron down icon" v-show="!open"></i>
+      </span>
+    </div>
+    <div v-show="open" class="pad-l1">
+      <item class="item" v-for="model in model.children" :model="model"> </item>
+      <!--<li class="add" @click="addChild">+ Add child</li>-->
+      <div class="add ghost green-left-border5 list-item pad05" @click="toggleNewLocationTypeModal()">+ Add child</div>
+    </div>
+  </div>
+</script>
+<script>
+  var selectedObj;
+  // define the item component
+  Vue.component('item', {
+    template: '#item-template',
+    props: {
+      model: Object
+    },
+    data: function () {
+      return {
+        open: false
+      }
+    },
+    computed: {
+      isFolder: function () {
+        return this.model.children &&
+          this.model.children.length
+      }
+    },
+    methods: {
+      toggle: function () {
+        //if (this.isFolder) {
+          this.open = !this.open
+        //}
+      },
+      addChild: function () {
+        this.model.children.push({
+          name: 'new stuff'
+        })
+      },
+      toggleNewLocationTypeModal: function(){
+        $('#new-location-type-modal').modal('toggle');
+        selectedObj = this.model;
+      },
+      showLocationsOfType: function(lt_id){
+        this.$parent.showLocationsOfType(lt_id); 
+      }
+    }
+  })
+
+  var locationHierarchy = new Vue({
+    el: "#location_hierarchy",
+    data: {
+      locationTypes: [],
+      locations: [],
+      sortedLocations: [],
+      newLocation: {
+        id: null,
+        name: "",
+        locationType: {},
+        parent: {},
+      },
+      cachedLocation: {},
+    },
+    computed: {
+      allLocationTypes: function(){
+        return flattenNested(this.locationTypes, ['id', 'name', 'location_type_id', 'parent_id']);
+      },
+      allLocations: function (){
+        return flattenNested(this.locations, ['id', 'name', 'location_type_id', 'parent_id']);
+      },
+    },
+    methods: {
+      getLocationTypes: function(){
+        var that = this;
+        $.ajax({
+          url: "/organizations/<%= @organization.id %>/location_types.json",
+          success: function(res){
+            that.locationTypes = res;
+          },
+          error: function(err){
+            console.log(err.massage)
+          }
+        });
+      },
+      getLocations: function(){
+        var that = this;
+        $.ajax({
+          url: "/organizations/<%= @organization.id %>/locations.json",
+          success: function(res){
+            that.locations = res;
+            that.sortedLocations = that.allLocations;
+          },
+          error: function(err){
+            console.log(err.massage);
+          }
+        });
+      },
+      addRootLocationType: function(){
+        selectedObj = null;
+        this.toggleNewLocationTypeModal();
+      },
+      addSubLocationType: function(){
+        var locationTypeName = $('#new-location-type-modal input').val();
+        var that = this;
+        $.ajax({
+          url: "/organizations/<%= @organization.id %>/location_types.json",
+          data: {
+            location_type: {
+              name: locationTypeName,
+              parent_id: Boolean(selectedObj) ? selectedObj.id : null,
+              organization_id: <%= @organization.id %>
+            }
+          },
+          method: "POST",
+          success: function(res){
+            if ( Boolean(selectedObj))
+              selectedObj.children.push(res);
+            else
+              that.locationTypes.push(res);
+            that.toggleNewLocationTypeModal();
+          },
+          error: function(err){
+            console.log(err.massage)
+          }
+        })
+      },
+      createNewLocation: function(){
+        var that = this;
+        $.ajax({
+          url: "/organizations/<%= @organization.id %>/locations.json",
+          data: {
+            location: {
+              name: that.newLocation.name,
+              location_type_id: that.newLocation.locationType.id,
+              parent_id: that.newLocation.parent.id,
+              organization_id: <%= @organization.id %>
+            }
+          },
+          method: "POST",
+          success: function(res){
+            // add new location to tree
+            newLocation = {};
+            that.locations.push(res);
+            that.sortedLocations = that.allLocations;
+            that.toggleNewLocationModal();
+          },
+          error: function(err){
+            console.log(err.massage)
+          }
+        })
+      },
+      deleteLocation: function(){
+        var that = this;
+        $.ajax({
+          url: "/organizations/<%= @organization.id %>/locations/"+ this.cachedLocation.id +".json",
+          method: "DELETE",
+          success: function(res){
+            // add new location to tree
+            newLocation = {};
+            prune(that.locations, that.cachedLocation.id)
+            that.sortedLocations = that.allLocations;
+            that.toggleDeleteLocationModal();
+          },
+          error: function(err){
+            console.log(err.massage)
+          }
+        })
+      },
+      toggleNewLocationTypeModal: function(){
+        $('#new-location-type-modal').modal('toggle');
+      },
+      toggleNewLocationModal: function(){
+        $('#new-location-modal').modal('toggle');
+      },
+      setCachedLocation: function(location){
+        this.cachedLocation = location;
+      },
+      toggleDeleteLocationModal: function(){
+        $('#delete-location-modal').modal('toggle');
+      },
+      allLocationsWithLocationType: function (lt_id){
+        return this.allLocations.filter(function(el){
+          return el.location_type_id == lt_id;
+        });
+      },
+      findLocationType: function (lt_id){
+        return this.allLocationTypes.find(function(el){
+          if (el.id == lt_id) return el;
+        });
+      },
+      findLocation: function (l_id){
+        return this.allLocations.find(function(el){
+          if (el.id == l_id) return el;
+        });
+      },
+      showLocationsOfType: function(lt_id){
+        var out = this.allLocations.filter(function(el){
+          return el.location_type_id == lt_id;
+        });
+        console.log(out);
+        this.sortedLocations = out;
+      },
+      toggleLocationShow: function(){
+        var first = $('#right1').is(':visible') ? '#right1' : '#right2';
+        var second = $('#right1').is(':visible') ? '#right2' : '#right1';
+        console.log('first: ' + first +", second: " + second);
+        $(first).toggle('fast', function(){
+          $(second).toggle('fast', function(){
+          });
+        });
+      }
+    }
+  });
+
+  locationHierarchy.getLocationTypes();
+  locationHierarchy.getLocations();
+  
+</script>

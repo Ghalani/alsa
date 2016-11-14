@@ -10,7 +10,7 @@
 	  <tbody>
 			<tr v-for="farmer in farmers">
 			  <td>
-			  	<a :href="'/organizations/'+ farmer.organization.id +'/farmers/' + farmer.id">{{farmer.fname}} {{farmer.lname}}</a> <i class="ui eye icon float-right" @click.prevent="requestSetFarmerInfo(farmer)"></i>
+			  	<a :href="'/organizations/'+ farmer.organization.id +'/farmers/' + farmer.id">{{farmer.fname}} {{farmer.lname}}</a> <i class="ui eye icon float-right ghost" @click.prevent="requestSetFarmerInfo(farmer)"></i>
 			  </td>
 			  <td>{{farmer.phone}}</td>
 			  <td>{{farmer.gender}}</td>
