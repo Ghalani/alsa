@@ -44,9 +44,9 @@
   var marker;
 
   var farmJSON = <%= @farm.to_json.html_safe %>;
-  if (Boolean(farmJSON.lat))
+  if (!Boolean(farmJSON.lat))
     farmJSON.lat = null;
-  if (Boolean(farmJSON.lng))
+  if (!Boolean(farmJSON.lng))
     farmJSON.lng = null;
 
   window.__FORM__ = {
@@ -89,6 +89,11 @@
           success: function(res){
             createPolygon(farmShow.farm.points);  
             res.forEach(function(obj){
+              marker = new google.maps.Marker({
+                position: {lat: obj.lat, lng: obj.lng},
+                map: map,
+                title: obj.name
+              });
               createPolygon(obj.points);
             })
           }

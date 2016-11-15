@@ -62,6 +62,7 @@ body{background: #f5f5f5;}
 .h600{height: 600px !important;}
 .h700{height: 700px !important;}
 .h800{height: 800px !important;}
+.h400-min{min-height: 400px !important;}
 
 .w90p{
   width: 90%;
@@ -258,8 +259,18 @@ body{background: #f5f5f5;}
   padding: 5px 0;
   transition: all 0.3s ease-in-out;
   cursor: pointer;
+  .parent-hover{
+    display: none;
+  }
+
   &:hover{
     background: $grey-highlight;
+    .parent-hover{
+      display: block;
+      &.red:hover{
+        color: red;
+      }
+    } 
   }
 }
 
@@ -276,7 +287,6 @@ body{background: #f5f5f5;}
 .right-icon-grey{
   float: right;
   color: #ccc;
-
   &:hover{
     color: #333;
   }
@@ -289,4 +299,9 @@ body{background: #f5f5f5;}
 .float-bottom{
   position: absolute;
   bottom: 1em;
+}
+
+.disabled {
+  opacity: 0.65; 
+  cursor: not-allowed;
 }

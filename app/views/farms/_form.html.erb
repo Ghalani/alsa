@@ -30,17 +30,19 @@
       <label for="">Please select the marker tool <i class="ui marker icon"></i> and pin the farm's location</label><br>  
       <%= f.number_field :lat, placeholder: "Latitude", "v-model":"farm.lat", step:"any" %> 
       <%= f.number_field :lng, placeholder: "Longitude", "v-model":"farm.lng", step:"any" %>
+      <!--<input type="number" name="farm[lat]" v-model="farm.lat" step="any">
+      <input type="number" name="farm[lng]" v-model="farm.lng" step="any">-->
     </div>
     <hr>
     <div class="form-group">
-      <label for="">Draw out the shape of your farm by selecting the polygon tool and clicking the edges of your farm.</label>
+      <span>Draw out the shape of your farm by selecting the polygon tool and clicking the edges of your farm.</span>
+      <div>{{farm.points.length}} point(s) in Farm shape <span onclick="clearShape(); return false;" alt="Clear shape"><i class="refresh icon"></i></span></div>
       <div class="grey-border" >
         <div v-for="point in farm.points" class="ui equal width grid">
           <input id="business_loc" multiple="multiple" name="farm[points][]" type="hidden" style="color: rgb(175, 175, 175); " v-model="point">
-          <div class="column">Lat: {{point.lat}} </div>
-          <div class="column">Lng: {{point.lng}} </div>          
+          <!--<div class="column">Lat: {{point.lat}} </div>
+          <div class="column">Lng: {{point.lng}} </div>          -->
         </div>
-        <button onclick="clearShape(); return false;">Clear shape</button>
       </div>
     </div>
     <div class="form-group ui grid grey-border" v-if="!isMarkerInPolygon()">
@@ -49,7 +51,9 @@
         <h4>Make sure that the marker is inside the farm shape you drew</h4>
       </div>      
     </div>
-    <div class="form-group">
+    <br>
+    <br>
+    <div class="form-group" v-if="isMarkerInPolygon()">
       <%= f.submit 'Submit', class:"btn ripple accent-bg" %>
     </div>
   <% end %>

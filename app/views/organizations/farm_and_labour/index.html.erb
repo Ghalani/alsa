@@ -7,8 +7,8 @@
 		</div>
 	</div>
 	<div class="top-neg-marg100">
-		<div class="ui centered container grid h400">
-			<div class="three wide column row computer only">
+		<!--<div class="ui centered container grid h400-min">-->
+			<!--<div class="three wide column row computer only">
 				<div class="card raise-1 w90p">
 					<div class="ui vertical fluid tabular menu">
 						<a class="item side-menu-item active" name='farmer-item'>
@@ -17,17 +17,18 @@
 						<a class="item side-menu-item" name='farm-item'>
 							Farms
 						</a>
-						<!--<a class="item side-menu-item" name='labourer-item'>
+						<a class="item side-menu-item" name='labourer-item'>
 							Labourers
-						</a>-->
+						</a>
 					</div>
 				</div>
-			</div>
-			<!--<div class="one wide column tablet mobile only">
-				Three dots
 			</div>-->
 			<div class="w100p eleven wide column row">
-					<div class="card raise-1 w100p">
+					<div class="card raise-1 w90p hcenter">
+						<div class="ui column fluid tabular menu mobile only">
+							<a class="item side-menu-item active" name='farmer-item'>Farmers</a>
+							<a class="item side-menu-item" name='farm-item'>Farms</a>
+						</div>
 						<div id="farmer-item-panel" class="ui active tab">
 							<div class="row" style="text-align: right;">
 								<span>
@@ -70,7 +71,7 @@
 					</div>
 
 			</div>
-		</div>
+		<!--</div>-->
 	</div>
 	<%= render "organizations/farm_and_labour/farmer_info_modal" %>
 	<%= render "organizations/farm_and_labour/labourer_info_modal" %>
