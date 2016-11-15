@@ -2,11 +2,11 @@
 	<%= render "static_pages/nav" %>
 	<div class="stat-bar green-bg">
 		<div class="ui container padb100">
-			<div class="text15"><%= @organization.name %></div><br>
+			<div class="text15">Orgnanization: <%= @organization.name.capitalize %></div><br>
 			<div class="text2">Farmer and labour management</div>
 		</div>
 	</div>
-	<div class="top-neg-marg100">
+	<div class="top-neg-marg100 ui container">
 		<!--<div class="ui centered container grid h400-min">-->
 			<!--<div class="three wide column row computer only">
 				<div class="card raise-1 w90p">
@@ -23,8 +23,8 @@
 					</div>
 				</div>
 			</div>-->
-			<div class="w100p eleven wide column row">
-					<div class="card raise-1 w90p hcenter">
+			<div class="w100p">
+					<div class="card raise-1 w100p hcenter">
 						<div class="ui column fluid tabular menu mobile only">
 							<a class="item side-menu-item active" name='farmer-item'>Farmers</a>
 							<a class="item side-menu-item" name='farm-item'>Farms</a>
