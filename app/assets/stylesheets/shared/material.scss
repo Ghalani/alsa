@@ -11,6 +11,7 @@ $theme-red: #db2828;
 .dark-green-bg{  background: $theme-color-dark !important;}
 .accent-bg{  background: $theme-accent !important; color:#fff !important;}
 .red-bg{  background: $theme-red !important; color:#fff !important;}
+.grey-bg{ background: #ededed !important;}
 
 .stat-bar{
   padding: 1rem;
@@ -25,7 +26,7 @@ $theme-red: #db2828;
   border-radius: 3px;
   display: inline-block;
   height: auto;
-  margin: 1rem;
+  //margin: 0.5rem;
   position: relative;
   width: auto;
   transition: all 0.3s ease-in-out;
@@ -44,10 +45,11 @@ $theme-red: #db2828;
 
   .card-top{
     border-radius: 3px 3px 0;
+    margin: -1rem -1rem 1rem -1rem !important;
+    padding: 0.5rem 1rem;
     &.theme-bg{
       background: $theme-color;
       color: #fff;
-      margin: -1rem -1rem 1rem -1rem !important;
     }
   }
 

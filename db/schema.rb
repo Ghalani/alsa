@@ -11,29 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161111100222) do
+ActiveRecord::Schema.define(version: 20161117111354) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "categories", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "type"
-    t.text     "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  create_table "categories_farmers", id: false, force: :cascade do |t|
-    t.integer "category_id"
-    t.integer "farmer_id"
-  end
-
-  create_table "certifications", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
 
   create_table "countries", force: :cascade do |t|
     t.string   "iso"
@@ -42,30 +23,6 @@ ActiveRecord::Schema.define(version: 20161111100222) do
     t.string   "iso3"
     t.string   "numcode"
     t.string   "phonecode"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "districts", force: :cascade do |t|
-    t.integer  "organization_id"
-    t.string   "name"
-    t.float    "lat"
-    t.float    "lng"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-  end
-
-  create_table "farmer_certifications", force: :cascade do |t|
-    t.integer  "farmer_id"
-    t.integer  "certification_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-  end
-
-  create_table "farmer_id_cards", force: :cascade do |t|
-    t.integer  "farmer_id"
-    t.integer  "id_card_id"
-    t.string   "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -105,14 +62,6 @@ ActiveRecord::Schema.define(version: 20161111100222) do
     t.float    "lng"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
-  end
-
-  create_table "id_cards", force: :cascade do |t|
-    t.string   "type"
-    t.integer  "length"
-    t.integer  "level"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "labourers", force: :cascade do |t|
@@ -215,14 +164,5 @@ ActiveRecord::Schema.define(version: 20161111100222) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["phone"], name: "index_users_on_phone", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
-
-  create_table "villages", force: :cascade do |t|
-    t.integer  "district_id"
-    t.string   "name"
-    t.float    "lat"
-    t.float    "lng"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
 
 end

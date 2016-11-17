@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     get 'farm_and_labour' => 'organizations#farm_and_labour'
     get 'user_and_role' => 'organizations#user_and_role'
     get 'location_and_hierarchy' => 'organizations#location_and_hierarchy'
+    get 'stock_management' => 'organizations#stock_management'
     resources :farmers
     resources :labourers
     resources :farms

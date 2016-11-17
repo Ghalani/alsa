@@ -1,0 +1,12 @@
+<script>
+
+$('.menu-item').on('click', function(){
+  $('.menu-item').each(function(){
+    $(this).removeClass('active');
+    $("#"+$(this).attr('id')+"-panel").removeClass('active');      
+  });
+
+  $(this).addClass('active');
+  $("#"+$(this).attr('id')+"-panel").addClass('active');
+});
+</script>

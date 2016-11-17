@@ -1,0 +1,62 @@
+<div id="user-role">
+  <%= render "static_pages/nav" %>
+  <div class="green-bg pad1 padb3">
+    Stats
+  </div>
+  <div class="">
+    <div class="ui grid">
+      <div class="six wide column">
+        <div class="card w100p marg-tb">
+          <div class="card-top">
+            <h4>Stock types</h4>
+            <hr>
+          </div>   
+          <div>
+            List
+          </div>
+        </div>
+        <div class="card w100p marg-tb">
+          <div class="card-top">
+            <h4>Stock items</h4>
+            <hr>
+          </div> 
+          <div>
+            List
+          </div>
+        </div>
+      </div>
+      <div class="ten wide column">
+        <div class="card w100p marg-tb">
+          <div class="card-top">
+            <h4><a id="incoming-item" class="active item pad1 menu-item">Incoming</a>
+            <a id="stored-item" class="item pad1 menu-item">Stored</a>
+            <a id="orders-item" class="item pad1 menu-item">Orders</a></h4>
+            <hr>
+          </div> 
+          <div>
+            <div id="incoming-item-panel" class="ui active tab">
+              <div class="ui grid">
+                <div class="ten wide column">
+                  Table
+                </div>
+                <div class="six wide column">
+                  <h4>Sources (Suppliers)</h4>
+                  <div>
+                    list
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="stored-item-panel" class="ui tab">
+              stored
+            </div>
+            <div id="orders-item-panel" class="ui tab">
+              orders
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%= render 'organizations/stock_management/scripts' %>

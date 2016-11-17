@@ -1,6 +1,6 @@
 class OrganizationsController < ApplicationController
   before_action :set_organization, only: [:show, :edit, :update, :destroy]
-  before_action only: [:user_and_role, :farm_and_labour, :add_member, :location_and_hierarchy] do
+  before_action only: [:user_and_role, :farm_and_labour, :add_member, :location_and_hierarchy, :stock_management] do
     set_organization(params[:organization_id])
   end
   # GET /organizations
@@ -104,6 +104,10 @@ class OrganizationsController < ApplicationController
 
   def location_and_hierarchy
     render 'organizations/location_and_hierarchy/index'
+  end
+
+  def stock_management
+    render 'organizations/stock_management/index'
   end
 
   private
