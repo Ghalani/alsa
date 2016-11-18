@@ -21,6 +21,10 @@ Rails.application.routes.draw do
     resources :roles
     resources :location_types
     resources :locations
+    resources :stock_types
+    resources :stock_items
+    resources :storages
+    resources :stock_sources
   end
   
 

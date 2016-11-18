@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161117111354) do
+ActiveRecord::Schema.define(version: 20161117121023) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,32 @@ ActiveRecord::Schema.define(version: 20161117111354) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "customer_orders", force: :cascade do |t|
+    t.integer  "organization_id"
+    t.integer  "customer_id"
+    t.integer  "status"
+    t.datetime "date_ordered"
+    t.integer  "deliverer_id_id"
+    t.datetime "date_delivered"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "customer_orders", ["customer_id"], name: "index_customer_orders_on_customer_id", using: :btree
+  add_index "customer_orders", ["organization_id"], name: "index_customer_orders_on_organization_id", using: :btree
+
+  create_table "customers", force: :cascade do |t|
+    t.integer  "organization_id"
+    t.string   "name"
+    t.string   "email"
+    t.string   "phone"
+    t.string   "address"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "customers", ["organization_id"], name: "index_customers_on_organization_id", using: :btree
 
   create_table "farmers", force: :cascade do |t|
     t.string   "fname"
@@ -63,6 +89,21 @@ ActiveRecord::Schema.define(version: 20161117111354) do
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
   end
+
+  create_table "incoming_stocks", force: :cascade do |t|
+    t.integer  "organization_id"
+    t.integer  "stock_item_id"
+    t.integer  "stock_source_id"
+    t.integer  "receiver_id_id"
+    t.integer  "quantity"
+    t.datetime "arrived_at"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "incoming_stocks", ["organization_id"], name: "index_incoming_stocks_on_organization_id", using: :btree
+  add_index "incoming_stocks", ["stock_item_id"], name: "index_incoming_stocks_on_stock_item_id", using: :btree
+  add_index "incoming_stocks", ["stock_source_id"], name: "index_incoming_stocks_on_stock_source_id", using: :btree
 
   create_table "labourers", force: :cascade do |t|
     t.integer  "organization_id"
@@ -110,6 +151,21 @@ ActiveRecord::Schema.define(version: 20161117111354) do
     t.datetime "updated_at",      null: false
   end
 
+  create_table "ordered_stocks", force: :cascade do |t|
+    t.integer  "organization_id"
+    t.integer  "stock_item_id"
+    t.integer  "customer_order_id"
+    t.integer  "receiver_id_id"
+    t.integer  "quantity"
+    t.integer  "cost"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "ordered_stocks", ["customer_order_id"], name: "index_ordered_stocks_on_customer_order_id", using: :btree
+  add_index "ordered_stocks", ["organization_id"], name: "index_ordered_stocks_on_organization_id", using: :btree
+  add_index "ordered_stocks", ["stock_item_id"], name: "index_ordered_stocks_on_stock_item_id", using: :btree
+
   create_table "organizations", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "name"
@@ -121,6 +177,21 @@ ActiveRecord::Schema.define(version: 20161117111354) do
 
   add_index "organizations", ["country_id"], name: "index_organizations_on_country_id", using: :btree
   add_index "organizations", ["user_id"], name: "index_organizations_on_user_id", using: :btree
+
+  create_table "outgoing_stocks", force: :cascade do |t|
+    t.integer  "organization_id"
+    t.integer  "stock_item_id"
+    t.integer  "storage_id"
+    t.integer  "ordered_stock_id"
+    t.integer  "quantity"
+    t.integer  "requester_id_id"
+    t.integer  "releaser_id_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  add_index "outgoing_stocks", ["organization_id"], name: "index_outgoing_stocks_on_organization_id", using: :btree
+  add_index "outgoing_stocks", ["stock_item_id"], name: "index_outgoing_stocks_on_stock_item_id", using: :btree
 
   create_table "roles", force: :cascade do |t|
     t.integer  "organization_id"
@@ -137,6 +208,82 @@ ActiveRecord::Schema.define(version: 20161117111354) do
 
   add_index "roles_users", ["role_id"], name: "index_roles_users_on_role_id", using: :btree
   add_index "roles_users", ["user_id"], name: "index_roles_users_on_user_id", using: :btree
+
+  create_table "stock_items", force: :cascade do |t|
+    t.integer  "organization_id"
+    t.integer  "stock_type_id"
+    t.string   "name"
+    t.integer  "cost"
+    t.integer  "minimum_quantity"
+    t.jsonb    "extra",            default: [],              array: true
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "stock_items", ["organization_id"], name: "index_stock_items_on_organization_id", using: :btree
+  add_index "stock_items", ["stock_type_id"], name: "index_stock_items_on_stock_type_id", using: :btree
+
+  create_table "stock_sources", force: :cascade do |t|
+    t.integer  "organization_id"
+    t.string   "name"
+    t.string   "email"
+    t.string   "phone"
+    t.string   "address"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "stock_sources", ["organization_id"], name: "index_stock_sources_on_organization_id", using: :btree
+
+  create_table "stock_types", force: :cascade do |t|
+    t.integer  "organization_id"
+    t.string   "name"
+    t.string   "description"
+    t.string   "unit"
+    t.jsonb    "extra_fields",    default: [],              array: true
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+  end
+
+  add_index "stock_types", ["organization_id"], name: "index_stock_types_on_organization_id", using: :btree
+
+  create_table "storage_types", force: :cascade do |t|
+    t.integer  "organization_id"
+    t.string   "name"
+    t.string   "description"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "storage_types", ["organization_id"], name: "index_storage_types_on_organization_id", using: :btree
+
+  create_table "storages", force: :cascade do |t|
+    t.integer  "organization_id"
+    t.integer  "storage_type_id"
+    t.string   "name"
+    t.integer  "location_id"
+    t.decimal  "lat"
+    t.decimal  "lon"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "storages", ["location_id"], name: "index_storages_on_location_id", using: :btree
+  add_index "storages", ["organization_id"], name: "index_storages_on_organization_id", using: :btree
+  add_index "storages", ["storage_type_id"], name: "index_storages_on_storage_type_id", using: :btree
+
+  create_table "stored_stocks", force: :cascade do |t|
+    t.integer  "organization_id"
+    t.integer  "stock_item_id"
+    t.integer  "storage_id"
+    t.integer  "incoming_stock_id"
+    t.integer  "quantity"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "stored_stocks", ["organization_id"], name: "index_stored_stocks_on_organization_id", using: :btree
+  add_index "stored_stocks", ["stock_item_id"], name: "index_stored_stocks_on_stock_item_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false

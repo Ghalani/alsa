@@ -13,7 +13,7 @@ $theme-color: #39b54a;
 $theme-color-dark: #00a651;
 $grey-highlight: #ededed;
 $grey1: #ededed;
-$theme-accent: #0091EA;
+$theme-accent: #0176ff;
 $dark-green-text: #245013;
 
 .grey-hr1{border: 1px solid #ebebeb;}
@@ -97,6 +97,7 @@ body{background: #f5f5f5;}
 .neg-marg-top3{ margin-top: -3rem !important;}
 
 .grey-border1 {border: 1px solid $grey1;}
+.grey-border-right { border-right: 1px solid $grey1; }
 
 .rounded-input{
   border-radius: 3px;

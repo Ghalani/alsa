@@ -1,4 +1,148 @@
 <script>
+var stockManagement = new Vue({
+  el: "#stock-management",
+  data: {
+    stockTypes: [],
+    stockItems: [],
+    storages: [],
+    stockSources: [],
+    incomingStocks: [],
+    storedItems: [],
+    customerOrders: [],
+    newStockType: {},
+    newStockItem: {},
+    newStorage: {},
+    newStockSource: {},
+    newIncomingStock: {},
+  },
+  methods: {
+    getStockTypes: function(){
+      var that = this;
+      $.ajax({
+        url: "/organizations/<%= @organization.id %>/stock_types.json",
+        success: function(res){
+          that.stockTypes = res;
+        }, error: function(err){console.log(err.massage)}
+      });
+    },
+    getStockItems: function(){
+      var that = this;
+      $.ajax({
+        url: "/organizations/<%= @organization.id %>/stock_items.json",
+        success: function(res){
+          that.stockItems = res;
+        }, error: function(err){console.log(err.massage)}
+      });
+    },
+    getStorages: function(){
+      var that = this;
+      $.ajax({
+        url: "/organizations/<%= @organization.id %>/storages.json",
+        success: function(res){
+          that.storages = res;
+        }, error: function(err){console.log(err.massage)}
+      });
+    },
+    getStockSources: function(){
+      var that = this;
+      $.ajax({
+        url: "/organizations/<%= @organization.id %>/stock_sources.json",
+        success: function(res){
+          that.stockSources = res;
+        }, error: function(err){console.log(err.massage)}
+      });
+    },
+    getIncomingStocks: function(){},
+    getStoredItems: function(){},
+    getCustomerOrders: function(){},
+    addStockType: function(){
+      this.newStockType.organization_id = <%= @organization.id %>
+      var that = this;
+      $.ajax({
+        url: "/organizations/<%= @organization.id %>/stock_types.json",
+        method: "POST",
+        data: { 
+          stock_type: that.newStockType 
+        },
+        success: function(res){
+          that.stockTypes.push(res);
+          that.newStockType = {}
+          that.toggleNewStockTypeModal();
+        },
+        error: function(err){console.log(err.massage)}
+      });
+    },
+    addStockItem: function(){
+      this.newStockItem.organization_id = <%= @organization.id %>
+      var that = this;
+      $.ajax({
+        url: "/organizations/<%= @organization.id %>/stock_items.json",
+        method: "POST",
+        data: { 
+          stock_item: that.newStockItem 
+        },
+        success: function(res){
+          that.stockItems.push(res);
+          that.newStockItem = {}
+          that.toggleNewStockItemModal();
+        },
+        error: function(err){console.log(err.massage)}
+      });
+    },
+    addStorage: function(){
+      this.newStorage.organization_id = <%= @organization.id %>
+      var that = this;
+      $.ajax({
+        url: "/organizations/<%= @organization.id %>/storages.json",
+        method: "POST",
+        data: { 
+          storage: that.newStorage 
+        },
+        success: function(res){
+          that.storages.push(res);
+          that.newStorage = {}
+          that.toggleNewStorageModal();
+        },
+        error: function(err){console.log(err.massage)}
+      });
+    },
+    addStockSource: function(){
+      this.newStockSource.organization_id = <%= @organization.id %>
+      var that = this;
+      $.ajax({
+        url: "/organizations/<%= @organization.id %>/stock_sources.json",
+        method: "POST",
+        data: { 
+          stock_source: that.newStockSource
+        },
+        success: function(res){
+          that.stockSources.push(res);
+          that.newStockSource = {}
+          that.toggleNewStockSourceModal();
+        },
+        error: function(err){console.log(err.massage)}
+      });
+    },
+    toggleNewStockTypeModal: function(){
+      $('#new-stock-type-modal').modal('toggle');
+    },
+    toggleNewStockItemModal: function(){
+      $('#new-stock-item-modal').modal('toggle');
+    },
+    toggleNewStorageModal: function(){
+      $('#new-storage-modal').modal('toggle');
+    },
+    toggleNewStockSourceModal: function(){
+      $('#new-stock-source-modal').modal('toggle');
+    },
+    toggleNewIncomingStockItem: function(){
+      $('#new-incoming-stock-item').toggle('fast', function(){
+        $('#new-incoming-stock-item-button').toggle('fast')
+      });
+    },
+
+  },
+});
 
 $('.menu-item').on('click', function(){
   $('.menu-item').each(function(){
@@ -9,4 +153,11 @@ $('.menu-item').on('click', function(){
   $(this).addClass('active');
   $("#"+$(this).attr('id')+"-panel").addClass('active');
 });
+
+stockManagement.getStockTypes();
+stockManagement.getStockItems();
+stockManagement.getStorages();
+stockManagement.getStockSources();
+
+$(".date").flatpickr({}); // jQuery
 </script>

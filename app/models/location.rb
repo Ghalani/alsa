@@ -3,6 +3,7 @@ class Location < ActiveRecord::Base
   has_many   :children, foreign_key: "parent_id", class_name: "Location", dependent: :destroy
   belongs_to :location_type
   belongs_to :organization
+  has_many  :storages
   
   validates :name, presence: true
   validates :organization_id, presence: true

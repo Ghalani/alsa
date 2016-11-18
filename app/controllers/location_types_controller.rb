@@ -2,8 +2,6 @@ class LocationTypesController < ApplicationController
   before_action :set_location_type, only: [:show, :edit, :update, :destroy]
   before_action :set_organization
 
-  # GET /location_types
-  # GET /location_types.json
   def index
     #@location_types = LocationType.all
     respond_to do |format|
@@ -16,22 +14,16 @@ class LocationTypesController < ApplicationController
     end
   end
 
-  # GET /location_types/1
-  # GET /location_types/1.json
   def show
   end
 
-  # GET /location_types/new
   def new
     @location_type = LocationType.new
   end
 
-  # GET /location_types/1/edit
   def edit
   end
 
-  # POST /location_types
-  # POST /location_types.json
   def create
     @location_type = LocationType.new(location_type_params)
 
@@ -46,8 +38,6 @@ class LocationTypesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /location_types/1
-  # PATCH/PUT /location_types/1.json
   def update
     respond_to do |format|
       if @location_type.update(location_type_params)
@@ -60,8 +50,6 @@ class LocationTypesController < ApplicationController
     end
   end
 
-  # DELETE /location_types/1
-  # DELETE /location_types/1.json
   def destroy
     @location_type.destroy
     respond_to do |format|

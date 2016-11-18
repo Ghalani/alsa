@@ -26,14 +26,13 @@ $theme-red: #db2828;
   border-radius: 3px;
   display: inline-block;
   height: auto;
-  //margin: 0.5rem;
   position: relative;
   width: auto;
   transition: all 0.3s ease-in-out;
   padding: 1rem;
 
   .grid{ margin: -1rem 0 !important; }
-  a{ color: $theme-color; }
+  //a{ color: $theme-color; }
 
   hr{
     border: 1px solid#f8f8f8;

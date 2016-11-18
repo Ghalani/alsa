@@ -14,6 +14,18 @@ class Organization < ActiveRecord::Base
 	has_many 		:location_types
 	has_many 		:locations
 
+	has_many		:customers
+	has_many		:stock_sources
+	has_many		:stock_types
+	has_many		:stock_items
+	has_many		:incoming_stocks
+	has_many		:storage_types
+	has_many		:storages
+	has_many		:stored_stocks
+	has_many		:customer_orders
+	has_many		:ordered_stocks
+	has_many		:outgoing_stocks
+
 	validates :user_id, presence: true
 	validates :country_id, presence: true
 	validates_uniqueness_of :name, scope: :user_id
