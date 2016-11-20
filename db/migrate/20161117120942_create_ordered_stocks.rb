@@ -4,7 +4,7 @@ class CreateOrderedStocks < ActiveRecord::Migration
       t.references  :organization, index: true
       t.references  :stock_item, index: true
       t.references  :customer_order, index: true
-      t.belongs_to  :receiver_id, class_name:"User"
+      t.belongs_to  :receiver, class_name:"User"
       t.integer     :quantity
       t.integer     :cost
 

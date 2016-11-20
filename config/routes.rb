@@ -25,6 +25,10 @@ Rails.application.routes.draw do
     resources :stock_items
     resources :storages
     resources :stock_sources
+    resources :incoming_stocks
+    resources :stored_stocks
+    resources :customers
+    resources :customer_orders
   end
   
 

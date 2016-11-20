@@ -5,7 +5,7 @@
   </div>
   <div class="">
     <div class="ui grid">
-      <div class="six wide column">
+      <div class="sixteen wide tablet four wide computer column">
         <div class="card raise-1 w100p marg-tb">
           <div class="card-top">
             <h4>Stock types
@@ -18,7 +18,7 @@
               No Stock types on your system
             </div>            
             <div v-if="stockTypes.length > 0">
-              <div v-for="st in stockTypes">
+              <div v-for="st in stockTypes" class="list-item">
                 {{st.name}} {{st.unit}}
               </div>
             </div>
@@ -36,14 +36,14 @@
               No Stock items on your system
             </div>            
             <div v-if="stockItems.length > 0">
-              <div v-for="si in stockItems">
+              <div v-for="si in stockItems" class="list-item">
                 {{si.name}} {{si.unit}}
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="ten wide column">
+      <div class="sixteen wide tablet twelve wide computer column">
         <div class="card raise-1 w100p marg-tb">
           <div class="card-top">
             <h4>
@@ -54,87 +54,14 @@
             <hr>
           </div> 
           <div>
-            <div id="stored-item-panel" class="ui active tab">
-              <div class="ui grid">
-                <div class="ten wide column h400-min grey-border-right">
-                  <div class="fab fab-br raise-3"><i class="ui add icon"></i></div>
-                  Stored items
-                </div>
-                <div class="six wide column">
-                  <h4>Storages (warehouse)
-                    <span @click="toggleNewStorageModal()" class="right-icon-grey"><i class="plus icon"></i></span>
-                  </h4>
-                  <hr>
-                  <div>
-                    <div v-if="storages.length < 1">
-                      No Storage (warehouse) on your system
-                    </div>            
-                    <div v-if="storages.length > 0">
-                      <div v-for="st in storages">
-                        {{st.name}}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div id="stored-item-panel" class="ui active tab">              
+              <%= render 'organizations/stock_management/stored_item' %>
             </div>
             <div id="incoming-item-panel" class="ui tab">
-              <div class="ui grid">
-                <div class="ten wide column h400-min grey-border-right">
-                  <div id="new-incoming-stock-item-button" class="fab fab-br raise-3" @click="toggleNewIncomingStockItem()"><i class="ui add icon"></i></div>
-                  <div id="new-incoming-stock-item" hidden>
-                    <span class="right-icon-grey" @click="toggleNewIncomingStockItem()"><i class="ui remove icon"></i></span>
-                    <div class="form-group">
-                      <label>Stock type</label><br>
-                      <div v-if="stockItems.length < 1" class="ui button accent-bg" @click="toggleNewStockItemModal()">
-                        Create new Stock Item
-                      </div>
-                      <select v-if="stockItems.length > 0" v-model="newIncomingStock.stock_item_id" class="classic">
-                        <option v-for="stockItem in stockItems" v-bind:value="stockItem.id">{{stockItem.name}}</option>
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <label>Source (From who?)</label><br>
-                      <div v-if="stockSources.length < 1" class="ui button accent-bg" @click="toggleNewStockSourceModal()">
-                        Create new Stock source
-                      </div>
-                      <select v-if="stockSources.length > 0" v-model="newIncomingStock.stock_item_id" class="classic">
-                        <option v-for="stockSource in stockSources" v-bind:value="stockSource.id">{{stockSource.name}}</option>
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <label>Quantity</label><br>
-                      <input class="classic" type="number" v-model="newIncomingStock.quantity">
-                    </div>
-                    <div class="form-group">
-                      <label>Date</label><br>
-                      <input class="classic date" type="datetime" v-model="newIncomingStock.date" placeholder="when did it arrive?">
-                    </div>
-                  </div>
-                  <div id="incoming-stock-item-list">
-                    Incoming stock item List
-                  </div>
-                </div>
-                <div class="six wide column">
-                  <h4>Sources (Suppliers)
-                    <span @click="toggleNewStockSourceModal()" class="right-icon-grey"><i class="plus icon"></i></span>
-                  </h4>
-                  <hr>
-                  <div>
-                    <div v-if="stockSources.length < 1">
-                      No Supplier of stock on your system
-                    </div>            
-                    <div v-if="stockSources.length > 0">
-                      <div v-for="sp in stockSources">
-                        {{sp.name}}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <%= render 'organizations/stock_management/incoming_item' %>
             </div>
             <div id="orders-item-panel" class="ui tab">
-              orders
+              <%= render 'organizations/stock_management/orders_item' %>
             </div>
           </div>
         </div>
@@ -227,6 +154,41 @@
     </div>
     <div class="actions">
       <div class="ui button accent-bg" @click="addStockSource()">Create</div>
+      <div class="ui cancel button">Cancel</div>
+    </div>
+  </div>
+  <div id="new-stored-stock-modal" class="ui small modal">
+    <div class="content">
+      <h4>New stock item</h4>
+      <div class="form-group">
+        <label>Incoming stock</label><br>
+        <div v-if="incomingStocks.length < 1" class="ui button accent-bg">
+          The are no stock items to add
+        </div>
+        <select v-if="incomingStocks.length > 0" v-model="newStoredStock.incoming_stock_id" class="classic">
+          <option v-if="(incomingStock.quantity - incomingStock.quantity_stored) > 0"
+            v-for="incomingStock in incomingStocks" 
+            v-bind:value="incomingStock.id">
+            {{incomingStock.quantity - incomingStock.quantity_stored}} {{incomingStock.stock_item.name}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Storage</label><br>
+        <div v-if="storages.length < 1" class="ui button accent-bg" @click="toggleNewStorageModal()">
+          Create new Storage
+        </div>
+        <select v-if="storages.length > 0" v-model="newStoredStock.storage_id" class="classic">
+          <option v-for="storage in storages" v-bind:value="storage.id">{{storage.name}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Quantity</label><br>
+        <input class="classic" type="number" v-model="newStoredStock.quantity" placeholder="How much are you storing?">
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui button accent-bg" @click="addStoredStock()">Create</div>
       <div class="ui cancel button">Cancel</div>
     </div>
   </div>

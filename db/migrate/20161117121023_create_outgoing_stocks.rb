@@ -7,8 +7,8 @@ class CreateOutgoingStocks < ActiveRecord::Migration
       t.references  :storage
       t.references  :ordered_stock
       t.integer     :quantity
-      t.belongs_to  :requester_id, class_name:"User"
-      t.belongs_to  :releaser_id, class_name:"User"
+      t.belongs_to  :requester, class_name:"User"
+      t.belongs_to  :releaser, class_name:"User"
 
       t.timestamps null: false
     end

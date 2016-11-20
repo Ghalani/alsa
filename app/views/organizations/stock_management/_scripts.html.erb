@@ -1,22 +1,73 @@
+<script type="text/x-template" id="table-incoming-stock">
+	<table class="ui selectable table">
+	  <thead>
+	    <tr>
+	    	<th>Item</th>
+		    <th>Source</th>
+		    <th>Received by</th>
+		    <th>Quantity</th>
+		    <th>Stored</th>
+		    <th>Date</th>
+		    <th></th>
+		  </tr>
+	  </thead>
+	  <tbody>
+			<tr v-for="stock in stocks">
+			  <td>
+          {{stock.stock_item.name}}
+			  </td>
+			  <td>{{stock.stock_source.name}}</td>
+			  <td>{{Boolean(stock.receiver) ? stock.receiver.name : "--"}}</td>
+			  <td>{{stock.quantity}}</td>
+			  <td>{{stock.quantity_stored}}</td>
+			  <td>{{when(stock)}}</td>
+			  <td>
+          <div v-if="itemPending(stock)" class="ui button">Store</div>
+          <i v-if="!itemPending(stock)" class="checkmark icon"></i>
+        </td>
+			</tr>
+		</tbody>
+	</table>
+</script>
 <script>
+Vue.component('table-incoming-stock', {
+  props: ['stocks'],
+  template: '#table-incoming-stock',
+  methods:{
+    when(stock) {
+      return Boolean(stock.arrived_at) ? moment(stock.arrived_at, "YYYY-MM-DD").fromNow() : "--";
+    },
+    itemPending(stock){
+      return (stock.quantity - stock.quantity_stored) > 0
+    }
+  } 
+});
 var stockManagement = new Vue({
   el: "#stock-management",
   data: {
     stockTypes: [],
     stockItems: [],
     storages: [],
+    storedStocks: [],
     stockSources: [],
     incomingStocks: [],
     storedItems: [],
+    customers: [],
     customerOrders: [],
     newStockType: {},
     newStockItem: {},
     newStorage: {},
     newStockSource: {},
     newIncomingStock: {},
+    newStoredStock: {},
+    newCustomer: {},
+    newCustomerOrder: {
+      ordered_stocks: [],
+    },
+    newOrderedStock: {},
   },
   methods: {
-    getStockTypes: function(){
+    getStockTypes(){
       var that = this;
       $.ajax({
         url: "/organizations/<%= @organization.id %>/stock_types.json",
@@ -25,7 +76,7 @@ var stockManagement = new Vue({
         }, error: function(err){console.log(err.massage)}
       });
     },
-    getStockItems: function(){
+    getStockItems(){
       var that = this;
       $.ajax({
         url: "/organizations/<%= @organization.id %>/stock_items.json",
@@ -34,7 +85,7 @@ var stockManagement = new Vue({
         }, error: function(err){console.log(err.massage)}
       });
     },
-    getStorages: function(){
+    getStorages(){
       var that = this;
       $.ajax({
         url: "/organizations/<%= @organization.id %>/storages.json",
@@ -43,7 +94,7 @@ var stockManagement = new Vue({
         }, error: function(err){console.log(err.massage)}
       });
     },
-    getStockSources: function(){
+    getStockSources(){
       var that = this;
       $.ajax({
         url: "/organizations/<%= @organization.id %>/stock_sources.json",
@@ -52,10 +103,43 @@ var stockManagement = new Vue({
         }, error: function(err){console.log(err.massage)}
       });
     },
-    getIncomingStocks: function(){},
-    getStoredItems: function(){},
-    getCustomerOrders: function(){},
-    addStockType: function(){
+    getIncomingStocks(){
+      var that = this;
+      $.ajax({
+        url: "/organizations/<%= @organization.id %>/incoming_stocks.json",
+        success: function(res){
+          that.incomingStocks = res;
+        }, error: function(err){console.log(err.massage)}
+      });
+    },
+    getStoredItems(){
+      var that = this;
+      $.ajax({
+        url: "/organizations/<%= @organization.id %>/stored_stocks.json",
+        success: function(res){
+          that.storedStocks = res;
+        }, error: function(err){console.log(err.massage)}
+      });
+    },
+    getCustomers(){
+      var that = this;
+      $.ajax({
+        url: "/organizations/<%= @organization.id %>/customers.json",
+        success: function(res){
+          that.customers = res;
+        }, error: function(err){console.log(err.massage)}
+      });
+    },
+    getCustomerOrders(){
+      var that = this;
+      $.ajax({
+        url: "/organizations/<%= @organization.id %>/customer_orders.json",
+        success: function(res){
+          that.customerOrders = res;
+        }, error: function(err){console.log(err.massage)}
+      });
+    },
+    addStockType(){
       this.newStockType.organization_id = <%= @organization.id %>
       var that = this;
       $.ajax({
@@ -72,7 +156,7 @@ var stockManagement = new Vue({
         error: function(err){console.log(err.massage)}
       });
     },
-    addStockItem: function(){
+    addStockItem(){
       this.newStockItem.organization_id = <%= @organization.id %>
       var that = this;
       $.ajax({
@@ -89,7 +173,7 @@ var stockManagement = new Vue({
         error: function(err){console.log(err.massage)}
       });
     },
-    addStorage: function(){
+    addStorage(){
       this.newStorage.organization_id = <%= @organization.id %>
       var that = this;
       $.ajax({
@@ -106,7 +190,7 @@ var stockManagement = new Vue({
         error: function(err){console.log(err.massage)}
       });
     },
-    addStockSource: function(){
+    addStockSource(){
       this.newStockSource.organization_id = <%= @organization.id %>
       var that = this;
       $.ajax({
@@ -123,25 +207,139 @@ var stockManagement = new Vue({
         error: function(err){console.log(err.massage)}
       });
     },
-    toggleNewStockTypeModal: function(){
-      $('#new-stock-type-modal').modal('toggle');
-    },
-    toggleNewStockItemModal: function(){
-      $('#new-stock-item-modal').modal('toggle');
-    },
-    toggleNewStorageModal: function(){
-      $('#new-storage-modal').modal('toggle');
-    },
-    toggleNewStockSourceModal: function(){
-      $('#new-stock-source-modal').modal('toggle');
-    },
-    toggleNewIncomingStockItem: function(){
-      $('#new-incoming-stock-item').toggle('fast', function(){
-        $('#new-incoming-stock-item-button').toggle('fast')
+    addIncomingStock(){
+      this.newIncomingStock.organization_id = <%= @organization.id %>
+      var that = this;
+      if (!Boolean(that.newStoredStock.receiver_id))
+        that.newIncomingStock.receiver_id = <%= current_user.id %>
+
+      $.ajax({
+        url: "/organizations/<%= @organization.id %>/incoming_stocks.json",
+        method: "POST",
+        data: { 
+          incoming_stock: that.newIncomingStock
+        },
+        success: function(res){
+          that.incomingStocks.push(res);
+          that.newIncomingStock = {}
+          that.toggleNewIncomingStock();
+        },
+        error: function(err){console.log(err.massage)}
       });
     },
-
+    addStoredStock(){
+      this.newStoredStock.organization_id = <%= @organization.id %>
+      var that = this;
+      this.newStoredStock.stock_item_id = this.getStockItemId(this.newStoredStock.incoming_stock_id);
+      
+      $.ajax({
+        url: "/organizations/<%= @organization.id %>/stored_stocks.json",
+        method: "POST",
+        data: { 
+          stored_stock: that.newStoredStock
+        },
+        success: function(res){
+          that.storedStocks.push(res);
+          //subtract quantity from incoming_stock selected
+          that.newStoredStock = {}
+          that.toggleNewStoredStockModal();
+        },
+        error: function(err){console.log(err.massage)}
+      });
+    },
+    addCustomer(){
+      this.newCustomer.organization_id = <%= @organization.id %>
+      var that = this;
+      
+      $.ajax({
+        url: "/organizations/<%= @organization.id %>/customers.json",
+        method: "POST",
+        data: { 
+          customer: that.newCustomer
+        },
+        success: function(res){
+          that.customers.push(res);
+          that.newCustomer = {}
+          that.toggleNewCustomerModal();
+        },
+        error: function(err){console.log(err.massage)}
+      });
+    },
+    addCustomerOrder(){
+      this.newCustomerOrder.organization_id = <%= @organization.id %>
+      this.newCustomerOrder.ordered_stocks.organization_id = <%= @organization.id %>
+      var that = this;
+      
+      $.ajax({
+        url: "/organizations/<%= @organization.id %>/customer_orders.json",
+        method: "POST",
+        data: { 
+          customer_order: that.newCustomerOrder,
+          ordered_stocks: that.newCustomerOrder.ordered_stocks
+        },
+        success: function(res){
+          that.customerOrders.push(res);
+          that.newCustomerOrder = {}
+          that.toggleNewCustomerOrderModal();
+        },
+        error: function(err){console.log(err.massage)}
+      });
+    },
+    toggleNewStockTypeModal(){
+      $('#new-stock-type-modal').modal('toggle');
+    },
+    toggleNewStockItemModal(){
+      $('#new-stock-item-modal').modal('toggle');
+    },
+    toggleNewStorageModal(){
+      $('#new-storage-modal').modal('toggle');
+    },
+    toggleNewStockSourceModal(){
+      $('#new-stock-source-modal').modal('toggle');
+    },
+    toggleNewIncomingStock(){
+      $('#new-incoming-stock').toggle('fast', function(){
+        $('#new-incoming-stock-button').toggle('fast')
+      });
+    },
+    toggleNewStoredStockModal(){
+      $('#new-stored-stock-modal').modal('toggle');
+    },
+    toggleNewCustomerModal(){
+      $('#new-customer-modal').modal('toggle');
+    },
+    toggleNewCustomerModal(){
+      $('#new-customer-modal').modal('toggle');
+    },
+    toggleNewCustomerOrderModal(){
+      $('#new-customer-order-modal').modal('toggle');
+    },
+    getStockItemId(val){
+      return (this.incomingStocks.find(function(el){
+        return el.id == val;
+      })).stock_item.id;
+    },
+    addOrderStockToCustomerOrder(){
+      if (!(Boolean(this.newOrderedStock.stock_item_id) && Boolean(this.newOrderedStock.quantity))) return false;
+      this.orderedStockCost();
+      this.newOrderedStock.organization_id = <%= @organization.id %>
+      this.newCustomerOrder.ordered_stocks.push(this.newOrderedStock);
+      this.newOrderedStock = {};
+    },
+    findStockItem(id){
+      return this.stockItems.find(function(el){
+        return el.id == id;
+      })
+    },
+    orderedStockCost(){    
+      if (!(Boolean(this.newOrderedStock.stock_item_id) && Boolean(this.newOrderedStock.quantity)))
+       this.newOrderedStock.cost = 0;
+      else
+        this.newOrderedStock.cost = this.newOrderedStock.quantity * this.findStockItem(this.newOrderedStock.stock_item_id).cost;  
+    }
   },
+  computed: {
+  }
 });
 
 $('.menu-item').on('click', function(){
@@ -158,6 +356,10 @@ stockManagement.getStockTypes();
 stockManagement.getStockItems();
 stockManagement.getStorages();
 stockManagement.getStockSources();
+stockManagement.getIncomingStocks()
+stockManagement.getStoredItems();
+stockManagement.getCustomers();
+stockManagement.getCustomerOrders()
 
 $(".date").flatpickr({}); // jQuery
 </script>

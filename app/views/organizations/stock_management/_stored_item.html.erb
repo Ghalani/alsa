@@ -1,0 +1,39 @@
+<div class="ui grid">
+  <div class="ten wide column h400-min grey-border-right">
+    <div class="fab fab-br raise-3"><i class="ui add icon" @click="toggleNewStoredStockModal()"></i></div>
+    <table class="ui selectable table">
+	  <thead>
+	    <tr>
+	    	<th>Item</th>
+		    <th>Storage</th>
+		    <th>Quantity</th>
+		    <th></th>
+		  </tr>
+	  </thead>
+	  <tbody>
+			<tr v-for="si in storedStocks">
+			  <td>{{si.stock_item.name}}</td>
+			  <td>{{si.storage.name}}</td>
+			  <td>{{si.quantity}}</td>
+			  <td></td>
+			</tr>
+		</tbody>
+	</table>
+  </div>
+  <div class="six wide column">
+    <h4>Storages (warehouse)
+      <span @click="toggleNewStorageModal()" class="right-icon-grey"><i class="plus icon"></i></span>
+    </h4>
+    <hr>
+    <div>
+      <div v-if="storages.length < 1">
+        No Storage (warehouse) on your system
+      </div>            
+      <div v-if="storages.length > 0">
+        <div v-for="st in storages">
+          {{st.name}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

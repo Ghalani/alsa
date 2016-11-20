@@ -1,0 +1,109 @@
+<div class="ui grid">
+  <div class="ten wide column h400-min grey-border-right">
+    <div class="fab fab-br raise-3"><i class="ui add icon" @click="toggleNewCustomerOrderModal()"></i></div>
+    <table class="ui selectable table">
+	  <thead>
+	    <tr>
+	    	<th>Customer</th>
+		    <th>Items</th>
+		    <th>Status</th>
+		    <th></th>
+		  </tr>
+	  </thead>
+	  <tbody>
+			<tr v-for="co in customerOrders">
+			  <td>{{co.customer.name}}</td>
+			  <td>{{co.orderd_stocks.length}}</td>
+			  <td>{{co.status}}</td>
+			  <td></td>
+			</tr>
+		</tbody>
+	</table>
+  </div>
+  <div class="six wide column">
+    <h4>Customers 
+      <span @click="toggleNewCustomerModal()" class="right-icon-grey"><i class="plus icon"></i></span>
+    </h4>
+    <hr>
+    <div>
+      <div v-if="customers.length < 1">
+        Please register a customer into the system
+      </div>            
+      <div v-if="customers.length > 0">
+        <div v-for="customer in customers">
+          {{customer.name}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="new-customer-modal" class="ui small modal">
+  <div class="content">
+    <h4>New Customer order </h4><hr>    
+    <div class="form-group">
+      <label>Name</label><br>
+      <input v-model="newCustomer.name" type="text" class="classic">
+    </div>
+    <div class="form-group">
+      <label>Email</label><br>
+      <input v-model="newCustomer.email" type="email" class="classic">
+    </div>
+    <div class="form-group">
+      <label>Phone</label><br>
+      <input v-model="newCustomer.phone" type="tel" class="classic">
+    </div>
+    <div class="form-group">
+      <label>Address</label><br>
+      <input v-model="newCustomer.address" type="text" class="classic">
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui button accent-bg" @click="addCustomer()">Add</div>
+    <div class="ui cancel button">Cancel</div>
+  </div>
+</div>
+<div id="new-customer-order-modal" class="ui small modal">
+  <div class="content">
+    <h4>New Customer order </h4><hr>
+    <div class="form-group">
+      <label>Customers</label>
+      <div class="ui button" v-if="customers.length < 1" @click="toggleNewCustomerModal">Add customer</div>
+      <select v-if="customers.length > 0" v-model="newCustomerOrder.customer_id" class="classic">
+        <option v-for="customer in customers" 
+          v-bind:value="customer.id">
+          {{customer.name}}
+        </option>
+      </select>
+    </div>
+    <div class="grey-border1 pad1">
+      Add Items to the order
+      <div class="ui grid form-group">
+        <div class="doubling three column row">
+          <div class="column">
+            <select v-if="stockItems.length > 0" v-model="newOrderedStock.stock_item_id" class="classic">
+              <option v-for="si in stockItems" 
+                v-bind:value="si.id">
+                {{si.name}}
+              </option>
+            </select>
+          </div>
+          <div class="column">
+            <input v-model="newOrderedStock.quantity" @keyup.enter="orderedStockCost" class="classic" type="number" placeholder="Quantity">
+          </div>
+          <div class="column">
+            <i class="add icon"  @click="addOrderStockToCustomerOrder"></i>
+          </div>
+        </div>
+        <!--<div class="row">{{newOrderedStock.cost}}</div>-->
+        
+      </div>
+      <div class="list-item" v-for="item in newCustomerOrder.ordered_stocks">
+        {{findStockItem(item.stock_item_id).name}}  {{item.quantity}}
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui button accent-bg" @click="addCustomerOrder">Add</div>
+    <div class="ui cancel button">Cancel</div>
+  </div>
+</div>

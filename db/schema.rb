@@ -30,12 +30,12 @@ ActiveRecord::Schema.define(version: 20161117121023) do
   create_table "customer_orders", force: :cascade do |t|
     t.integer  "organization_id"
     t.integer  "customer_id"
-    t.integer  "status"
+    t.integer  "status",          default: 0
     t.datetime "date_ordered"
-    t.integer  "deliverer_id_id"
+    t.integer  "deliverer_id"
     t.datetime "date_delivered"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   add_index "customer_orders", ["customer_id"], name: "index_customer_orders_on_customer_id", using: :btree
@@ -94,7 +94,7 @@ ActiveRecord::Schema.define(version: 20161117121023) do
     t.integer  "organization_id"
     t.integer  "stock_item_id"
     t.integer  "stock_source_id"
-    t.integer  "receiver_id_id"
+    t.integer  "receiver_id"
     t.integer  "quantity"
     t.datetime "arrived_at"
     t.datetime "created_at",      null: false
@@ -155,7 +155,7 @@ ActiveRecord::Schema.define(version: 20161117121023) do
     t.integer  "organization_id"
     t.integer  "stock_item_id"
     t.integer  "customer_order_id"
-    t.integer  "receiver_id_id"
+    t.integer  "receiver_id"
     t.integer  "quantity"
     t.integer  "cost"
     t.datetime "created_at",        null: false
@@ -184,8 +184,8 @@ ActiveRecord::Schema.define(version: 20161117121023) do
     t.integer  "storage_id"
     t.integer  "ordered_stock_id"
     t.integer  "quantity"
-    t.integer  "requester_id_id"
-    t.integer  "releaser_id_id"
+    t.integer  "requester_id"
+    t.integer  "releaser_id"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
   end

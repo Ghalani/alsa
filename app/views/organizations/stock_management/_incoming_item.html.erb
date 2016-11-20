@@ -1,0 +1,75 @@
+<div class="ui grid">
+  <div class="ten wide column h400-min grey-border-right">
+    <div id="new-incoming-stock-button" class="fab fab-br raise-3" @click="toggleNewIncomingStock()"><i class="ui add icon"></i></div>
+    <div id="new-incoming-stock" hidden>
+      <span class="right-icon-grey" @click="toggleNewIncomingStock()"><i class="ui remove icon"></i></span>
+      <br>
+      <div class="form-group">
+        <label>Stock type</label><br>
+        <div v-if="stockItems.length < 1" class="ui button accent-bg" @click="toggleNewStockItemModal()">
+          Create new Stock Item
+        </div>
+        <div class="ui grid">
+          <div class="twelve wide column">
+            <select v-if="stockItems.length > 0" v-model="newIncomingStock.stock_item_id" class="classic">
+              <option v-for="stockItem in stockItems" v-bind:value="stockItem.id">{{stockItem.name}}</option>
+            </select>
+          </div>
+          <div class="four wide column">
+            <div class="ui button accent-bg" @click="toggleNewStockTypeModal()">Add</div>                        
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Source (From who?)</label><br>
+        <div v-if="stockSources.length < 1" class="ui button accent-bg" @click="toggleNewStockSourceModal()">
+          Create new Stock source
+        </div>
+        <div class="ui grid">
+          <div class="twelve wide column">
+            <select v-if="stockSources.length > 0" v-model="newIncomingStock.stock_source_id" class="classic">
+              <option v-for="stockSource in stockSources" v-bind:value="stockSource.id">{{stockSource.name}}</option>
+            </select>
+          </div>
+          <div class="four wide column">
+            <div class="ui button accent-bg" @click="toggleNewStockSourceModal()">Add</div>
+          </div>
+        </div>
+      </div>      
+      <div class="form-group">
+        <label>Received by me</label>
+        <div class="ui button">Change</div>
+      </div>
+      <div class="form-group">
+        <label>Quantity</label><br>
+        <input class="classic" type="number" v-model="newIncomingStock.quantity">
+      </div>
+      <div class="form-group">
+        <label>Date</label><br>
+        <input class="classic date" type="datetime" v-model="newIncomingStock.arrived_at" placeholder="when did it arrive?">
+      </div>
+      <div class="form-group">
+        <div class="ui button accent-bg" @click="addIncomingStock()">SUBMIT</div>
+      </div>
+    </div>
+    <div id="incoming-stock-item-list">
+      <table-incoming-stock :stocks="incomingStocks"></table-incoming-stock>
+    </div>
+  </div>
+  <div class="six wide column">
+    <h4>Sources (Suppliers)
+      <span @click="toggleNewStockSourceModal()" class="right-icon-grey"><i class="plus icon"></i></span>
+    </h4>
+    <hr>
+    <div>
+      <div v-if="stockSources.length < 1">
+        No Supplier of stock on your system
+      </div>            
+      <div v-if="stockSources.length > 0">
+        <div v-for="sp in stockSources">
+          {{sp.name}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
