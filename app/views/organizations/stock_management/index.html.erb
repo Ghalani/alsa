@@ -1,43 +1,49 @@
 <div id="stock-management">
   <%= render "static_pages/nav" %>
   <div class="green-bg pad1 padb3">
-    Stock management
+    <%= render 'organizations/stock_management/stat_bar'%>
   </div>
   <div class="">
     <div class="ui grid">
       <div class="sixteen wide tablet four wide computer column">
-        <div class="card raise-1 w100p marg-tb">
-          <div class="card-top">
-            <h4>Stock types
-              <span class="right-icon-grey" @click="toggleNewStockTypeModal()" ><i class="plus icon"></i></span>
-            </h4>
-            <hr>
-          </div>   
-          <div>
-            <div v-if="stockTypes.length < 1">
-              No Stock types on your system
-            </div>            
-            <div v-if="stockTypes.length > 0">
-              <div v-for="st in stockTypes" class="list-item">
-                {{st.name}} {{st.unit}}
+        <div class="ui grid">
+          <div class="eight wide tablet sixteen wide computer column">
+            <div class="card raise-1 w100p marg-tb">
+              <div class="card-top">
+                <h4>Stock types
+                  <span class="right-icon-grey" @click="toggleNewStockTypeModal()" ><i class="plus icon"></i></span>
+                </h4>
+                <hr>
+              </div>   
+              <div>
+                <div v-if="stockTypes.length < 1">
+                  No Stock types on your system
+                </div>            
+                <div v-if="stockTypes.length > 0">
+                  <div v-for="st in stockTypes" class="list-item">
+                    {{st.name}} {{st.unit}}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="card raise-1 w100p marg-tb">
-          <div class="card-top">
-            <h4>Stock items 
-              <span class="right-icon-grey" @click="toggleNewStockItemModal()" ><i class="plus icon"></i></span>
-            </h4>
-            <hr>
-          </div> 
-          <div>
-            <div v-if="stockItems.length < 1">
-              No Stock items on your system
-            </div>            
-            <div v-if="stockItems.length > 0">
-              <div v-for="si in stockItems" class="list-item">
-                {{si.name}} {{si.unit}}
+          <div class="eight wide tablet sixteen wide computer column">
+            <div class="card raise-1 w100p marg-tb">
+              <div class="card-top">
+                <h4>Stock items 
+                  <span class="right-icon-grey" @click="toggleNewStockItemModal()" ><i class="plus icon"></i></span>
+                </h4>
+                <hr>
+              </div> 
+              <div>
+                <div v-if="stockItems.length < 1">
+                  No Stock items on your system
+                </div>            
+                <div v-if="stockItems.length > 0">
+                  <div v-for="si in stockItems" class="list-item">
+                    {{si.name}} {{si.unit}}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

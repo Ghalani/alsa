@@ -4,5 +4,5 @@ class StoredStockSerializer < ActiveModel::Serializer
   has_one :storage
   has_one :incoming_stock
 
-  attributes :id, :quantity
+  attributes :id, :quantity, :remaining
 end

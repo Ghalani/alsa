@@ -21,7 +21,7 @@ class StoredStocksController < ApplicationController
     @stored_stock = StoredStock.new(stored_stock_params)
 
     respond_to do |format|
-      if @stored_stock.save
+      if @stored_stock.save_and_update_icoming_quantity_stored
         #format.html { redirect_to [@organization, @stored_stock], notice: 'Stock type was successfully created.' }
         format.json { render json: @stored_stock, status: :created }
       else

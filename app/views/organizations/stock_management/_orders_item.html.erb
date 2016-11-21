@@ -15,7 +15,13 @@
 			  <td>{{co.customer.name}}</td>
 			  <td>{{co.ordered_stocks.length}}</td>
 			  <td>{{co.status}}</td>
-			  <td></td>
+			  <td>
+          <a :href="'/organizations/'+ organization.id +'/customer_orders/' + co.id">
+            <span class="right-icon-grey">
+              <i class="eye icon"></i>
+            </span>          
+          </a>
+        </td>
 			</tr>
 		</tbody>
 	</table>
@@ -39,7 +45,7 @@
 </div>
 <div id="new-customer-modal" class="ui small modal">
   <div class="content">
-    <h4>New Customer order </h4><hr>    
+    <h4>New Customer </h4><hr>    
     <div class="form-group">
       <label>Name</label><br>
       <input v-model="newCustomer.name" type="text" class="classic">

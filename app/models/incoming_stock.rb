@@ -15,4 +15,8 @@ class IncomingStock < ActiveRecord::Base
     end
     return out
   end
+
+  def remaining
+    self.quantity - self.quantity_stored
+  end
 end

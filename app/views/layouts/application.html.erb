@@ -11,12 +11,15 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
+  <div id="alert-holder" class="">
     <% flash.each do |key, value| %>
-      <%= content_tag(:div, class: "alert alert-#{key}") do %>
-        <span id="alicon" class="circle square"></span> <span><%= value %></span>
-      <% end %>
+      <div class="text-right pad1">
+        <%= content_tag(:div, class: "alert alert-#{key}") do %>
+          <span><%= value %></span> <i class="remove icon" onclick="removeAlert()"></i>
+        <% end %>
+      </div>
     <% end %>
+  </div>
 
 <%= yield %>
 <div id="modal" class="ui modal">

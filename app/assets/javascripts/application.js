@@ -24,16 +24,40 @@ function appendModal(html){
 }
 
 $(document).on('ready', function(){
-	(function (){
-		if ($('.alert').length > 0){
-			setTimeout(function(){
-				$('.alert').each(function(i, obj){
-					obj.remove();
-				})
-			}, 5000)
-		}
-	}());
+    removeAlerts();
+    $('.close-alert').on('click', function(){
+        console.log('clicked');
+        $(this).parent.remove();
+    });
 });
+
+function displayAlert(err){
+    console.log(err);
+    var json = JSON.parse(err.responseText);
+    var keys = Object.keys(json);
+    var values = Object.values(json);
+    $.each(keys, function(pos, key){
+        $.each(values[pos], function(pos2, val){
+            appendAlert(key +" : "+ val);
+        })
+    });
+    removeAlerts();
+}
+
+function appendAlert(msg){
+  $('#alert-holder').append('<div class="text-right pad1"><span class="alert"><span>' + msg + '</span> <i class="remove icon close-alert"></i></span></div>');
+}
+
+
+function removeAlerts(){
+    if ($('.alert').length > 0){
+        setTimeout(function(){
+            $('.alert').each(function(i, obj){
+                $(obj).parent().remove();
+            })
+        }, 5000)
+    }
+}
 
 $.fn.serializeObject = function()
 {

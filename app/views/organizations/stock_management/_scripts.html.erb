@@ -45,6 +45,7 @@ Vue.component('table-incoming-stock', {
 var stockManagement = new Vue({
   el: "#stock-management",
   data: {
+    organization: <%= @organization.to_json.html_safe %>,
     stockTypes: [],
     stockItems: [],
     storages: [],
@@ -73,7 +74,7 @@ var stockManagement = new Vue({
         url: "/organizations/<%= @organization.id %>/stock_types.json",
         success: function(res){
           that.stockTypes = res;
-        }, error: function(err){console.log(err.massage)}
+        }, error: function(err){displayAlert(err)}
       });
     },
     getStockItems(){
@@ -82,7 +83,7 @@ var stockManagement = new Vue({
         url: "/organizations/<%= @organization.id %>/stock_items.json",
         success: function(res){
           that.stockItems = res;
-        }, error: function(err){console.log(err.massage)}
+        }, error: function(err){displayAlert(err)}
       });
     },
     getStorages(){
@@ -91,7 +92,7 @@ var stockManagement = new Vue({
         url: "/organizations/<%= @organization.id %>/storages.json",
         success: function(res){
           that.storages = res;
-        }, error: function(err){console.log(err.massage)}
+        }, error: function(err){displayAlert(err)}
       });
     },
     getStockSources(){
@@ -100,7 +101,7 @@ var stockManagement = new Vue({
         url: "/organizations/<%= @organization.id %>/stock_sources.json",
         success: function(res){
           that.stockSources = res;
-        }, error: function(err){console.log(err.massage)}
+        }, error: function(err){displayAlert(err)}
       });
     },
     getIncomingStocks(){
@@ -109,7 +110,7 @@ var stockManagement = new Vue({
         url: "/organizations/<%= @organization.id %>/incoming_stocks.json",
         success: function(res){
           that.incomingStocks = res;
-        }, error: function(err){console.log(err.massage)}
+        }, error: function(err){displayAlert(err)}
       });
     },
     getStoredItems(){
@@ -118,7 +119,7 @@ var stockManagement = new Vue({
         url: "/organizations/<%= @organization.id %>/stored_stocks.json",
         success: function(res){
           that.storedStocks = res;
-        }, error: function(err){console.log(err.massage)}
+        }, error: function(err){displayAlert(err)}
       });
     },
     getCustomers(){
@@ -127,7 +128,7 @@ var stockManagement = new Vue({
         url: "/organizations/<%= @organization.id %>/customers.json",
         success: function(res){
           that.customers = res;
-        }, error: function(err){console.log(err.massage)}
+        }, error: function(err){displayAlert(err)}
       });
     },
     getCustomerOrders(){
@@ -136,7 +137,7 @@ var stockManagement = new Vue({
         url: "/organizations/<%= @organization.id %>/customer_orders.json",
         success: function(res){
           that.customerOrders = res;
-        }, error: function(err){console.log(err.massage)}
+        }, error: function(err){displayAlert(err)}
       });
     },
     addStockType(){
@@ -153,7 +154,7 @@ var stockManagement = new Vue({
           that.newStockType = {}
           that.toggleNewStockTypeModal();
         },
-        error: function(err){console.log(err.massage)}
+        error: function(err){displayAlert(err)}
       });
     },
     addStockItem(){
@@ -170,7 +171,7 @@ var stockManagement = new Vue({
           that.newStockItem = {}
           that.toggleNewStockItemModal();
         },
-        error: function(err){console.log(err.massage)}
+        error: function(err){displayAlert(err)}
       });
     },
     addStorage(){
@@ -187,7 +188,7 @@ var stockManagement = new Vue({
           that.newStorage = {}
           that.toggleNewStorageModal();
         },
-        error: function(err){console.log(err.massage)}
+        error: function(err){displayAlert(err)}
       });
     },
     addStockSource(){
@@ -204,7 +205,7 @@ var stockManagement = new Vue({
           that.newStockSource = {}
           that.toggleNewStockSourceModal();
         },
-        error: function(err){console.log(err.massage)}
+        error: function(err){displayAlert(err)}
       });
     },
     addIncomingStock(){
@@ -224,7 +225,7 @@ var stockManagement = new Vue({
           that.newIncomingStock = {}
           that.toggleNewIncomingStock();
         },
-        error: function(err){console.log(err.massage)}
+        error: function(err){displayAlert(err)}
       });
     },
     addStoredStock(){
@@ -244,7 +245,7 @@ var stockManagement = new Vue({
           that.newStoredStock = {}
           that.toggleNewStoredStockModal();
         },
-        error: function(err){console.log(err.massage)}
+        error: function(err){displayAlert(err)}
       });
     },
     addCustomer(){
@@ -262,7 +263,7 @@ var stockManagement = new Vue({
           that.newCustomer = {}
           that.toggleNewCustomerModal();
         },
-        error: function(err){console.log(err.massage)}
+        error: function(err){displayAlert(err)}
       });
     },
     addCustomerOrder(){
@@ -282,7 +283,7 @@ var stockManagement = new Vue({
           that.newCustomerOrder = {}
           that.toggleNewCustomerOrderModal();
         },
-        error: function(err){console.log(err.massage)}
+        error: function(err){displayAlert(err)}
       });
     },
     toggleNewStockTypeModal(){
@@ -336,7 +337,7 @@ var stockManagement = new Vue({
        this.newOrderedStock.cost = 0;
       else
         this.newOrderedStock.cost = this.newOrderedStock.quantity * this.findStockItem(this.newOrderedStock.stock_item_id).cost;  
-    }
+    }, 
   },
   computed: {
   }
