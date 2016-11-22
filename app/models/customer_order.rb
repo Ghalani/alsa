@@ -5,4 +5,7 @@ class CustomerOrder < ActiveRecord::Base
   has_many    :ordered_stocks, dependent: :destroy
 
   enum status: [:pending, :active, :delivered]
+  
+  validates :customer_id, presence: true
+  validates :organization_id, presence: true
 end

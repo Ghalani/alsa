@@ -83,26 +83,37 @@
       </select>
     </div>
     <div class="grey-border1 pad1">
-      Add Items to the order
+      <h3>Add by selecting Stock item and quantity and pressing the <i class="arrow down icon"></i> button</h3>
       <div class="ui grid form-group">
         <div class="doubling three column row">
           <div class="column">
+            <label>Stock item</label><br>
             <select v-if="stockItems.length > 0" v-model="newOrderedStock.stock_item_id" class="classic keyup">
               <option v-for="si in stockItems" 
                 v-bind:value="si.id">
-                {{si.name}}
+                {{si.name}} ({{si.cost}})
               </option>
             </select>
           </div>
           <div class="column">
-            <input class="keyup cost" v-model="newOrderedStock.quantity" @keyup.enter="orderedStockCost" class="classic" type="number" placeholder="Quantity">
+            <label>Quantity</label><br>
+            <input class="keyup cost classic" 
+              v-model="newOrderedStock.quantity" 
+              @keyup.enter="orderedStockCost" 
+              class="classic" type="number" placeholder="How many does the customer want?">
           </div>
           <div class="column">
-            <i class="add icon"  @click="addOrderStockToCustomerOrder"></i>
+            <div class="row">Cost: {{newOrderedStock.cost}}</div>
+            <div class="fab raise-3 pad-top-5px">
+              <i class="arrow down icon" @click="addOrderStockToCustomerOrder"></i>
+            </div>
           </div>
         </div>
-        <div class="row">{{newOrderedStock.cost}}</div>
         
+      </div>
+      <hr>
+      <div v-if="Boolean(newCustomerOrder.ordered_stocks) && newCustomerOrder.ordered_stocks.length < 1">
+        <h3>Please add an item before submitting</h3>
       </div>
       <div class="list-item" v-for="item in newCustomerOrder.ordered_stocks">
         {{findStockItem(item.stock_item_id).name}}  {{item.quantity}}
