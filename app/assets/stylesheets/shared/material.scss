@@ -1,5 +1,6 @@
 $theme-color: #39b54a;
 $theme-color-dark: #00a651;
+$theme-color-dark2: #388E3C;
 $theme-white: #edffe6;
 
 $grey-highlight: #ededed;
@@ -9,6 +10,7 @@ $theme-red: #db2828;
 
 .green-bg{  background: $theme-color !important; color: $theme-white !important;}
 .dark-green-bg{  background: $theme-color-dark !important;}
+.dark-green-bg2{  background: $theme-color-dark2 !important; color: #fff !important;}
 .accent-bg{  background: $theme-accent !important; color:#fff !important;}
 .red-bg{  background: $theme-red !important; color:#fff !important;}
 .grey-bg{ background: #ededed !important;}
@@ -43,7 +45,7 @@ $theme-red: #db2828;
   }
 
   .card-top{
-    border-radius: 3px 3px 0;
+    border-radius: 3px 3px 0 0;
     margin: -1rem -1rem 1rem -1rem !important;
     padding: 0.5rem 1rem;
     &.theme-bg{

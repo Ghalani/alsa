@@ -1,0 +1,69 @@
+<div class="card raise-1 w100p marg-tb">
+  <div class="card-top dark-green-bg2">
+    <h4>Stock items 
+      <span class="right-icon-grey" @click="toggleNewStockItemModal()" ><i class="plus icon"></i></span>
+    </h4>
+  </div> 
+  <div>
+    <div v-if="stockItems.length < 1">
+      No Stock items on your system
+    </div>            
+    <div v-if="stockItems.length > 0">
+      <div v-for="si in stockItems" class="list-item" @click="setCache(si); toggleShowModal('show-stock-item-modal')">
+        {{si.name}} {{si.unit}}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="new-stock-item-modal" class="ui small modal">
+  <div class="content">
+    <h4>New stock item</h4>
+    <div class="form-group">
+      <label>Stock type</label><br>
+      <div v-if="stockTypes.length < 1" class="ui button accent-bg" @click="toggleNewStockTypeModal()">
+        Create new Stock type
+      </div>
+      <select v-if="stockTypes.length > 0" v-model="newStockItem.stock_type_id" class="classic">
+        <option v-for="stockType in stockTypes" v-bind:value="stockType.id">{{stockType.name}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Name</label><br>
+      <input class="classic" type="text" v-model="newStockItem.name" placeholder="Nordox, 24 pack Coca cola, etc.">
+    </div>
+    <div class="form-group">
+      <label>Cost</label><br>
+      <input class="classic" type="number" v-model="newStockItem.cost" placeholder="Cost per unit">
+    </div>
+    <div class="form-group">
+      <label>Minimum quantity</label><br>
+      <input class="classic" type="number" v-model="newStockItem.minimum_quantity" placeholder="Minimum quantity to alert for refill">
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui button accent-bg" @click="addStockItem()">Create</div>
+    <div class="ui cancel button">Cancel</div>
+  </div>
+</div>
+
+<div id="show-stock-item-modal" class="ui small modal">
+  <div class="content">
+    <h3>Stock item details</h3><hr>
+    <div class="form-group">
+      <label>Name</label><br>
+      {{cache.name}} 
+    </div>
+    <div class="form-group">
+      <label>Cost</label><br>
+      {{cache.cost}} 
+    </div>
+    <div class="form-group">
+      <label>Minimum quantity</label><br>
+      {{cache.minimum_quantity}} 
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui cancel button">Cancel</div>
+  </div>
+</div>

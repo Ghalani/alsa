@@ -30,10 +30,138 @@
         No Storage (warehouse) on your system
       </div>            
       <div v-if="storages.length > 0">
-        <div v-for="st in storages">
+        <div class="list-item" v-for="st in storages" @click="setCache(st); toggleShowModal('show-storage-modal')">
           {{st.name}}
         </div>
       </div>
     </div>
+  </div>
+</div>
+<!--New Storage-->
+<div id="new-storage-modal" class="ui small modal">
+  <div class="content">
+    <div id="new-storage-body">
+      <h4>New storage</h4>
+      <div class="form-group">
+        <label>Name</label><br>
+        <input class="classic" type="text" v-model="newStorage.name" placeholder="Warehouse 1, Room x2, etc.">
+      </div>
+      <div class="form-group">
+        <label>location</label> <div class="ui button" @click="toggleLocationShow('storage')">Add New location</div><br>
+        <select v-model="newStorage.location" class="classic">
+          <option v-for="location in allLocations" v-bind:value="location.id">{{location.name}}</option>
+        </select>
+      </div>
+    </div>
+    <div id="new-location-storage" hidden>
+      <div class="fab fab-tr raise-3" @click="toggleLocationShow('storage')"><i class="arrow left icon"></i></div>
+      dfkjdkfjdfkjdfkjdfkjdfkjdfkj
+      <h3>New location</h3><hr>
+      <div class="form-group">
+        <label>Location type</label> <br>
+        <select v-model="newLocation.locationType" class="classic">
+          <option v-for="lt in allLocationTypes" v-bind:value="lt">{{lt.name}}</option>
+        </select>
+      </div>
+      <div class="form-group" v-if="Boolean(newLocation.locationType) && Boolean(newLocation.locationType.parent_id)">
+        Parent ({{newLocation.locationType.name}}) <br>
+        <select v-model="newLocation.parent" class="classic">
+          <option v-for="location in allLocationsWithLocationType(newLocation.locationType.parent_id)" v-bind:value="location">{{location.name}}</option>
+        </select>
+      </div>
+      <div class="form-group classic">
+        <label>Name</label> <br>
+        <input class="classic" type="text" v-model="newLocation.name" placeholder="(e.g. District, Area, Village ...) ">
+      </div>
+      <div class="ui button green-bg" v-on:click="createNewLocation('storage')">Add location</div>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui button accent-bg" @click="addStorage()">Create</div>
+    <div class="ui cancel button">Cancel</div>
+  </div>
+</div>
+<!--Show Storage-->
+<div id="show-storage-modal" class="ui small modal">
+  <div class="content">
+    <h3>Storage details</h3><hr>
+    <div class="form-group">
+      <label>Name</label><br>
+      {{cache.name}} 
+    </div>
+    <div class="form-group">
+      <label>Location</label><br>
+      {{cache.cost}} 
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui cancel button">Cancel</div>
+  </div>
+</div>
+
+<!--New Stored stock-->
+<div id="new-stored-stock-modal" class="ui small modal">
+  <div class="content">
+    <h4>Add Stock item to Storage (Warehouse)</h4>
+    <div class="form-group">
+      <label>Incoming stock</label><br>
+      <div v-if="incomingStocks.length < 1" class="ui button accent-bg">
+        The are no stock items to add
+      </div>
+      <select v-if="incomingStocks.length > 0" v-model="newStoredStock.incoming_stock_id" class="classic">
+        <option v-if="(incomingStock.quantity - incomingStock.quantity_stored) > 0"
+          v-for="incomingStock in incomingStocks" 
+          v-bind:value="incomingStock.id">
+          {{incomingStock.quantity - incomingStock.quantity_stored}} {{incomingStock.stock_item.name}}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Storage</label><br>
+      <div v-if="storages.length < 1" class="ui button accent-bg" @click="toggleNewStorageModal()">
+        Create new Storage
+      </div>
+      <select v-if="storages.length > 0" v-model="newStoredStock.storage_id" class="classic">
+        <option v-for="storage in storages" v-bind:value="storage.id">{{storage.name}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Quantity</label><br>
+      <input class="classic" type="number" v-model="newStoredStock.quantity" placeholder="How much are you storing?">
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui button accent-bg" @click="addStoredStock()">Create</div>
+    <div class="ui cancel button">Cancel</div>
+  </div>
+</div>
+<!--New Stored stock-->
+<div id="new-filled-stored-stock-modal" class="ui small modal">
+  <div class="content">
+    <h4>New stock item</h4>
+    <div class="form-group">
+      <label>Incoming stock</label><br>
+      <h3<span v-if="Boolean(cache.quantity_stored)">
+        <!--<input v-model="newStoredStock.incoming_stock_id" v-bind:value="cache.id" hidden>-->
+        {{cache.quantity - cache.quantity_stored}} {{cache.stock_item.name}}
+      </span></h3>
+    </div>
+    <div class="form-group">
+      <label>Storage</label><br>
+      <div v-if="storages.length < 1" class="ui button accent-bg" @click="toggleNewStorageModal()">
+        Create new Storage
+      </div>
+      <select v-if="storages.length > 0" v-model="newStoredStock.storage_id" class="classic">
+        <option v-for="storage in storages" v-bind:value="storage.id">{{storage.name}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Quantity</label><br>
+      <input class="classic" type="number" v-model="newStoredStock.quantity" placeholder="How much are you storing?">
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui button accent-bg" @click="addStoredStock(true)">Create</div>
+    <div class="ui cancel button">Cancel</div>
   </div>
 </div>

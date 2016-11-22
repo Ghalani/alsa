@@ -10,16 +10,18 @@ class StoredStock < ActiveRecord::Base
   end
 
   def save_and_update_icoming_quantity_stored
+    puts "transaction **"
     transaction do
+      incoming_remaining = self.incoming_stock.remaining
       begin
-        if self.incoming_stock.remaining >= self.quantity
+        if incoming_remaining >= self.quantity
           save!
         else
-          self.errors.add("cannot be nil") 
           raise ActiveRecord::Rollback        
         end
         true
       rescue
+        errors.add(:quantity, :blank, message: "is greater than what's in stock (#{incoming_remaining})")
         false
       end
     end

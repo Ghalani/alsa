@@ -6,8 +6,9 @@ class OutgoingStock < ActiveRecord::Base
 
   def save_and_update_quantity_taken
     transaction do
+      remaining = self.stored_stock.remaining
       begin
-        if self.stored_stock.remaining >= self.quantity
+        if remaining >= self.quantity
           save!
           self.stored_stock.remaining += self.quantity
         else
@@ -15,6 +16,7 @@ class OutgoingStock < ActiveRecord::Base
         end
         true
       rescue
+        errors.add(:quantity, :blank, message: "is greater than what's in the stored-stock (#{remaining})")
         false
       end
     end

@@ -1,0 +1,54 @@
+<div class="card raise-1 w100p marg-tb">
+  <div class="card-top dark-green-bg2">
+    <h4>Stock types
+      <span class="right-icon-grey" @click="toggleNewStockTypeModal()" ><i class="plus icon"></i></span>
+    </h4>
+  </div>   
+  <div>
+    <div v-if="stockTypes.length < 1">
+      No Stock types on your system
+    </div>            
+    <div v-if="stockTypes.length > 0">
+      <div v-for="st in stockTypes" class="list-item" @click="setCache(st); toggleShowModal('show-stock-type-modal')">
+      <strong>{{st.name}}</strong> ({{st.unit}})
+      </div>
+    </div>
+  </div>
+</div>
+<div id="new-stock-type-modal" class="ui small modal">
+  <div class="content">
+    <h4>New stock type</h4><hr>
+    <div class="form-group">
+      <label>Name</label><br>
+      <input class="classic" type="text" v-model="newStockType.name" placeholder="fertilizer, aerosol, liquid, tool, machine, etc...">
+    </div>
+    <div class="form-group">
+      <label>Unit of measurement </label><br>
+      <input class="classic" type="text" v-model="newStockType.unit" placeholder="(e.g. Kilogram, bags, packs, bottles etc...">
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui button accent-bg" @click="addStockType()">Create</div>
+    <div class="ui cancel button">Cancel</div>
+  </div>
+</div>
+<div id="show-stock-type-modal" class="ui small modal">
+  <div class="content">
+    <h3>Stock type details</h3><hr>
+    <div class="form-group">
+      <label>Name</label><br>
+      {{cache.name}} 
+    </div>
+    <div class="form-group">
+      <label>Unit</label><br>
+      {{cache.unit}} 
+    </div>
+    <div class="form-group">
+      <label>Description</label><br>
+      {{cache.description}} 
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui cancel button">Cancel</div>
+  </div>
+</div>

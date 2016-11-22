@@ -66,10 +66,60 @@
         No Supplier of stock on your system
       </div>            
       <div v-if="stockSources.length > 0">
-        <div v-for="sp in stockSources">
+        <div class="list-item" v-for="sp in stockSources" @click="setCache(sp); toggleShowModal('show-stock-source-modal')">
           {{sp.name}}
         </div>
       </div>
     </div>
+  </div>
+</div>
+<div id="new-stock-source-modal" class="ui small modal">
+  <div class="content">
+    <h4>New Stock source (Supplier)</h4>
+    <div class="form-group">
+      <label>Name</label><br>
+      <input class="classic" type="text" v-model="newStockSource.name" placeholder="eg. Fertilizer depot 1">
+    </div>
+    <div class="form-group">
+      <label>Email</label><br>
+      <input class="classic" type="email" v-model="newStockSource.email" placeholder="eg. name@example.com">
+    </div>
+    <div class="form-group">
+      <label>phone</label><br>
+      <input class="classic" type="tel" v-model="newStockSource.phone" placeholder="eg. 02013235648">
+    </div>
+    <div class="form-group">
+      <label>Address</label><br>
+      <input class="classic" type="text" v-model="newStockSource.address" placeholder="1st street, city-name">
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui button accent-bg" @click="addStockSource()">Create</div>
+    <div class="ui cancel button">Cancel</div>
+  </div>
+</div>
+
+<div id="show-stock-source-modal" class="ui small modal">
+  <div class="content">
+    <h3>Stock source (Supplier)</h3><hr>
+    <div class="form-group">
+      <label>Name</label><br>
+      {{cache.name}} 
+    </div>
+    <div class="form-group">
+      <label>Email</label><br>
+      {{cache.email}} 
+    </div>
+    <div class="form-group">
+      <label>Phone</label><br>
+      {{cache.phone}} 
+    </div>
+    <div class="form-group">
+      <label>Address</label><br>
+      {{cache.address}} 
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui cancel button">Cancel</div>
   </div>
 </div>

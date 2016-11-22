@@ -22,7 +22,7 @@
 			  <td>{{stock.quantity_stored}}</td>
 			  <td>{{when(stock)}}</td>
 			  <td>
-          <div v-if="itemPending(stock)" class="ui button">Store</div>
+          <div v-if="itemPending(stock)" class="ui button" @click="setCacheAndStore(stock)">Store</div>
           <i v-if="!itemPending(stock)" class="checkmark icon"></i>
         </td>
 			</tr>
@@ -39,12 +39,17 @@ Vue.component('table-incoming-stock', {
     },
     itemPending(stock){
       return (stock.quantity - stock.quantity_stored) > 0
+    },
+    setCacheAndStore(obj){
+      this.$parent.setCache(obj);
+      this.$parent.toggleFilledNewStoredStockModal();
     }
   } 
 });
 var stockManagement = new Vue({
   el: "#stock-management",
   data: {
+    cache: {},
     organization: <%= @organization.to_json.html_safe %>,
     stockTypes: [],
     stockItems: [],
@@ -65,9 +70,19 @@ var stockManagement = new Vue({
     newCustomerOrder: {
       ordered_stocks: [],
     },
-    newOrderedStock: {},
+    newOrderedStock: {
+      cost: 0,
+    },
+    locationTypes: [],
+    locations: [],
+    newLocation: {
+      locationType: {},
+    },
   },
   methods: {
+    setCache(object){
+      this.cache = object
+    },
     getStockTypes(){
       var that = this;
       $.ajax({
@@ -176,6 +191,7 @@ var stockManagement = new Vue({
     },
     addStorage(){
       this.newStorage.organization_id = <%= @organization.id %>
+      this.newStorage.location_id = this.newStorage.location.id
       var that = this;
       $.ajax({
         url: "/organizations/<%= @organization.id %>/storages.json",
@@ -228,11 +244,16 @@ var stockManagement = new Vue({
         error: function(err){displayAlert(err)}
       });
     },
-    addStoredStock(){
+    addStoredStock(isfilled){
       this.newStoredStock.organization_id = <%= @organization.id %>
       var that = this;
-      this.newStoredStock.stock_item_id = this.getStockItemId(this.newStoredStock.incoming_stock_id);
-      
+      if (!Boolean(isfilled)){
+        this.newStoredStock.stock_item_id = this.getStockItemId(this.newStoredStock.incoming_stock_id);
+      }else{
+        this.newStoredStock.incoming_stock_id = this.cache.id
+        this.newStoredStock.stock_item_id = this.cache.stock_item.id
+      }
+
       $.ajax({
         url: "/organizations/<%= @organization.id %>/stored_stocks.json",
         method: "POST",
@@ -242,8 +263,17 @@ var stockManagement = new Vue({
         success: function(res){
           that.storedStocks.push(res);
           //subtract quantity from incoming_stock selected
+          that.incomingStocks.find(function(el){
+            if (el.id == res.incoming_stock.id){
+              el.quantity_stored = (el.quantity_stored + res.quantity)
+              return true
+            }
+          })
           that.newStoredStock = {}
-          that.toggleNewStoredStockModal();
+          if (!Boolean(isfilled))
+            that.toggleNewStoredStockModal();
+          else
+            that.toggleFilledNewStoredStockModal();
         },
         error: function(err){displayAlert(err)}
       });
@@ -306,6 +336,9 @@ var stockManagement = new Vue({
     toggleNewStoredStockModal(){
       $('#new-stored-stock-modal').modal('toggle');
     },
+    toggleFilledNewStoredStockModal(){
+      $('#new-filled-stored-stock-modal').modal('toggle');
+    },
     toggleNewCustomerModal(){
       $('#new-customer-modal').modal('toggle');
     },
@@ -338,8 +371,80 @@ var stockManagement = new Vue({
       else
         this.newOrderedStock.cost = this.newOrderedStock.quantity * this.findStockItem(this.newOrderedStock.stock_item_id).cost;  
     }, 
+    toggleShowModal(htmlId){
+      $('#'+htmlId).modal('toggle');
+    },
+    getLocationTypes: function(){
+      var that = this;
+      $.ajax({
+        url: "/organizations/<%= @organization.id %>/location_types.json",
+        success: function(res){
+          that.locationTypes = res;
+        },
+        error: function(err){displayAlert(err)}
+      });
+    },
+    getLocations: function(){
+      var that = this;
+      $.ajax({
+        url: "/organizations/<%= @organization.id %>/locations.json",
+        success: function(res){
+          that.locations = res;
+          that.sortedLocations = that.allLocations;
+        },
+        error: function(err){displayAlert(err)}
+      });
+    },
+    createNewLocation: function(model){
+      if (!Boolean(this.newLocation.name)) return false;
+      var that = this;
+      $.ajax({
+        url: "/organizations/<%= @organization.id %>/locations.json",
+        data: {
+          location: {
+            name: that.newLocation.name,
+            location_type_id: that.newLocation.locationType.id,
+            parent_id: that.newLocation.parent.id,
+            organization_id: <%= @organization.id %>
+          }
+        },
+        method: "POST",
+        success: function(res){
+          // add new location to tree
+          that.locations.push(res);
+          that.sortedLocations = that.allLocations;
+          that.newLocation = {
+            locationType: {},
+          };
+          that.toggleLocationShow(model);
+        },
+        error: function(err){displayAlert(err)}
+      })
+    },
+    toggleLocationShow(model){
+      var str1 = '#new-'+ model +'-body';
+      var str2 = '#new-location-'+ model ;
+      var first = $(str1).is(':visible') ? str1 : str2;
+      var second = $(str1).is(':visible') ? str2 : str1;
+      console.log('first: ' + first +", second: " + second);
+      $(first).toggle('fast', function(){
+        $(second).toggle('fast', function(){
+        });
+      });
+    },
+    allLocationsWithLocationType: function (lt_id){
+      return this.allLocations.filter(function(el){
+        return el.location_type_id == lt_id;
+      });
+    },
   },
   computed: {
+    allLocationTypes: function(){
+      return flattenNested(this.locationTypes, ['id', 'name', 'location_type_id', 'parent_id']);
+    },
+    allLocations: function (){
+      return flattenNested(this.locations, ['id', 'name', 'location_type_id', 'parent_id']);
+    },
   }
 });
 
@@ -353,6 +458,17 @@ $('.menu-item').on('click', function(){
   $("#"+$(this).attr('id')+"-panel").addClass('active');
 });
 
+// Start monitoring cost change for ordered stock
+$( ".keyup.cost" ).on('click', function(){
+  $("select.keyup").change(function(){
+    console.log("dfhjdhfjdf");
+    stockManagement.orderedStockCost();
+  });
+  $( ".keyup.cost" ).keyup(function(){
+    stockManagement.orderedStockCost();    
+  });
+})
+
 stockManagement.getStockTypes();
 stockManagement.getStockItems();
 stockManagement.getStorages();
@@ -360,7 +476,9 @@ stockManagement.getStockSources();
 stockManagement.getIncomingStocks()
 stockManagement.getStoredItems();
 stockManagement.getCustomers();
-stockManagement.getCustomerOrders()
+stockManagement.getCustomerOrders();
+stockManagement.getLocationTypes();
+stockManagement.getLocations();
 
 $(".date").flatpickr({}); // jQuery
 </script>
