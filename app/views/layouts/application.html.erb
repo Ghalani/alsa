@@ -14,7 +14,7 @@
   <div id="alert-holder" class="">
     <% flash.each do |key, value| %>
       <div class="text-right pad1">
-        <%= content_tag(:div, class: "alert alert-#{key}") do %>
+        <%= content_tag(:span, class: "alert alert-#{key}") do %>
           <span><%= value %></span> <i class="remove icon" onclick="removeAlert()"></i>
         <% end %>
       </div>
