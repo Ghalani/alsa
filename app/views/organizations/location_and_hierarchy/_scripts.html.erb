@@ -95,9 +95,7 @@
           success: function(res){
             that.locationTypes = res;
           },
-          error: function(err){
-            console.log(err.message)
-          }
+          error: function(err){displayAlert(err)}
         });
       },
       getLocations: function(){
@@ -108,9 +106,7 @@
             that.locations = res;
             that.sortedLocations = that.allLocations;
           },
-          error: function(err){
-            console.log(err.message);
-          }
+          error: function(err){displayAlert(err)}
         });
       },
       addRootLocationType: function(){
@@ -139,9 +135,7 @@
             that.toggleNewLocationTypeModal();
             $('#new-location-type-modal input').val("");
           },
-          error: function(err){
-            console.log(err.message)
-          }
+          error: function(err){displayAlert(err)}
         })
       },
       createNewLocation: function(){
@@ -160,15 +154,15 @@
           method: "POST",
           success: function(res){
             // add new location to tree
-            newLocation = {};
+            //newLocation = {};
             that.locations.push(res);
             that.sortedLocations = that.allLocations;
-            that.newLocation = {};
+            that.newLocation = {
+              locationType: {},
+            };
             that.toggleNewLocationModal();
           },
-          error: function(err){
-            console.log(err.message)
-          }
+          error: function(err){displayAlert(err)}
         })
       },
       deleteLocation: function(){
@@ -183,9 +177,7 @@
             that.sortedLocations = that.allLocations;
             that.toggleDeleteLocationModal();
           },
-          error: function(err){
-            console.log(err.message)
-          }
+          error: function(err){displayAlert(err)}
         })
       },
       deleteLocationType: function(){
@@ -200,9 +192,7 @@
             //delete all locations with location_type_id of that.cachedLocationType.id
             that.toggleDeleteLocationTypeModal();
           },
-          error: function(err){
-            console.log(err.message)
-          }
+          error: function(err){displayAlert(err)}
         })
       },
       toggleNewLocationTypeModal: function(){

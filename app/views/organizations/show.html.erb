@@ -31,17 +31,29 @@
 							Add users
 						<% end %>-->
 					</div>			
-					<div class="two wide column">
+					<!--<div class="two wide column">
 						<span class="text3"><%= @organization.labourers.size %></span>
 						<p class="text08">Labourer<%= @organization.labourers.size > 1 ? "s":"" %></p>
-					</div>			
+					</div>			-->
 					<div class="two wide column">
 						<span class="text3"><%= @organization.farmers.size %></span>
 						<p class="text08">Farmer<%= @organization.farmers.size > 1 ? "s":"" %></p>
 					</div>			
 					<div class="two wide column">
 						<span class="text3"><%= @organization.farms.size %></span>
-						<p class="text08">Farm(s)</p>
+						<p class="text08">Farm<%= @organization.farms.size > 1 ? "s":"" %></p>
+					</div>						
+					<div class="two wide column">
+						<span class="text3"><%= @organization.locations.size %></span>
+						<p class="text08">Location<%= @organization.locations.size > 1 ? "s":"" %></p>
+					</div>				
+					<div class="two wide column">
+						<span class="text3"><%= @organization.stock_items.size %></span>
+						<p class="text08">Stock<%= @organization.stock_items.size > 1 ? "s":"" %></p>
+					</div>	
+					<div class="two wide column">
+						<span class="text3"><%= @organization.roles.size %></span>
+						<p class="text08">Role<%= @organization.roles.size > 1 ? "s":"" %></p>
 					</div>						
 				</div>
 				<br>	
@@ -87,6 +99,42 @@
 							<%= image_tag "stock64.png" %>
 							<hr>
 								Stock management
+						</div>
+					<% end %>
+				</div>
+				<div class="column">
+					<%= link_to '#', title:"Coming soon" do %>
+						<div class="card raise-1 card-module hover-raise w200 text-center ripple" data-ripple-color="#c4e5c9">
+							<%= image_tag "finance64.png" %>
+							<hr>
+								Financials
+						</div>
+					<% end %>
+				</div>
+				<div class="column">
+					<%= link_to '#', title:"Coming soon" do %>
+						<div class="card raise-1 card-module hover-raise w200 text-center ripple" data-ripple-color="#c4e5c9">
+							<%= image_tag "crm64.png" %>
+							<hr>
+								Customer relationship
+						</div>
+					<% end %>
+				</div>
+				<div class="column">
+					<%= link_to '#', title:"Coming soon" do %>
+						<div class="card raise-1 card-module hover-raise w200 text-center ripple" data-ripple-color="#c4e5c9">
+							<%= image_tag "analytics64.png" %>
+							<hr>
+								Reporting and analytics
+						</div>
+					<% end %>
+				</div>
+				<div class="column">
+					<%= link_to '#', title:"Coming soon" do %>
+						<div class="card raise-1 card-module hover-raise w200 text-center ripple" data-ripple-color="#c4e5c9">
+							<%= image_tag "task64.png" %>
+							<hr>
+								Task management
 						</div>
 					<% end %>
 				</div>

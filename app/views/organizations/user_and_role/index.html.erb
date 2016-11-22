@@ -94,7 +94,9 @@
 
   <div class="ui small modal" id="new-role-modal">
     <div class="content">
-      <p><input type="text" placeholder="Role name" v-model="newRole.name"></p>
+      <div class="form-group">
+        <input type="text" placeholder="Role name" v-model="newRole.name">
+      </div>
       <hr>
       <p>Permissions</p>
       <p>By checking a property, you are giving a role the ability to do what is checked</p>

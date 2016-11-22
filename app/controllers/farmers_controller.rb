@@ -79,7 +79,6 @@ class FarmersController < ApplicationController
   # DELETE /farmers/1.json
   def destroy
     authorize @farmer
-
     @farmer.destroy
     respond_to do |format|
       format.html { redirect_to farmers_url, notice: 'Farmer was successfully destroyed.' }
