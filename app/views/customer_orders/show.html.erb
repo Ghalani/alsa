@@ -1,4 +1,4 @@
-<div id="stock-management">
+<div id="customer-order">
   <%= render "static_pages/nav" %>
   <div class="green-bg pad1 padb3">
     <h3>Customer order</h3>
@@ -6,7 +6,88 @@
     <%= @customer_order.date_ordered %> <br>
 
   </div>
-  <div class="">
-    iueiureiueierieur
+  <div class="ui grid">
+    <div class="sixteen wide tablet four wide computer column no-pad">
+      <div class="ui grid">
+        <div class="eight wide tablet sixteen wide computer column">
+          <div class="card raise-1 w100p marg-tb">
+            <div class="card-top dark-green-bg2">
+              <h4>
+                Ordered stocks 
+              </h4>
+            </div> 
+            <div v-for="os in orderedStocks" class="list-item">
+              <strong>{{os.stock_item.name}}</strong> ({{os.quantity}}) 
+              <i class="check icon" v-if="os.quantity == os.quantity_requested"></i>
+            </div>
+          </div>
+        </div>
+        <div class="eight wide tablet sixteen wide computer column">   
+          <div class="card raise-1 w100p marg-tb">
+            <div class="card-top dark-green-bg2">
+              <h4>
+                Requested stocks 
+              </h4>
+            </div> 
+            <div v-if="outgoingStocks.length < 1">
+              No item has been requested for this order
+            </div>
+            <div v-for="os in outgoingStocks" class="list-item">
+              <strong>{{os.stock_item.name}}</strong> ({{os.quantity}})
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sixteen wide tablet twelve wide computer column">
+      <div class="card raise-1 w100p marg-tb">
+        <div class="card-top cyan-bg">
+          <h3>Stored items</h3>
+        </div>
+        <table class="ui table selectable">
+          <thead>
+            <tr>
+              <th >Name</th>
+              <th>Quantity</th>
+              <th >Storage</th>
+              <th >location</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="ss in storedStocks" v-if="ss.remaining > 0 && orderedStocksIds.includes(ss.stock_item.id)" class="list-item" @click="setCache(ss); toggleNewModal('outgoing-stock')">
+              <td>{{ss.stock_item.name}}</td>
+              <td>{{ss.remaining}}</td>
+              <td>{{ss.storage.name}}</td>
+              <td>{{findLocationById(ss.storage.location_id).name}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="new-outgoing-stock-modal" class="ui small modal">
+    <div class="content" v-if="cache.stock_item">
+      <div class="form-group" v-if="Boolean(cache.storage)">
+        <label>{{cache.remaining}} of <strong>{{cache.stock_item.name}}</strong> remaining in {{cache.storage.name}}</label>
+      </div>
+      <div class="form-group">
+        <label>Ordered Stock</label> <br>
+        <select v-model="newOutgoingStock.ordered_stock_id" class="classic">
+          <option v-for="os in orderedStocks" v-bind:value="os.id" v-if="os.stock_item.id == cache.stock_item.id">
+            {{os.stock_item.name}} ({{os.quantity - os.quantity_requested}} needed)  
+          </option>
+        </select>       
+      </div>
+      <div class="form-group">
+        <label>Quantity to requested</label> <br>
+        <input type="number" v-model="newOutgoingStock.quantity" class="classic">
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui button green-bg" @click="addOutgoingStocks()">Add</div>
+      <div class="ui cancel button">Cancel</div>
+    </div>
   </div>
 </div>
+<%= render 'scripts' %>

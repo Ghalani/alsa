@@ -29,6 +29,8 @@ Rails.application.routes.draw do
     resources :stored_stocks
     resources :customers
     resources :customer_orders
+    resources :outgoing_stocks
+    resources :ordered_stocks
   end
   
 

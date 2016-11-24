@@ -61,6 +61,6 @@ class OutgoingStocksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def outgoing_stock_params
-      params.require(:outgoing_stock).permit(:organization_id, :stock_item_id, :stock_source_id, :receiver_id, :quantity, :arrived_at)
+      params.require(:outgoing_stock).permit(:organization_id, :ordered_stock_id, :stock_item_id, :storage_id, :stored_stock_id, :quantity, :requster_id)
     end
 end

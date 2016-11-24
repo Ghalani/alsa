@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161121160842) do
+ActiveRecord::Schema.define(version: 20161124110156) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,11 +31,11 @@ ActiveRecord::Schema.define(version: 20161121160842) do
     t.integer  "organization_id"
     t.integer  "customer_id"
     t.integer  "status",          default: 0
-    t.datetime "date_ordered"
+    t.datetime "date_ordered",    default: '2016-11-23 11:24:25'
     t.integer  "deliverer_id"
     t.datetime "date_delivered"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
   end
 
   add_index "customer_orders", ["customer_id"], name: "index_customer_orders_on_customer_id", using: :btree
@@ -188,10 +188,12 @@ ActiveRecord::Schema.define(version: 20161121160842) do
     t.integer  "releaser_id"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+    t.integer  "stored_stock_id"
   end
 
   add_index "outgoing_stocks", ["organization_id"], name: "index_outgoing_stocks_on_organization_id", using: :btree
   add_index "outgoing_stocks", ["stock_item_id"], name: "index_outgoing_stocks_on_stock_item_id", using: :btree
+  add_index "outgoing_stocks", ["stored_stock_id"], name: "index_outgoing_stocks_on_stored_stock_id", using: :btree
 
   create_table "roles", force: :cascade do |t|
     t.integer  "organization_id"

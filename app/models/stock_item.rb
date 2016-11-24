@@ -11,4 +11,7 @@ class StockItem < ActiveRecord::Base
   validates :stock_type_id, presence: true
   validates_uniqueness_of :name, scope: :organization_id
 
+  def as_json(options = {})
+    super(options.merge({ except: [:updated_at, :created_at] }))
+  end
 end

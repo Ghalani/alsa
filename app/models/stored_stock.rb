@@ -4,13 +4,17 @@ class StoredStock < ActiveRecord::Base
   belongs_to  :stock_item
   belongs_to  :incoming_stock
   has_many    :stored_stocks
+  has_many    :outgoing_stocks
 
   def remaining
-    self.quantity - self.quantity_taken
+    self.quantity - self.quantity_requested
+  end
+
+  def quantity_requested
+    self.outgoing_stocks.inject(0){|sum, outgoing_stock| sum + outgoing_stock.quantity }
   end
 
   def save_and_update_icoming_quantity_stored
-    puts "transaction **"
     transaction do
       incoming_remaining = self.incoming_stock.remaining
       begin

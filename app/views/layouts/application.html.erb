@@ -2,10 +2,13 @@
 <html>
 <head>
   <title>Alsa</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#39b54a">
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag params[:controller] %>
-  <%= stylesheet_link_tag params[:controller] %>
+  <%= javascript_include_tag params[:controller]  if javascript_exists?(params[:controller]) %>
+  <%= stylesheet_link_tag params[:controller] if stylesheet_exists?(params[:controller]) %>
   <%= render partial: 'layouts/favicon' %>
   <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/components/icon.min.css'>
   <%= csrf_meta_tags %>

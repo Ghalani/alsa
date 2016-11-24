@@ -480,5 +480,13 @@ stockManagement.getCustomerOrders();
 stockManagement.getLocationTypes();
 stockManagement.getLocations();
 
-$(".date").flatpickr({}); // jQuery
+$(".date").flatpickr({
+  enableTime: true,
+  maxDate: new Date(),
+  disable: [
+    // function(date){ // disable odd days
+    //     return date.getDate()%2 > 0;
+    // }
+  ]
+}); // jQuery
 </script>

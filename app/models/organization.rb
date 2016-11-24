@@ -40,6 +40,10 @@ class Organization < ActiveRecord::Base
 	 self.members
 	end
 
+	def as_json(options = {})
+    super(options.merge({ except: [:updated_at, :created_at] }))
+  end
+	
 	private
 		def downcase_fields
 			self.name.downcase!

@@ -1,0 +1,98 @@
+<script>
+  var customerOrder = new Vue({
+    el: "#customer-order",
+    data: {
+      cache: {},
+      organization: <%= @organization.to_json.html_safe %>,
+      customerOrder: <%= @customer_order.to_json.html_safe %>,
+      orderedStocks: {},
+      storedStocks: [],
+      locations: <%= @organization.locations.to_json.html_safe %>,
+      newOutgoingStock: {},
+    },
+    methods: {
+      setCache(object){
+        this.cache = object
+      },
+      getStoredStocks(){
+        var that = this;
+        $.ajax({
+          url: "/organizations/<%= @organization.id %>/stored_stocks.json",
+          success: function(res){
+            that.storedStocks = res;
+          }, error: function(err){displayAlert(err)}
+        });
+      },
+      getOrderedStocks(){
+        var that = this;
+        $.ajax({
+          url: "/organizations/<%= @organization.id %>/ordered_stocks.json?customer_order_id="+ this.customerOrder.id,
+          success: function(res){
+            that.orderedStocks = res;
+          }, error: function(err){displayAlert(err)}
+        });
+      },
+      addOutgoingStocks(){
+        var that = this;
+        this.newOutgoingStock.organization_id = this.organization.id;
+        this.newOutgoingStock.stock_item_id = this.cache.stock_item.id;
+        this.newOutgoingStock.stored_stock_id = this.cache.id;
+        this.newOutgoingStock.storage_id = this.cache.storage.id;
+        this.newOutgoingStock.requester_id = <%= current_user.id %>;
+        $.ajax({
+          url: "/organizations/<%= @organization.id %>/outgoing_stocks.json",
+          data: {outgoing_stock: this.newOutgoingStock},
+          method: "POST",
+          success: function(res){
+            //that.outgoingStocks.push(res);
+            var orderedStock = that.findOrderedStockById(that.newOutgoingStock.ordered_stock_id);
+            var storedStock = that.findStoredStockById(that.newOutgoingStock.stored_stock_id);
+            orderedStock.outgoing_stocks.push(res);
+            orderedStock.quantity_requested = orderedStock.quantity_requested + res.quantity;
+            storedStock.remaining = storedStock.remaining - res.quantity;
+            that.cache = {};
+            that.newOutgoingStock = {};
+            that.toggleNewModal('outgoing-stock');
+          }, error: function(err){displayAlert(err)}
+        });
+      },
+      findLocationById(locId){
+        return this.locations.find(function(el){
+          return el.id == locId;
+        })
+      },
+      findOrderedStockById(osId){
+        return this.orderedStocks.find(function(el){
+          return el.id == osId;
+        })
+      },
+      findStoredStockById(osId){
+        return this.storedStocks.find(function(el){
+          return el.id == osId;
+        })
+      },
+      toggleNewModal(model){
+        $('#new-'+ model + '-modal').modal('toggle');
+      }
+    },
+    computed: {
+      orderedStocksIds(){
+        return this.orderedStocks.map(function(el){
+          return el.stock_item.id
+        });
+      },
+      outgoingStocks(){
+        var out = [];
+        if (Boolean(this.orderedStocks)){ 
+          this.orderedStocks.forEach(function(el){
+            out = out.concat( el.outgoing_stocks )
+          })
+        }
+        return out;
+      }
+    }
+  });
+
+  customerOrder.getStoredStocks();
+  customerOrder.getOrderedStocks();
+</script>

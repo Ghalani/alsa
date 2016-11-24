@@ -1,5 +1,5 @@
 <div class="ui grid">
-  <div class="ten wide column h400-min grey-border-right">
+  <div class="twelve wide computer sixteen wide tablet column h400-min grey-border-right">
     <div id="new-incoming-stock-button" class="fab fab-br raise-3" @click="toggleNewIncomingStock()"><i class="ui add icon"></i></div>
     <div id="new-incoming-stock" hidden>
       <span class="right-icon-grey" @click="toggleNewIncomingStock()"><i class="ui remove icon"></i></span>
@@ -56,7 +56,7 @@
       <table-incoming-stock :stocks="incomingStocks"></table-incoming-stock>
     </div>
   </div>
-  <div class="six wide column">
+  <div class="four wide computer sixteen wide tablet column">
     <h4>Sources (Suppliers)
       <span @click="toggleNewStockSourceModal()" class="right-icon-grey"><i class="plus icon"></i></span>
     </h4>
