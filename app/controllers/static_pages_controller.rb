@@ -10,6 +10,7 @@ class StaticPagesController < ApplicationController
 		@users = @user.organizations.collect{|o| o.users}.flatten
 		@orgs = @user.get_member_orgs
 		@countries = Country.all
+		@currencies = Currency.all
 		respond_to do |f|
 			f.html
 			f.json {

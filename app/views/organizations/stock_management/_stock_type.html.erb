@@ -10,7 +10,8 @@
     </div>            
     <div v-if="stockTypes.length > 0">
       <div v-for="st in stockTypes" class="list-item" @click="setCache(st); toggleShowModal('show-stock-type-modal')">
-      <strong>{{st.name}}</strong> ({{st.unit}})
+      <div>{{st.name}}</div> 
+      <div class="text08 grey-text1">{{st.unit}} </div>
       </div>
     </div>
   </div>

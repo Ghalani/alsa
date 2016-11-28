@@ -8,7 +8,7 @@ class IncomingStock < ActiveRecord::Base
   validates :organization_id, presence: true
   validates :stock_item_id, presence: true
   validates :arrived_at, presence: true
-  before_save :validate_not_future_date
+  validate :validate_not_future_date
 
   def quantity_stored
     out = 0;
@@ -23,10 +23,10 @@ class IncomingStock < ActiveRecord::Base
   end
 
 
-  private
+  #private
     def validate_not_future_date
       begin
-        raise unless (Time.parse(self.arrived_at) <= Time.now)
+        raise unless (self.arrived_at <= Time.now)
         true
       rescue 
         errors.add("Datetime received", "must be less than current date and time.")

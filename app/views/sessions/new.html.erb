@@ -1,24 +1,22 @@
-<div id="login" class="container">
-  <div class="profile">
-    <button class="profile__avatar" id="toggleProfile">
-      <%= image_tag 'ghalani_100.jpg', class:'circle' %>
-    </button>
-    <div class="profile__form">
-        <%= form_tag sessions_path do %>
-          <div class="profile__fields">
-            <div class="field">
-            <%= text_field_tag :email, "", class:"input", required: true %>
-              <label for="fieldUser" class="label">Username</label>
-            </div>
-            <div class="field">
-              <%= password_field_tag :password,"", class: "input", required: true %>
-              <label for="fieldPassword" class="label">Password</label>
-            </div>
-            <div class="profile__footer">
-                <%= submit_tag 'Log in', class:"btn btn-pink btn-block text-uppercase waves-effect waves-light" %>
-            </div>
-          </div>
-        <% end %>
-     </div>
-  </div>
+<div class="h100p w100p theme-grad absolute">
+</div>
+<div>
+  <h1>..</h1>
+  <%= image_tag 'ghalani_dark_trans_600.png', class:"absolute brand-fade w500 wmax70" %>
+  <%= form_tag sessions_path do %>
+    <div class="card raise-5 hcenter w400 wmax90 top-marg-20vh">
+      <div class="form-group">
+        <label class="label">Email</label><br>
+        <%= text_field_tag :email, "", class:"input classic", placeholder:"eg. name@website.com", required: true %>
+      </div>
+      <div class="form-group">
+        <label class="label">Password</label><br>
+        <%= password_field_tag :password,"", class: "input classic", required: true %>
+      </div>
+      <!--<div class="form-group">
+      </div>-->
+      <%= submit_tag 'Log in', hidden:"true" %>
+      <div class="overflow-submit dark-green-bg pad1 hand ripple" onclick="document.forms[0].submit();">LOG IN</div>
+    </div>
+  <% end %>
 </div>

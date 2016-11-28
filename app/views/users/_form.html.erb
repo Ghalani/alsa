@@ -1,49 +1,50 @@
 <%= form_for(@user) do |f| %>
-  <% if @user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+  <div class="card raise-5 hcenter w400 wmax90 top-marg-20vh">
+    <% if @user.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
 
-      <ul>
-      <% @user.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+        <ul>
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
 
-  <div class="form-group ">
-    <div class="w100p-rounded">
+    <div class="form-group ">
       <%= f.hidden_field :app_role, value: "company" %>
-      <%= f.text_field :email, class:"form-control", placeholder:"Email", required: true %>
+      <label>Email</label><br>
+      <%= f.text_field :email, class:"classic", placeholder:"eg. name@website.com", required: true %>
     </div>
-  </div>
 
-  <div class="form-group ">
-    <div class="w100p-rounded">
-      <%= f.text_field :fname, class:"form-control", placeholder:"First name", required: true %>
+    <div class="form-group ">
+      <label>First name</label><br>
+      <%= f.text_field :fname, class:"classic", placeholder:"", required: true %>
     </div>
-  </div>
 
-  <div class="form-group ">
-    <div class="w100p-rounded">
-      <%= f.text_field :lname, class:"form-control", placeholder:"Last name", required: true %>
+    <div class="form-group ">
+      <label>Last name</label><br>
+      <%= f.text_field :lname, class:"classic", placeholder:"", required: true %>
     </div>
-  </div>
 
-  <div class="form-group">
-    <div class="w100p-rounded">
-      <%= f.password_field :password, class: "form-control", placeholder: 'Password', id:'pwd1', required: true %>
+    <div class="form-group">
+      <label>Password</label><br>    
+      <%= f.password_field :password, class: "classic", placeholder: '', id:'pwd1', required: true %>
     </div>
-  </div>
 
-  <div class="form-group">
-    <div class="w100p-rounded">
-      <%= f.password_field :password_confirmation, class: "form-control", placeholder: 'Confirm password', required: true, id:'pwd2' %>
+    <div class="form-group">
+      <label>Confirm password</label><br>    
+      <%= f.password_field :password_confirmation, class: "classic", placeholder: '', required: true, id:'pwd2' %>
     </div>
-  </div>
-  <%= f.hidden_field :role, value: "admin" %>
+    <%= f.hidden_field :role, value: "admin" %>
+    <div class="text-center">
+      <p>Already have account? <a href="/login" class="text-primary m-l-5"><b>Sign In</b></a></p>
+    </div>
 
-  <div class="form-group text-center">
-    <%= f.submit 'REGISTER', onclick:"return verPass();", class:"ui button green-bg" %>
+    <!--<div class="form-group text-center">
+      <%= f.submit 'REGISTER', onclick:"return verPass();", class:"ui button accent-bg classic pad1" %>
+    </div>-->
+    <div class="overflow-submit dark-green-bg pad1 hand ripple" onclick="return verPass(); document.forms[0].submit();">REGISTER</div>
   </div>
 <% end %>

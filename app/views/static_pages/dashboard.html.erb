@@ -34,7 +34,8 @@
 	    organizations: [
 				{name:"dfjdfhdjfhdjfhdfjh"},
 	    ],
-			countries: <%= @countries.to_json.html_safe %>
+			countries: <%= @countries.to_json.html_safe %>,
+			currencies: <%= @currencies.to_json.html_safe %>,
 	  },
 	  methods:{
 	  	getOrgs: function(){

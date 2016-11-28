@@ -4,35 +4,37 @@
     <div id="new-incoming-stock" hidden>
       <span class="right-icon-grey" @click="toggleNewIncomingStock()"><i class="ui remove icon"></i></span>
       <br>
-      <div class="form-group">
-        <label>Stock type</label><br>
+      <div class="form-group">        
         <div v-if="stockItems.length < 1" class="ui button accent-bg" @click="toggleNewStockItemModal()">
           Create new Stock Item
         </div>
         <div class="ui grid">
-          <div class="twelve wide column">
+          <div class="row"><label>Stock type</label></div>
+          <div class="twelve wide column no-pad">
             <select v-if="stockItems.length > 0" v-model="newIncomingStock.stock_item_id" class="classic">
               <option v-for="stockItem in stockItems" v-bind:value="stockItem.id">{{stockItem.name}}</option>
             </select>
           </div>
-          <div class="four wide column">
-            <div class="ui button accent-bg" @click="toggleNewStockTypeModal()">Add</div>                        
+          <div class="four wide column no-pad">
+            or <div class="ui button accent-bg" @click="toggleNewStockTypeModal()">Add</div>                        
           </div>
         </div>
       </div>
       <div class="form-group">
-        <label>Source (From who?)</label><br>
         <div v-if="stockSources.length < 1" class="ui button accent-bg" @click="toggleNewStockSourceModal()">
           Create new Stock source
         </div>
         <div class="ui grid">
-          <div class="twelve wide column">
+          <div class="row">
+            <label>Source (From who?)</label>
+          </div>
+          <div class="twelve wide column no-pad">
             <select v-if="stockSources.length > 0" v-model="newIncomingStock.stock_source_id" class="classic">
               <option v-for="stockSource in stockSources" v-bind:value="stockSource.id">{{stockSource.name}}</option>
             </select>
           </div>
-          <div class="four wide column">
-            <div class="ui button accent-bg" @click="toggleNewStockSourceModal()">Add</div>
+          <div class="four wide column no-pad">
+            or <div class="ui button accent-bg" @click="toggleNewStockSourceModal()">Add</div>
           </div>
         </div>
       </div>      

@@ -8,13 +8,14 @@ class CustomerOrder < ActiveRecord::Base
   
   validates :customer_id, presence: true
   validates :date_ordered, presence: true
-  before_save :validate_not_future_date
+  #before_save :validate_not_future_date
+  validate :validate_not_future_date
   validates :organization_id, presence: true
 
-  private
+  #private
     def validate_not_future_date
       begin
-        raise unless (Time.parse(self.date_ordered) <= Time.now)
+        raise unless (self.date_ordered <= Time.now)
         true
       rescue
         errors.add("Datetime ordered", "must be less than current date and time." )

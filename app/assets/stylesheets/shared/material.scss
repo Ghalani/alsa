@@ -9,7 +9,7 @@ $dark-green-text: #245013;
 $theme-red: #db2828;
 
 .green-bg{  background: $theme-color !important; color: $theme-white !important;}
-.dark-green-bg{  background: $theme-color-dark !important;}
+.dark-green-bg{  background: $theme-color-dark !important; color: #fff !important;}
 .dark-green-bg2{  background: $theme-color-dark2 !important; color: #fff !important;}
 .accent-bg{  background: $theme-accent !important; color:#fff !important;}
 .red-bg{  background: $theme-red !important; color:#fff !important;}
@@ -55,9 +55,9 @@ $theme-red: #db2828;
   }
 
   .card-image{
-    margin: -10px;
+    margin: -1rem;
     overflow: hidden;
-    border-radius: 3px 3px 0;
+    border-radius: 3px 3px 0 0;
     img{
       width: 100%;
     }
@@ -167,11 +167,6 @@ $theme-red: #db2828;
 
 .theme-text1{ color: $theme-color;}
 .theme-text2{ color: $theme-color-dark;}
-.org-card{
-  .card-content{
-    font-size: 2em;
-  }
-}
 
 .menu{
   border-radius: 0 !important;

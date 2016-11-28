@@ -12,7 +12,9 @@ class OutgoingStock < ActiveRecord::Base
       remaining = self.stored_stock.remaining
       begin
         if remaining >= self.quantity
+          customer_order = self.ordered_stock.customer_order
           raise StandardError, "total request order is more than ordered quantity" unless is_enough?
+          customer_order.active! if customer_order.pending?
           save!
           #self.stored_stock.quantity_taken += self.quantity
         else

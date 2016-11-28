@@ -7,6 +7,7 @@
 	    	<th>Item</th>
 		    <th>Storage</th>
 		    <th>Quantity</th>
+		    <th>Remaining</th>
 		    <th></th>
 		  </tr>
 	  </thead>
@@ -15,6 +16,7 @@
 			  <td>{{si.stock_item.name}}</td>
 			  <td>{{si.storage.name}}</td>
 			  <td>{{si.quantity}}</td>
+			  <td>{{si.remaining}}</td>
 			  <td></td>
 			</tr>
 		</tbody>
@@ -30,8 +32,9 @@
         No Storage (warehouse) on your system
       </div>            
       <div v-if="storages.length > 0">
-        <div class="list-item" v-for="st in storages" @click="setCache(st); toggleShowModal('show-storage-modal')">
-          {{st.name}}
+        <div class="list-item" v-for="st in storages" @click="setCache(st); toggleShowModal('show-storage-modal')">      
+          <div class="">{{st.name}} </div>
+          <div class="text08 grey-text1" v-if="Boolean(st.location)">{{st.location.name}} </div>
         </div>
       </div>
     </div>
@@ -55,7 +58,6 @@
     </div>
     <div id="new-location-storage" hidden>
       <div class="fab fab-tr raise-3" @click="toggleLocationShow('storage')"><i class="arrow left icon"></i></div>
-      dfkjdkfjdfkjdfkjdfkjdfkjdfkj
       <h3>New location</h3><hr>
       <div class="form-group">
         <label>Location type</label> <br>
@@ -89,9 +91,9 @@
       <label>Name</label><br>
       {{cache.name}} 
     </div>
-    <div class="form-group">
+    <div class="form-group" v-if="cache.location">
       <label>Location</label><br>
-      {{cache.cost}} 
+      {{cache.location.name}} 
     </div>
   </div>
   <div class="actions">

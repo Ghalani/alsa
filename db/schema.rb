@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161124110156) do
+ActiveRecord::Schema.define(version: 20161128195408) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,18 @@ ActiveRecord::Schema.define(version: 20161124110156) do
     t.string   "phonecode"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "currencies", force: :cascade do |t|
+    t.string   "name"
+    t.string   "iso_code"
+    t.string   "iso_numeric"
+    t.string   "symbol"
+    t.string   "subunit"
+    t.string   "seperator",   default: "."
+    t.string   "delimeter",   default: ","
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   create_table "customer_orders", force: :cascade do |t|
@@ -170,9 +182,14 @@ ActiveRecord::Schema.define(version: 20161124110156) do
     t.integer  "user_id"
     t.string   "name"
     t.text     "bio"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.integer  "country_id"
+    t.integer  "currency_id"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
   end
 
   add_index "organizations", ["country_id"], name: "index_organizations_on_country_id", using: :btree
