@@ -83,7 +83,7 @@
       },
       outgoingStocks(){
         var out = [];
-        if (Boolean(this.orderedStocks)){ 
+        if (Boolean(this.orderedStocks.length > 0)){ 
           this.orderedStocks.forEach(function(el){
             out = out.concat( el.outgoing_stocks )
           })
