@@ -437,6 +437,20 @@ var stockManagement = new Vue({
         return el.location_type_id == lt_id;
       });
     },
+    updateModelImage(modelName, image){
+      $.ajax({
+        url:"/organizations/<%= @organization.id %>/"+modelName+"s/"+cache.id,
+        method: "PATCH",
+        data: {
+          modelName: {
+            image: image
+          }
+        },
+        success: function(){},
+        error: function(err){displayAlert(err)}
+      })
+      //toggleActiveModal();
+    },
   },
   computed: {
     allLocationTypes: function(){
@@ -468,6 +482,33 @@ $( ".keyup.cost" ).on('click', function(){
     stockManagement.orderedStockCost();    
   });
 })
+
+function toggleActiveModal(){
+  $('.modal').each(function(el){
+    if($(this).is(':visible')){
+      $(this).modal('toggle');
+      return true;
+    }
+  });
+}
+
+function previewImage(id) {
+  var oFReader = new FileReader();
+  oFReader.readAsDataURL(document.getElementById(id + "-upload-image").files[0]);
+  oFReader.onload = function (oFREvent) {
+    document.getElementById(id + "-upload-preview").src = oFREvent.target.result;
+  };
+};
+
+function switchTab(id){
+  var first = $('#'+ id +'-tab-1').is(':visible') ? '#'+ id +'-tab-1' : '#'+ id +'-tab-2';
+  var second = $('#'+ id +'-tab-1').is(':visible') ? '#'+ id +'-tab-2' : '#'+ id +'-tab-1';
+  console.log('first: ' + first +", second: " + second);
+  $(first).toggle('fast', function(){
+    $(second).toggle('fast', function(){
+    });
+  });
+}
 
 stockManagement.getStockTypes();
 stockManagement.getStockItems();

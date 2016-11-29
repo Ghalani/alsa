@@ -14,7 +14,15 @@ $theme-red: #db2828;
 .accent-bg{  background: $theme-accent !important; color:#fff !important;}
 .red-bg{  background: $theme-red !important; color:#fff !important;}
 .grey-bg{ background: #ededed !important;}
-
+.no-bg{ 
+  background: none !important;
+  &.button{
+    color: $theme-accent !important;
+    &:hover{
+      background: $grey-highlight !important;
+    }
+  }
+}
 .stat-bar{
   padding: 1rem;
   color: #e6fcdd;
