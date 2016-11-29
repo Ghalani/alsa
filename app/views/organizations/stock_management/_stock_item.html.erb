@@ -52,18 +52,26 @@
 
 <div id="show-stock-item-modal" class="ui small modal">
   <div class="content">
-    <h3>Stock item details</h3><hr>
-    <div class="form-group">
-      <label>Name</label><br>
-      {{cache.name}} 
-    </div>
-    <div class="form-group">
-      <label>Cost</label><br>
-      {{cache.cost}} 
-    </div>
-    <div class="form-group">
-      <label>Minimum quantity</label><br>
-      {{cache.minimum_quantity}} 
+    <div class="ui stackable two column grid">
+      <div class="column">
+        <h3>Stock item details</h3><hr>
+        <div class="form-group">
+          <label>Name</label><br>
+          {{cache.name}} 
+        </div>
+        <div class="form-group">
+          <label>Cost</label><br>
+          {{cache.cost}} 
+        </div>
+        <div class="form-group">
+          <label>Minimum quantity</label><br>
+          {{cache.minimum_quantity}} 
+        </div>
+      </div>
+      <div class="column text-center">
+        <%= image_tag 'trolley128.png' %> <br>
+        <div class="ui button raise-2 accent-bg ripple">change</div>
+      </div>
     </div>
   </div>
   <div class="actions">
