@@ -58,7 +58,7 @@
               <td>{{ss.stock_item.name}}</td>
               <td>{{ss.remaining}}</td>
               <td>{{ss.storage.name}}</td>
-              <td>{{findLocationById(ss.storage.location_id).name}}</td>
+              <td>{{Boolean(ss.storage.location_id && findLocationById(ss.storage.location_id)) ? findLocationById(ss.storage.location_id).name : "---"}}</td>
             </tr>
           </tbody>
         </table>
