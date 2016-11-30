@@ -34,7 +34,7 @@ class StockItemsController < ApplicationController
   def update
     respond_to do |format|
       if @stock_item.update(stock_item_params)
-        #format.html { redirect_to @stock_item, notice: 'Stock type was successfully updated.' }
+        format.html { redirect_to :back }
         format.json { render :show, status: :ok, location: @stock_item }
       else
         #format.html { render :edit }

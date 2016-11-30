@@ -437,19 +437,17 @@ var stockManagement = new Vue({
         return el.location_type_id == lt_id;
       });
     },
-    updateModelImage(modelName, image){
-      $.ajax({
-        url:"/organizations/<%= @organization.id %>/"+modelName+"s/"+cache.id,
-        method: "PATCH",
-        data: {
-          modelName: {
-            image: image
-          }
-        },
-        success: function(){},
-        error: function(err){displayAlert(err)}
-      })
-      //toggleActiveModal();
+    updateModelImage(imageId){
+      if (!Boolean(document.getElementById(imageId).files[0])){
+        appendAlert('Please attached image');
+        removeAlerts();
+        return false;
+      }
+      
+      console.log("sending image to server...")
+      var form = $('#stock-item-show-image-form');
+      form.attr('action',"/organizations/<%= @organization.id %>/stock_items/"+ this.cache.id);
+      form.submit();
     },
   },
   computed: {

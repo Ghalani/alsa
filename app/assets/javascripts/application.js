@@ -33,14 +33,18 @@ $(document).on('ready', function(){
 
 function displayAlert(err){
     console.log(err);
-    var json = JSON.parse(err.responseText);
-    var keys = Object.keys(json);
-    var values = Object.values(json);
-    $.each(keys, function(pos, key){
-        $.each(values[pos], function(pos2, val){
-            appendAlert(key +" : "+ val);
-        })
-    });
+    try{
+        var json = JSON.parse(err.responseText);
+        var keys = Object.keys(json);
+        var values = Object.values(json);
+        $.each(keys, function(pos, key){
+            $.each(values[pos], function(pos2, val){
+                appendAlert(key +" : "+ val);
+            })
+        });
+    }catch(err){
+        appendAlert("Couldn't complete operation");
+    }
     removeAlerts();
 }
 

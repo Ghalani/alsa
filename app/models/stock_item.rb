@@ -12,7 +12,7 @@ class StockItem < ActiveRecord::Base
   validates   :stock_type_id, presence: true
   validates_uniqueness_of :name, scope: :organization_id
   
-  has_attached_file :image, styles: { large: "600X600#", medium: "300x300#", thumb: "100x100#" }, default_url: "/images/:style/organization.png"
+  has_attached_file :image, styles: { large: "600X600#", medium: "300x300#", thumb: "100x100#" }, default_url: "/images/:style/trolley.png"
   validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
 
 	def image_url
@@ -31,6 +31,6 @@ class StockItem < ActiveRecord::Base
   private
 
     def destroy_original_image
-      File.unlink(self.photo.path)
+      #File.unlink(self.image.path)
     end
 end

@@ -72,26 +72,33 @@
 
         <div id="stock-item-show-tab-1" class="ui tab active">
           <div class="w200 center relative">
-            <%= image_tag 'trolley128.png', class:"circle w128 h128" %> <br>
+            <!--<%= image_tag 'trolley128.png', class:"circle w128 h128"  %> -->
+            <img v-if="cache.image_url" v-bind:src="cache.image_url.medium" class="circle w128 h128"><br>
           </div>
           <div class="ui no-bg button ripple hover-raise" 
             onclick="switchTab('stock-item-show')">change</div>
         </div>
         <div id="stock-item-show-tab-2" class="ui tab">
-          <div class="w200 center relative">
-            <div class="circle no-bg button fab-tr text15 pad02" 
-              onclick="$('#stock-item-show-upload-image').click();">
-              <i class="ui photo icon no-marg"></i>
+          <!--<form id="stock-item-show-image-form" action="#" method="post">-->
+          <%= form_tag('#', method: :put, id:"stock-item-show-image-form", multipart: true) do %>
+            <!--<input type="hidden" name="_method" value="put" />-->
+            <div class="w200 center relative">
+              <div class="circle no-bg button fab-tr text15 pad02" 
+                onclick="$('#stock-item-show-upload-image').click();">
+                <i class="ui photo icon no-marg"></i>
+              </div>
+              <%= image_tag 'trolley128.png', id:"stock-item-show-upload-preview", class:"circle w128 h128" %> <br>
+              <input type="file" name="stock_item[image]" id="stock-item-show-upload-image" 
+              onchange="previewImage('stock-item-show')" hidden>
             </div>
-            <%= image_tag 'trolley128.png', id:"stock-item-show-upload-preview", class:"circle w128 h128" %> <br>
-            <%= file_field_tag :image, id:"stock-item-show-upload-image", onchange:"previewImage('stock-item-show')", hidden:true, "v-model":"cache.image" %>
-          </div>
-          <div class="ui no-bg button ripple hover-raise text-center"
-            @click="updateModelImage('stock_item', $('#stock-item-show-upload-image').files[0])">
-            <i class="check icon no-marg"></i>
-          </div>
-          <div class="ui no-bg button ripple hover-raise text-center"
-             onclick="switchTab('stock-item-show')"><i class="delete icon no-marg"></i></div>
+            <div class="ui no-bg button ripple hover-raise text-center"
+              @click="updateModelImage('stock-item-show-upload-image')">
+              <i class="check icon no-marg"></i>
+            </div>
+            <div class="ui no-bg button ripple hover-raise text-center"
+              onclick="switchTab('stock-item-show')"><i class="delete icon no-marg"></i></div>
+          </form>
+          <% end %>
         </div>
       </div>
     </div>
