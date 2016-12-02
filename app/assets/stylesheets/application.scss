@@ -86,6 +86,7 @@ body{background: #f5f5f5;}
 .h700{height: 700px !important;}
 .h800{height: 800px !important;}
 .h400-min{min-height: 400px !important;}
+.scroll-y{overflow-y: scroll;}
 
 .w90p{
   width: 90%;
@@ -104,6 +105,8 @@ body{background: #f5f5f5;}
 
 .h50p{ height: 50% !important;}
 .h100p{ height: 100% !important;}
+.h50p-max{max-height: 50% !important;}
+.h400-max{ max-height: 400px !important;}
 
 .pad1{padding: 1rem !important;}
 .pad05{padding: 0.5rem !important;}

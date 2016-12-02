@@ -1,5 +1,7 @@
 class FarmerPolicy
-	attr_reader :current_user, :model
+	attr_reader :current_user, :model  
+  before_filter :set_organization, except: [:index?]
+
 
 	def initialize(current_user, model)
     @current_user = current_user
@@ -7,11 +9,13 @@ class FarmerPolicy
   end
 
   def index?
-    verify {"index"}
+    # verify {"index"}
+    @organization = @farmer
+    (@organization.user == @current_user) || @current_user.is_member?(@organization)
   end
 
   def new?
-    verify {"new"}
+    verify {"create"}
   end
 
   def create?
@@ -19,16 +23,15 @@ class FarmerPolicy
   end
 
   def edit?
-    verify {"edit"}
-
+    verify {"create"}
   end
 
   def show?
-  	verify {"show"}
+  	verify {"create"}
   end
 
   def update?
-    verify {"update"}
+    verify {"create"}
   end
 
   def destroy?
@@ -36,20 +39,30 @@ class FarmerPolicy
   end
 
   def verify(&block)
-    if (@current_user.app_role == "company")
-      return true
+    # if (@current_user.app_role == "company")
+    #   return true
+    # end
+    return true if @organization.user == @current_user
+      
+    role = @current_user.org_role(@organization)
+    begin
+      return true if role.permissions['farmers'][block.call]      
+    rescue
+      false
     end
-    
-    role = @current_user.org_role(@farmer.organization)
-    if (role)
-      # if user is allowed to CREATE, he should be allowed to goto NEW, and UPDATE
-      method = ((block.call == "new") || (block.call == "update")) ? blobck.call : "create"
-      role.permissions &&
-      role.permissions > 0 && 
-      role.permissions['farmers'] && 
-      role.permissions['farmers'][method]
-    else 
-      return false
-    end
+    # if (role)
+    #   # if user is allowed to CREATE, he should be allowed to goto NEW, and UPDATE
+    #   # method = ((block.call == "new") || (block.call == "update")) ? blobck.call : "create"
+    #   role.permissions &&
+    #   role.permissions > 0 && 
+    #   role.permissions['farmers'] && 
+    #   role.permissions['farmers'][method]
+    # else 
+    #   return false
+    # end
+  end
+  
+  def set_organization
+    @organization = @farmer.organization
   end
 end

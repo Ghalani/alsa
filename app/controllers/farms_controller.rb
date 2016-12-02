@@ -7,6 +7,7 @@ class FarmsController < ApplicationController
   def index
     respond_to do |format|
       if @organization
+        authorize @organization
         if params[:farmer_id]
           @farms = Farmer.find(params[:farmer_id]).farms
         else
@@ -24,10 +25,12 @@ class FarmsController < ApplicationController
   # GET /farms/1
   # GET /farms/1.json
   def show
+    authorize @farm
   end
 
   # GET /farms/new
   def new
+    authorize @organization    
     @farm = Farm.new
   end
 
@@ -40,6 +43,7 @@ class FarmsController < ApplicationController
   def create
     @farm = Farm.new(farm_params)
     @farm.organization = @organization
+    authorize @farm    
 
     respond_to do |format|
       if @farm.save
@@ -55,6 +59,8 @@ class FarmsController < ApplicationController
   # PATCH/PUT /farms/1
   # PATCH/PUT /farms/1.json
   def update
+    authorize @farm
+    
     respond_to do |format|
       if @farm.update(farm_params)
         format.html { redirect_to [@organization, @farm], notice: 'Farm was successfully updated.' }
@@ -69,6 +75,8 @@ class FarmsController < ApplicationController
   # DELETE /farms/1
   # DELETE /farms/1.json
   def destroy
+    authorize @farm
+    
     @farm.destroy
     respond_to do |format|
       format.html { redirect_to farms_url, notice: 'Farm was successfully destroyed.' }

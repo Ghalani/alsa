@@ -94,18 +94,19 @@ class UsersController < ApplicationController
     end
   end
 
-  def add_role
-    oldRole = @user.org_role(@organization) 
-    newRole = Role.find(params[:role_id])
-    @user.roles.delete(oldRole) if oldRole
-    respond_to do |format|
-      if @user.roles << newRole
-        format.json{ render json: newRole, status: :ok}
-      else
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
-  end
+  # def add_role
+  #   oldRole = @user.org_role(@organization) 
+  #   newRole = Role.find(params[:role_id])
+  #   #authorize 
+  #   @user.roles.delete(oldRole) if oldRole
+  #   respond_to do |format|
+  #     if @user.roles << newRole
+  #       format.json{ render json: newRole, status: :ok}
+  #     else
+  #       format.json { render json: @user.errors, status: :unprocessable_entity }
+  #     end
+  #   end
+  # end
 
   private
     # Use callbacks to share common setup or constraints between actions.

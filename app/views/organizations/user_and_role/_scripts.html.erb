@@ -30,6 +30,15 @@
       memberships: {},
       locations: {},
       location_types: {},
+      stock_types: {},
+      stock_items: {},
+      incoming_stocks: {},
+      sources: {},
+      stored_stocks: {},
+      storages: {},
+      customers: {},
+      orders: {},
+      outgoing_stocks: {},
     }
   };
 
@@ -68,7 +77,7 @@
     computed: {
       farmLabourAccessible(){
         return Boolean(this.newRole.permissions.organizations.farm_and_labour)
-      }
+      },
     },
     methods: {
       getUsers: function(){
@@ -97,6 +106,11 @@
         });
       },
       createRole: function(){
+        if (!Boolean(this.newRole.name)){
+          appendAlert('Please give the new role a name');
+          return false;
+        }
+
         var that = this;
         $.ajax({
           method: 'POST',
@@ -121,7 +135,7 @@
         var user = this.userInfo;
         $.ajax({
           method: 'POST',
-          url: '/organizations/<%= @organization.id %>/users/'+user.id+'/add_role.json?role_id='+role.id,
+          url: '/organizations/<%= @organization.id %>/roles/'+role.id+'/add_role.json?user_id='+user.id,
           success: function(res){
             that.users.find(function(u){
               return u == user
@@ -166,4 +180,8 @@
     $(this).addClass('active');
     $("#"+$(this).attr('id')+"-panel").addClass('active');
   });
+
+  $('.ui.accordion')
+    .accordion()
+  ;
 </script>

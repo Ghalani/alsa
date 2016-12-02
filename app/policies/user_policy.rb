@@ -23,4 +23,15 @@ class UserPolicy
     false
   	#(@current_user != @user) && @current_user.admin?
   end
+
+  # def add_role?
+  #   return true if @user != @current_user
+      
+  #   role = @current_user.org_role(@organization)
+  #   begin
+  #     return true if role.permissions['memberships'][block.call]      
+  #   rescue
+  #     false
+  #   end
+  # end
 end

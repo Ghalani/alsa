@@ -36,6 +36,13 @@ class User < ActiveRecord::Base
     self.roles.where(organization_id: org.id).first
   end
 
+  def change_organization_role (role)
+    old_role = self.org_role(role.organization)
+    return true if (role == old_role)
+    self.roles.delete(old_role) if old_role
+    self.roles << role
+  end
+
   def name
     "#{self.fname} #{self.lname}"
   end

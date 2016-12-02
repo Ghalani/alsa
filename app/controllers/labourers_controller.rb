@@ -3,7 +3,7 @@ class LabourersController < ApplicationController
   before_action :set_organization
 
   def index
-    authorize Labourer
+    authorize @organization
     if @organization
       @labourers = @organization.labourers
       respond_to do |format|

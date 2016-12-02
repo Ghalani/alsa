@@ -5,9 +5,8 @@ class FarmersController < ApplicationController
   # GET /farmers
   # GET /farmers.json
   def index
-    authorize Farmer
-
     if @organization
+      authorize @organization
       @farmers = @organization.farmers
       respond_to do |format|
         format.json{render json: @farmers}
@@ -28,7 +27,7 @@ class FarmersController < ApplicationController
   # GET /farmers/new
   def new
     @farmer = Farmer.new
-    authorize Farmer
+    authorize @organization
 
   end
 

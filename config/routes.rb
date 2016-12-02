@@ -16,9 +16,11 @@ Rails.application.routes.draw do
     resources :labourers
     resources :farms
     resources :users do
-      post 'add_role' => 'users#add_role'
+      #post 'add_role' => 'users#add_role'
     end
-    resources :roles
+    resources :roles do
+      post 'add_role' => 'roles#add_role'
+    end
     resources :location_types
     resources :locations
     resources :stock_types
@@ -31,6 +33,7 @@ Rails.application.routes.draw do
     resources :customer_orders
     resources :outgoing_stocks
     resources :ordered_stocks
+    resources :memberships, only: [:index, :create, :destroy]
   end
   
 

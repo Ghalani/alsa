@@ -80,17 +80,18 @@ class OrganizationsController < ApplicationController
     end
   end
 
-  def add_member
-    @organization = Organization.find(params[:organization_id])
-    user = User.find(params[:user_id])
-    respond_to do |format|
-      if (@organization.members << user)
-        format.json{render json: {success: "user added successfully"}}
-      else
-        format.json{render json:{error: @organization.errors.full_message}}
-      end
-    end
-  end
+  # def add_member
+  #   authorize @organization    
+  #   @organization = Organization.find(params[:organization_id])
+  #   user = User.find(params[:user_id])
+  #   respond_to do |format|
+  #     if (@organization.members << user)
+  #       format.json{render json: {success: "user added successfully"}}
+  #     else
+  #       format.json{render json:{error: @organization.errors.full_message}}
+  #     end
+  #   end
+  # end
 
   def farm_and_labour
     authorize @organization
@@ -103,10 +104,12 @@ class OrganizationsController < ApplicationController
   end
 
   def location_and_hierarchy
+    authorize @organization
     render 'organizations/location_and_hierarchy/index'
   end
 
   def stock_management
+    authorize @organization
     render 'organizations/stock_management/index'
   end
 

@@ -3,7 +3,7 @@ class OrganizationPolicy
 
 	def initialize(current_user, model)
     @current_user = current_user
-    @org = model
+    @organization = model
   end
 
   def index?
@@ -19,7 +19,11 @@ class OrganizationPolicy
   end
 
   def show?
-    verify{ "show" }
+    if @organization.user == @current_user
+      return true
+    else
+      @current_user.is_member?(@organization)
+    end  
   end
 
   def update?
@@ -27,7 +31,7 @@ class OrganizationPolicy
   end
 
   def destroy?
-  	(@org.memberships.size < 1) && (verify { "destroy" } )
+  	(@organization.memberships.size < 1) && (verify { "destroy" } )
   end
 
   def farm_and_labour?
@@ -38,21 +42,35 @@ class OrganizationPolicy
     verify { "user_and_role" }
   end
 
+  def location_and_hierarchy?
+    verify { "location_and_hierarchy" }
+  end
+
+  def stock_management?
+    verify { "stock_management" }
+  end
+
+  def add_member?
+  end
+
+  def change_role?
+    return true if @organization.user == @current_user
+      
+    role = @current_user.org_role(@organization)
+    begin
+      return true if role.permissions['roles']['add_role']      
+    rescue
+      false
+    end
+  end
+
   def verify(&block)
-    role = @current_user.org_role(@org)
-    if @org.user == @current_user
-      return true
-    elsif (role)
-      # if (role.name == 'admin')
-      #   return true
-      # else
-        role.permissions &&
-        role.permissions > 0 && 
-        role.permissions['organizations'] && 
-        role.permissions['organizations'][(block.call)]
-        #block.call
-      # end
-    else 
+    return true if @organization.user == @current_user
+      
+    role = @current_user.org_role(@organization)
+    begin
+      return true if role.permissions['organizations'][(block.call)]
+    rescue
       return false
     end
   end

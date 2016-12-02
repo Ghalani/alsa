@@ -92,7 +92,7 @@
     </div>
   </div>
 
-  <div class="ui small modal" id="new-role-modal">
+  <div class="ui modal" id="new-role-modal">
     <div class="content">
       <div class="form-group">
         <input class="classic" type="text" placeholder="Role name" v-model="newRole.name">
@@ -100,104 +100,237 @@
       <hr>
       <p>Permissions</p>
       <p>By checking a property, you are giving a role the ability to do what is checked</p>
-      <div class="grey-border1 pad1">
-        <div class="row">Farmer and labour</div>
-        <div class="ui stackable doubling two column grid">
-          <div class="column">
-            <span class="">
-              <input type="checkbox" v-model="newRole.permissions.organizations.farm_and_labour">
-            </span>
-            <span class="">Access farm and labour management</span>
+      <div class="ui styled fluid accordion">
+        <div class="active title">
+          <i class="dropdown icon"></i> Farmer and labour
+        </div>
+        <div class="active content h400-max scroll-y">
+          <div class="ui stackable doubling three column grid">
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.organizations.farm_and_labour">
+              </span>
+              <span class="">Access farm and labour management</span>
+            </div>
+            <div class="column" v-bind:class="{ inactive: !farmLabourAccessible }">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.farmers.create">
+              </span>
+              <span class="">Create farmer</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.farms.create">
+              </span>
+              <span class="">Create farm</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.labourers.create">
+              </span>
+              <span class="">Create Labourer</span>
+            </div>
           </div>
-          <div class="column" v-bind:class="{ inactive: !farmLabourAccessible }">
-            <span class="">
-              <input type="checkbox" v-model="newRole.permissions.farmers.create">
-            </span>
-            <span class="">Create farmer</span>
+        </div>
+        <div class="active title">
+          <i class="dropdown icon"></i> User and Role
+        </div>
+        <div class="content h400-max scroll-y">
+          <div class="ui stackable doubling three column grid content h400-max scroll-y">
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.organizations.user_and_role">
+              </span>
+              <span class="">Access User and Role management</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.roles.create">
+              </span>
+              <span class="">Create role</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.roles.update">
+              </span>
+              <span class="">Change role permission</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.roles.add_role">
+              </span>
+              <span class="">Change member role</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.roles.destroy">
+              </span>
+              <span class="">Delete role</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.memberships.create">
+              </span>
+              <span class="">Add member</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.memberships.destroy">
+              </span>
+              <span class="">Remove member</span>
+            </div>
           </div>
-          <div class="column">
-            <span class="">
-              <input type="checkbox" v-model="newRole.permissions.farms.create">
-            </span>
-            <span class="">Create farm</span>
+        </div>
+        <div class="active title">
+          <i class="dropdown icon"></i> Location and Hierarchy
+        </div>
+        <div class="content h400-max scroll-y">
+          <div class="ui stackable doubling three column grid content h400-max scroll-y">
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.organizations.location_and_hierarchy">
+              </span>
+              <span class="">Access Location and Hierarchy management</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.locations.create">
+              </span>
+              <span class="">Create Location</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.location_types.create">
+              </span>
+              <span class="">Create Hierarchy</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.locations.destroy">
+              </span>
+              <span class="">Delete Location</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.location_types.destroy">
+              </span>
+              <span class="">Delete Hierarchy</span>
+            </div>
           </div>
-          <div class="column">
-            <span class="">
-              <input type="checkbox" v-model="newRole.permissions.labourers.create">
-            </span>
-            <span class="">Create Labourer</span>
-          </div>
-        </div> <hr>
-        <div class="row">User and Role</div>
-        <div class="ui stackable doubling two column grid">
-          <div class="column">
-            <span class="">
-              <input type="checkbox" v-model="newRole.permissions.organizations.user_and_role">
-            </span>
-            <span class="">Access User and Role management</span>
-          </div>
-          <div class="column">
-            <span class="">
-              <input type="checkbox" v-model="newRole.permissions.roles.create">
-            </span>
-            <span class="">Create role</span>
-          </div>
-          <div class="column">
-            <span class="">
-              <input type="checkbox" v-model="newRole.permissions.roles.update">
-            </span>
-            <span class="">Change role</span>
-          </div>
-          <div class="column">
-            <span class="">
-              <input type="checkbox" v-model="newRole.permissions.roles.destroy">
-            </span>
-            <span class="">Delete role</span>
-          </div>
-          <div class="column">
-            <span class="">
-              <input type="checkbox" v-model="newRole.permissions.memberships.create">
-            </span>
-            <span class="">Add member</span>
-          </div>
-          <div class="column">
-            <span class="">
-              <input type="checkbox" v-model="newRole.permissions.memberships.destroy">
-            </span>
-            <span class="">Remove member</span>
-          </div>
-        </div> <hr>
-        <div class="row">Location and Hierarchy</div>
-        <div class="ui stackable doubling two column grid">
-          <div class="column">
-            <span class="">
-              <input type="checkbox" v-model="newRole.permissions.organizations.user_and_role">
-            </span>
-            <span class="">Access Location and Hierarchy management</span>
-          </div>
-          <div class="column">
-            <span class="">
-              <input type="checkbox" v-model="newRole.permissions.locations.create">
-            </span>
-            <span class="">Create Location</span>
-          </div>
-          <div class="column">
-            <span class="">
-              <input type="checkbox" v-model="newRole.permissions.location_types.create">
-            </span>
-            <span class="">Create Hierarchy</span>
-          </div>
-          <div class="column">
-            <span class="">
-              <input type="checkbox" v-model="newRole.permissions.locations.destroy">
-            </span>
-            <span class="">Delete Location</span>
-          </div>
-          <div class="column">
-            <span class="">
-              <input type="checkbox" v-model="newRole.permissions.location_types.destroy">
-            </span>
-            <span class="">Delete Hierarchy</span>
+        </div>
+        <div class="active title">
+          <i class="dropdown icon"></i> Stock management
+        </div>
+        <div class="content h400-max scroll-y">
+          <div class="ui stackable doubling three column grid content h400-max scroll-y">
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.organizations.stock_management">
+              </span>
+              <span class="">Access stock management</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.stock_types.create">
+              </span>
+              <span class="">Create and Edit stock-types</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.stock_types.destroy">
+              </span>
+              <span class="">Delete stock-types</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.stock_items.create">
+              </span>
+              <span class="">Create and Edit stock-items</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.stock_items.destroy">
+              </span>
+              <span class="">Delete stock-items</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.incoming_stocks.create">
+              </span>
+              <span class="">Create and Edit incoming stocks</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.incoming_stocks.destroy">
+              </span>
+              <span class="">Delete incoming stocks</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.sources.create">
+              </span>
+              <span class="">Create and Edit sources</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.sources.destroy">
+              </span>
+              <span class="">Delete sources</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.stored_stocks.create">
+              </span>
+              <span class="">Create and Edit stored stocks</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.stored_stocks.destroy">
+              </span>
+              <span class="">Delete stored stocks</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.storages.create">
+              </span>
+              <span class="">Create and Edit storages</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.storages.destroy">
+              </span>
+              <span class="">Delete storages</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.customers.create">
+              </span>
+              <span class="">Create and Edit customers</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.customers.destroy">
+              </span>
+              <span class="">Delete customers</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.orders.create">
+              </span>
+              <span class="">Create orders</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.orders.destroy">
+              </span>
+              <span class="">Delete orders</span>
+            </div>
+            <div class="column">
+              <span class="">
+                <input type="checkbox" v-model="newRole.permissions.outgoing_stocks.create">
+              </span>
+              <span class="">Process orders</span>
+            </div>
           </div>
         </div>
       </div>

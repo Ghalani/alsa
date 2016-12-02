@@ -1,15 +1,16 @@
-class LabourerPolicy
-	attr_reader :current_user, :model
+class FarmPolicy
+	attr_reader :current_user, :model  
   before_filter :set_organization, except: [:index?]
+
 
 	def initialize(current_user, model)
     @current_user = current_user
-    @labourer = model
+    @farm = model
   end
 
   def index?
-    #verify {"index"}
-    @organization = @labourer
+    # verify {"index"}
+    @organization = @farm
     (@organization.user == @current_user) || @current_user.is_member?(@organization)
   end
 
@@ -23,7 +24,6 @@ class LabourerPolicy
 
   def edit?
     verify {"create"}
-
   end
 
   def show?
@@ -43,13 +43,13 @@ class LabourerPolicy
       
     role = @current_user.org_role(@organization)
     begin
-      return true if role.permissions['labourers'][block.call]      
+      return true if role.permissions['farms'][block.call]      
     rescue
       false
     end
   end
-
+  
   def set_organization
-    @organization = @labourer.organization
+    @organization = @farm.organization
   end
 end
