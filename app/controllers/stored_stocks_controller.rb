@@ -4,6 +4,7 @@ class StoredStocksController < ApplicationController
 
   def index
     #@stored_stocks = StoredStock.all
+    authorize @organization
     respond_to do |format|
       if @organization
         @stored_stocks = StoredStock.where(organization_id: @organization.id)
@@ -15,10 +16,12 @@ class StoredStocksController < ApplicationController
   end
 
   def show
+    authorize @stored_stock
   end
 
   def create
     @stored_stock = StoredStock.new(stored_stock_params)
+    authorize @stored_stock
 
     respond_to do |format|
       if @stored_stock.save_and_update_icoming_quantity_stored
@@ -32,6 +35,7 @@ class StoredStocksController < ApplicationController
   end
 
   def update
+    authorize @stored_stock
     respond_to do |format|
       if @stored_stock.update(stored_stock_params)
         #format.html { redirect_to @stored_stock, notice: 'Stock type was successfully updated.' }
@@ -44,6 +48,7 @@ class StoredStocksController < ApplicationController
   end
 
   def destroy
+    authorize @stored_stock
     @stored_stock.destroy
     respond_to do |format|
       #format.html { redirect_to stored_stocks_url, notice: 'Stock type was successfully destroyed.' }

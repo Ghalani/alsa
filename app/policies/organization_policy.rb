@@ -7,7 +7,8 @@ class OrganizationPolicy
   end
 
   def index?
-    @current_user
+    (@organization.user == @current_user) || 
+    @current_user.is_member?(@organization)
   end
 
   def new?

@@ -4,6 +4,8 @@ class StoragesController < ApplicationController
 
   def index
     #@storages = Storage.all
+    authorize @organization
+
     respond_to do |format|
       if @organization
         @storages = Storage.where(organization_id: @organization.id)
@@ -20,6 +22,7 @@ class StoragesController < ApplicationController
   def create
     @storage = Storage.new(storage_params)
 
+    authorize @storage
     respond_to do |format|
       if @storage.save
         #format.html { redirect_to [@organization, @storage], notice: 'Stock type was successfully created.' }
@@ -32,6 +35,7 @@ class StoragesController < ApplicationController
   end
 
   def update
+    authorize @storage
     respond_to do |format|
       if @storage.update(storage_params)
         #format.html { redirect_to @storage, notice: 'Stock type was successfully updated.' }
@@ -44,6 +48,7 @@ class StoragesController < ApplicationController
   end
 
   def destroy
+    authorize @storage
     @storage.destroy
     respond_to do |format|
       #format.html { redirect_to storages_url, notice: 'Stock type was successfully destroyed.' }

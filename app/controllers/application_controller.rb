@@ -10,12 +10,27 @@ class ApplicationController < ActionController::Base
   end
 
 
-	private
-    # Pundit
-    def user_not_authorized
-      flash[:alert] = "Access denied."
-      redirect_to (request.referrer || root_path)
+	rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
+  private
+    def user_not_authorized(exception)
+      policy_name = exception.policy.class.to_s.underscore
+
+      puts "#"*100
+      puts "POLICY.QUERY: #{policy_name}.#{exception.query}"
+      # en.yml
+      message = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
+      respond_to do |format|
+        flash[:error] = message
+        format.html{ redirect_to(request.referrer || root_path) }
+        format.json{ render json: {error: message}, status: :unprocessable_entity }
+      end
     end
+    # Pundit
+    # def user_not_authorized
+    #   flash[:alert] = "Access denied."
+    #   redirect_to (request.referrer || root_path)
+    # end
 
   	# Returns 401 if the user isn't authorized
   	def ensure_authenticated_user

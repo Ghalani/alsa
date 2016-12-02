@@ -4,6 +4,7 @@ class LocationTypesController < ApplicationController
 
   def index
     #@location_types = LocationType.all
+    authorize @organization
     respond_to do |format|
       if @organization
         @location_types = LocationType.org_roots(@organization.id)
@@ -15,18 +16,21 @@ class LocationTypesController < ApplicationController
   end
 
   def show
+    authorize @location_type
   end
 
-  def new
-    @location_type = LocationType.new
-  end
+  # def new
+  #   @location_type = LocationType.new
+  #   authorize @location_type
+  # end
 
-  def edit
-  end
+  # def edit
+  #   authorize @location_type
+  # end
 
   def create
     @location_type = LocationType.new(location_type_params)
-
+    authorize @location_type
     respond_to do |format|
       if @location_type.save
         #format.html { redirect_to [@organization, @location_type], notice: 'Location type was successfully created.' }
@@ -39,6 +43,8 @@ class LocationTypesController < ApplicationController
   end
 
   def update
+    authorize @location_type
+    
     respond_to do |format|
       if @location_type.update(location_type_params)
         #format.html { redirect_to @location_type, notice: 'Location type was successfully updated.' }
@@ -51,6 +57,8 @@ class LocationTypesController < ApplicationController
   end
 
   def destroy
+    authorize @location_type
+    
     @location_type.destroy
     respond_to do |format|
       format.html { redirect_to location_types_url, notice: 'Location type was successfully destroyed.' }

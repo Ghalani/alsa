@@ -4,6 +4,7 @@ class OutgoingStocksController < ApplicationController
 
   def index
     #@outgoing_stocks = OutgoingStock.all
+    authorize @organization
     respond_to do |format|
       if @organization
         @outgoing_stocks = OutgoingStock.where(organization_id: @organization.id)
@@ -15,11 +16,13 @@ class OutgoingStocksController < ApplicationController
   end
 
   def show
+    authorize @outgoing_stock
   end
 
   def create
     @outgoing_stock = OutgoingStock.new(outgoing_stock_params)
 
+    authorize @outgoing_stock
     respond_to do |format|
       if @outgoing_stock.save_and_update_quantity_taken
         format.json { render json: @outgoing_stock, status: :created }
@@ -30,6 +33,7 @@ class OutgoingStocksController < ApplicationController
   end
 
   def update
+    authorize @outgoing_stock
     respond_to do |format|
       if @outgoing_stock.update(outgoing_stock_params)
         #format.html { redirect_to @outgoing_stock, notice: 'Stock type was successfully updated.' }
@@ -42,6 +46,7 @@ class OutgoingStocksController < ApplicationController
   end
 
   def destroy
+    authorize @outgoing_stock
     @outgoing_stock.destroy
     respond_to do |format|
       #format.html { redirect_to outgoing_stocks_url, notice: 'Stock type was successfully destroyed.' }

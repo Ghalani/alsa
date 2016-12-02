@@ -4,6 +4,8 @@ class StockSourcesController < ApplicationController
 
   def index
     #@stock_sources = StockSource.all
+    authorize @organization    
+
     respond_to do |format|
       if @organization
         @stock_sources = StockSource.where(organization_id: @organization.id)
@@ -15,11 +17,13 @@ class StockSourcesController < ApplicationController
   end
 
   def show
+    authorize @stock_source    
   end
 
   def create
     @stock_source = StockSource.new(stock_source_params)
 
+    authorize @stock_source    
     respond_to do |format|
       if @stock_source.save
         #format.html { redirect_to [@organization, @stock_source], notice: 'Stock type was successfully created.' }
@@ -32,6 +36,7 @@ class StockSourcesController < ApplicationController
   end
 
   def update
+    authorize @stock_source    
     respond_to do |format|
       if @stock_source.update(stock_source_params)
         #format.html { redirect_to @stock_source, notice: 'Stock type was successfully updated.' }
@@ -44,6 +49,7 @@ class StockSourcesController < ApplicationController
   end
 
   def destroy
+    authorize @stock_source    
     @stock_source.destroy
     respond_to do |format|
       #format.html { redirect_to stock_sources_url, notice: 'Stock type was successfully destroyed.' }

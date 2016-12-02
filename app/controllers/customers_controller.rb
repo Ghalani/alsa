@@ -4,6 +4,8 @@ class CustomersController < ApplicationController
 
   def index
     #@customers = Customer.all
+    authorize @organization
+
     respond_to do |format|
       if @organization
         @customers = Customer.where(organization_id: @organization.id)
@@ -15,10 +17,12 @@ class CustomersController < ApplicationController
   end
 
   def show
+    authorize @customer    
   end
 
   def create
     @customer = Customer.new(customer_params)
+    authorize @customer    
 
     respond_to do |format|
       if @customer.save
@@ -32,6 +36,7 @@ class CustomersController < ApplicationController
   end
 
   def update
+    authorize @customer    
     respond_to do |format|
       if @customer.update(customer_params)
         #format.html { redirect_to @customer, notice: 'Stock type was successfully updated.' }
@@ -44,6 +49,7 @@ class CustomersController < ApplicationController
   end
 
   def destroy
+    authorize @customer    
     @customer.destroy
     respond_to do |format|
       #format.html { redirect_to customers_url, notice: 'Stock type was successfully destroyed.' }

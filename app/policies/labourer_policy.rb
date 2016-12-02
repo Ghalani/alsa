@@ -38,7 +38,9 @@ class LabourerPolicy
     verify {"destroy"}
   end
 
-  def verify(&block)
+  def verify(&block)    
+    @organization = @labourer.organization
+
     return true if @organization.user == @current_user
       
     role = @current_user.org_role(@organization)
@@ -47,9 +49,5 @@ class LabourerPolicy
     rescue
       false
     end
-  end
-
-  def set_organization
-    @organization = @labourer.organization
   end
 end

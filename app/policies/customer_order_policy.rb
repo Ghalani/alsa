@@ -1,17 +1,11 @@
-class FarmPolicy
-	attr_reader :current_user, :model  
+class CustomerOrderPolicy
+	attr_reader :current_user, :model
 
 
 	def initialize(current_user, model)
     @current_user = current_user
-    @farm = model
+    @customer_order = model
   end
-
-  # def index?
-  #   # verify {"index"}
-  #   @organization = @farm
-  #   (@organization.user == @current_user) || @current_user.is_member?(@organization)
-  # end
 
   def new?
     verify {"create"}
@@ -38,13 +32,12 @@ class FarmPolicy
   end
 
   def verify(&block)
-    @organization = @farm.organization
-
+    @organization = @customer_order.organization
     return true if @organization.user == @current_user
       
     role = @current_user.org_role(@organization)
     begin
-      return true if role.permissions['farms'][block.call]      
+      return true if role.permissions['customer_orders'][block.call]      
     rescue
       false
     end

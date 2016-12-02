@@ -40,6 +40,8 @@ class FarmersController < ApplicationController
   # POST /farmers.json
   def create
     @farmer = Farmer.new(farmer_params)
+    @farmer.organization = @organization
+    
     authorize @farmer
 
     if @organization
@@ -97,7 +99,7 @@ class FarmersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def farmer_params
-      params.require(:farmer).permit(:fname,:lname,:phone,:gender,
+      params.require(:farmer).permit(:organization_id, :fname,:lname,:phone,:gender,
         :dob,:educational_level,:village,:caa_id,
         :kcl_district_id,:certified,:marital_status, :image)
     end

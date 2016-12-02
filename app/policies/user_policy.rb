@@ -7,7 +7,7 @@ class UserPolicy
   end
 
   def index?
-  	@current_user.app_role == "company"
+  	return true if @current_user
   end
 
   def show?

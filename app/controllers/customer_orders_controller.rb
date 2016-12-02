@@ -4,6 +4,8 @@ class CustomerOrdersController < ApplicationController
 
   def index
     #@customer_orders = CustomerOrder.all
+    authorize @organization
+
     respond_to do |format|
       if @organization
         @customer_orders = CustomerOrder.where(organization_id: @organization.id)
@@ -15,12 +17,15 @@ class CustomerOrdersController < ApplicationController
   end
 
   def show
+    authorize @customer_order
   end
 
   def create
     @customer_order = CustomerOrder.new(customer_order_params)
-    puts "#"*100
-    puts ("OUT: " + ordered_stocks.to_json)
+    authorize @customer_order
+
+    # puts "#"*100
+    # puts ("OUT: " + ordered_stocks.to_json)
     respond_to do |format|
       if (@customer_order.save && 
         (ordered_stocks).map {|order|
@@ -36,6 +41,7 @@ class CustomerOrdersController < ApplicationController
   end
 
   def update
+    authorize @customer_order
     respond_to do |format|
       if @customer_order.update(customer_order_params)
         #format.html { redirect_to @customer_order, notice: 'Stock type was successfully updated.' }
@@ -48,6 +54,7 @@ class CustomerOrdersController < ApplicationController
   end
 
   def destroy
+    authorize @customer_order
     @customer_order.destroy
     respond_to do |format|
       #format.html { redirect_to customer_orders_url, notice: 'Stock type was successfully destroyed.' }

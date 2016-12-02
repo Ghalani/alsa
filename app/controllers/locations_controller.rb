@@ -2,9 +2,10 @@ class LocationsController < ApplicationController
   before_action :set_location, only: [:show, :edit, :update, :destroy]
   before_action :set_organization
 
-  # GET /locations
-  # GET /locations.json
+  # GET /organizations/:id/locations
+  # GET /organizations/:id/locations.json
   def index
+    authorize @organization
     respond_to do |format|
       if @organization
         @locations = Location.org_roots(@organization.id)
@@ -15,25 +16,28 @@ class LocationsController < ApplicationController
     end
   end
 
-  # GET /locations/1
-  # GET /locations/1.json
+  # GET /organizations/:id/locations/1
+  # GET /organizations/:id/locations/1.json
   def show
+    authorize @location
   end
 
-  # GET /locations/new
+  # GET /organizations/:id/locations/new
   def new
     @location = Location.new
   end
 
-  # GET /locations/1/edit
+  # GET /organizations/:id/locations/1/edit
   def edit
+    authorize @location    
   end
 
-  # POST /locations
-  # POST /locations.json
+  # POST /organizations/:id/locations
+  # POST /organizations/:id/locations.json
   def create
     @location = Location.new(location_params)
-
+    authorize @location
+    
     respond_to do |format|
       if @location.save
         #format.html { redirect_to [@organization, @location], notice: 'Location was successfully created.' }
@@ -45,9 +49,11 @@ class LocationsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /locations/1
-  # PATCH/PUT /locations/1.json
+  # PATCH/PUT /organizations/:id/locations/1
+  # PATCH/PUT /organizations/:id/locations/1.json
   def update
+    authorize @location
+
     respond_to do |format|
       if @location.update(location_params)
         #format.html { redirect_to @location, notice: 'Location was successfully updated.' }
@@ -59,9 +65,11 @@ class LocationsController < ApplicationController
     end
   end
 
-  # DELETE /locations/1
-  # DELETE /locations/1.json
+  # DELETE /organizations/:id/locations/1
+  # DELETE /organizations/:id/locations/1.json
   def destroy
+    authorize @location
+
     @location.destroy
     respond_to do |format|
       format.html { redirect_to locations_url, notice: 'Location was successfully destroyed.' }

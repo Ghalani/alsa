@@ -120,7 +120,8 @@
             that.roles.push(res);
             that.toggleNewRoleModal();
             that.newRole = roleTemplate;
-          }
+          },
+          error: function(err){displayAlert(err)}
         });
       },
       setUserInfo: function(user){
@@ -141,7 +142,8 @@
               return u == user
             }).role = role;
             $('#change-role-modal').modal('toggle');         
-          }
+          },
+          error: function(err){displayAlert(err)}
         });
       },
       toggleNewUserModal: function(){
@@ -157,7 +159,8 @@
             that.users.push(res);
             that.newUser = {};
             that.toggleNewUserModal()
-          }, error: function(err){ cosole.log(err.message)}
+          },
+          error: function(err){displayAlert(err)}
         })
       }, 
       addUserAsMember: function(){

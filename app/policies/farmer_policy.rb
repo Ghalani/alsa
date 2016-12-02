@@ -1,6 +1,6 @@
 class FarmerPolicy
 	attr_reader :current_user, :model  
-  before_filter :set_organization, except: [:index?]
+  #before_filter :set_organization, except: [:index?]
 
 
 	def initialize(current_user, model)
@@ -8,11 +8,11 @@ class FarmerPolicy
     @farmer = model
   end
 
-  def index?
-    # verify {"index"}
-    @organization = @farmer
-    (@organization.user == @current_user) || @current_user.is_member?(@organization)
-  end
+  # def index?
+  #   # verify {"index"}
+  #   @organization = @farmer
+  #   (@organization.user == @current_user) || @current_user.is_member?(@organization)
+  # end
 
   def new?
     verify {"create"}
@@ -42,9 +42,10 @@ class FarmerPolicy
     # if (@current_user.app_role == "company")
     #   return true
     # end
+    @organization = @farmer.organization
     return true if @organization.user == @current_user
       
-    role = @current_user.org_role(@organization)
+    role = @current_user.org_role(@farmer.organization)
     begin
       return true if role.permissions['farmers'][block.call]      
     rescue
@@ -60,9 +61,5 @@ class FarmerPolicy
     # else 
     #   return false
     # end
-  end
-  
-  def set_organization
-    @organization = @farmer.organization
   end
 end

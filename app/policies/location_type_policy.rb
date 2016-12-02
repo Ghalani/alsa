@@ -1,17 +1,11 @@
-class FarmPolicy
-	attr_reader :current_user, :model  
+class LocationTypePolicy
+	attr_reader :current_user, :model
 
 
 	def initialize(current_user, model)
     @current_user = current_user
-    @farm = model
+    @location_type = model
   end
-
-  # def index?
-  #   # verify {"index"}
-  #   @organization = @farm
-  #   (@organization.user == @current_user) || @current_user.is_member?(@organization)
-  # end
 
   def new?
     verify {"create"}
@@ -38,13 +32,12 @@ class FarmPolicy
   end
 
   def verify(&block)
-    @organization = @farm.organization
-
+    @organization = @location_type.organization
     return true if @organization.user == @current_user
       
     role = @current_user.org_role(@organization)
     begin
-      return true if role.permissions['farms'][block.call]      
+      return true if role.permissions['location_types'][block.call]      
     rescue
       false
     end

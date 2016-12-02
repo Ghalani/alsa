@@ -31,10 +31,10 @@ $(document).on('ready', function(){
     });
 });
 
-function displayAlert(err){
-    console.log(err);
+function displayAlert(message){
+    console.log(message);
     try{
-        var json = JSON.parse(err.responseText);
+        var json = JSON.parse(message.responseText);
         var keys = Object.keys(json);
         var values = Object.values(json);
         $.each(keys, function(pos, key){
@@ -43,7 +43,10 @@ function displayAlert(err){
             })
         });
     }catch(err){
-        appendAlert("Couldn't complete operation");
+        if (Boolean(message.responseJSON.error))
+            appendAlert(JSON.parse(message.responseText).error)
+        else
+            appendAlert("Couldn't complete operation");
     }
     removeAlerts();
 }

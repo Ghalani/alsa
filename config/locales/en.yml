@@ -21,3 +21,13 @@
 
 en:
   hello: "Hello world"
+  pundit:
+    default: 'You cannot perform this action sdsjdkjskdj.'
+    user:
+      update?: 'You cannot edit this user!'
+      create?: 'You cannot create users!'
+    organization_policy:
+      index?: 'You are not permitted to view this list'
+      change_role?: 'You dont have the permission'
+    customer_order_policy:
+      show?: "Please ask for your admin's permission" 

@@ -7,10 +7,10 @@ class MembershipPolicy
     @membership = model
   end
 
-  def index?
-    @organization = @membership
-    (@organization.user == @current_user) || @current_user.is_member?(@organization)
-  end
+  # def index?
+  #   @organization = @membership
+  #   (@organization.user == @current_user) || @current_user.is_member?(@organization)
+  # end
 
   def create?
   	verify {"create"}
@@ -21,6 +21,7 @@ class MembershipPolicy
   end
 
   def verify(&block)
+    @organization = @membership.organization
     return true if @organization.user == @current_user
       
     role = @current_user.org_role(@organization)
@@ -29,9 +30,5 @@ class MembershipPolicy
     rescue
       false
     end
-  end
-  
-  def set_organization
-    @organization = @membership.organization
   end
 end
