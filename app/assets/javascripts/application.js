@@ -23,6 +23,10 @@ function appendModal(html){
 	showModal();
 }
 
+function toggleSideBar(){
+    $('.ui.sidebar').sidebar('toggle');
+}
+
 $(document).on('ready', function(){
     removeAlerts();
     $('.close-alert').on('click', function(){

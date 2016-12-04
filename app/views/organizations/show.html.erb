@@ -1,10 +1,11 @@
-<div id="organization-show" >
+<%= render 'static_pages/sidebar'%>
+<div id="organization-show" class="pusher">
 	<%= render "static_pages/nav" %>
 	<% content_for :sub_nav do %>
 		sdsjdjshdjhs
 	<% end %>
 	<div class="">
-		<div class="ui vertical fluid tabular menu side-menu hidden w300">
+		<!--<div class="ui vertical fluid tabular menu side-menu hidden w300">
       <a class="active item">
         Bio
       </a>
@@ -17,9 +18,9 @@
       <a class="item">
         Links
       </a>
-    </div>
+    </div>-->
 		<div class="stat-bar green-bg">
-			<i class="ui content icon" onclick="toggleSideMenu()"></i>
+			<i class="ui content icon" onclick="toggleSideBar()"></i>
 			<div class="ui container pad-lr">
 				<div class="text15"><%= @organization.name %></div>
 				<br>
@@ -141,12 +142,6 @@
 					</div>
 				</div>
 			</div>
-			
 		</div>
 	</div>
 </div>
-<script>
-	function toggleSideMenu(){
-		$('.side-menu').toggleClass('hidden', 'fast');
-	}
-</script>

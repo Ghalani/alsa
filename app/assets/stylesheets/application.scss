@@ -9,6 +9,14 @@
 html,body{
   font-family: 'Roboto', sans-serif;
 }
+
+a{
+  text-decoration: none !important;  
+  &:hover{
+    text-decoration: none !important;
+  }
+}
+
 $theme-color: #39b54a;
 $theme-color2: #3ad45f;
 $theme-color-dark: #00a651;
