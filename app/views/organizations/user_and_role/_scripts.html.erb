@@ -42,6 +42,200 @@
     }
   };
 
+  var permissions = [
+        {
+          name: "Farm and Labour",
+          models: [
+            {
+              name: "organizations",
+              method: "farm_and_labour",
+              message: "Access farm and labour management"
+            },
+            {
+              name: "farmers",
+              method: "create",
+              message: "Create farmer"
+            },
+            {
+              name: "farms",
+              method: "create",
+              message: "Create farms"
+            },
+            {
+              name: "labourers",
+              method: "create",
+              message: "Create labourers"
+            },
+          ]
+        },
+        {
+          name: "User and Role",
+          models: [
+            {
+              name: "organizations",
+              method: "user_and_role",
+              message: "Access User and Role management"
+            },
+            {
+              name: "roles",
+              method: "create",
+              message: "Create role"
+            },
+            {
+              name: "roles",
+              method: "update",
+              message: "Change role permission"
+            },
+            {
+              name: "roles",
+              method: "add_role",
+              message: "Change member role"
+            },
+            {
+              name: "roles",
+              method: "destroy",
+              message: "Delete role"
+            },
+            {
+              name: "memberships",
+              method: "create",
+              message: "Add member"
+            },
+            {
+              name: "memberships",
+              method: "destroy",
+              message: "Remove member"
+            },
+          ]
+        },
+        {
+          name: "Location and Hierarchy",
+          models: [
+            {
+              name: "organizations",
+              method: "location_and_hierarchy",
+              message: "Access Location and Hierarchy management"
+            },
+            {
+              name: "locations",
+              method: "create",
+              message: "Create Location"
+            },
+            {
+              name: "location_types",
+              method: "create",
+              message: "Create Hierarchy"
+            },
+            {
+              name: "locations",
+              method: "destroy",
+              message: "Delete Location"
+            },
+            {
+              name: "location_types",
+              method: "destroy",
+              message: "Delete Hierarchy"
+            },
+          ]
+        },
+        {
+          name: "Stock management",
+          models: [
+            {
+              name: "organizations",
+              method: "stock_management",
+              message: "Access stock management"
+            },
+            {
+              name: "stock_types",
+              method: "create",
+              message: "Create and Edit stock-types"
+            },
+            {
+              name: "stock_types",
+              method: "destroy",
+              message: "Delete stock-types"
+            },
+            {
+              name: "stock_items",
+              method: "create",
+              message: "Create and Edit stock-items"
+            },
+            {
+              name: "stock_items",
+              method: "destroy",
+              message: "Delete stock-items"
+            },
+            {
+              name: "incoming_stocks",
+              method: "create",
+              message: "Create and Edit incoming stocks"
+            },
+            {
+              name: "incoming_stocks",
+              method: "destroy",
+              message: "Delete incoming stocks"
+            },
+            {
+              name: "sources",
+              method: "create",
+              message: "Create and Edit sources"
+            },
+            {
+              name: "sources",
+              method: "destroy",
+              message: "Delete sources"
+            },
+            {
+              name: "stored_stocks",
+              method: "create",
+              message: "Create and Edit stored stocks"
+            },
+            {
+              name: "stored_stocks",
+              method: "destroy",
+              message: "Delete stored stocks"
+            },
+            {
+              name: "storages",
+              method: "create",
+              message: "Create and Edit storages"
+            },
+            {
+              name: "storages",
+              method: "destroy",
+              message: "Delete storages"
+            },
+            {
+              name: "customers",
+              method: "create",
+              message: "Create and Edit customers"
+            },
+            {
+              name: "customers",
+              method: "destroy",
+              message: "Delete customers"
+            },
+            {
+              name: "orders",
+              method: "create",
+              message: "Create and Edit orders"
+            },
+            {
+              name: "orders",
+              method: "destroy",
+              message: "Delete orders"
+            },
+            {
+              name: "outgoing_stocks",
+              method: "create",
+              message: "Process orders"
+            },
+          ]
+        },
+      ];
+
+
   Vue.component('tbody-user', {
     props: ['users'],
     template: '#tbody-user',
@@ -66,20 +260,43 @@
       selectedRole: {
         permissions: {}
       },
-      newRole: roleTemplate,
+      cache: roleTemplate,
       newUser: {
         fname: "",
         lname: "",
         phone: "",
         email: ""
-      }
+      },
+      permissions: permissions,
     },
     computed: {
       farmLabourAccessible(){
-        return Boolean(this.newRole.permissions.organizations.farm_and_labour)
+        return Boolean(this.cache.permissions.organizations.farm_and_labour)
       },
     },
     methods: {
+      checkElement(model){
+        if (Boolean(this.cache.permissions[model.name][model.method])){
+          //console.log('#edit-role-'+ model.name +'-'+ model.method);
+          checkElement('#edit-role-'+ model.name +'-'+ model.method);
+        }
+        return;
+      },
+      checkAll(){
+        var that = this;
+        $.map(this.permissions, function(permission, index) {
+          $.map(permission.models, function(model, index) {
+            that.checkElement(model);
+          });
+        });
+      },
+      setCache(data){
+        //this.cache = data
+        this.cache = roleTemplate;
+        for (var attrname in data.permissions) { this.cache.permissions[attrname] = data.permissions[attrname]; }
+        this.cache.name = data.name;
+        this.cache.id = data.id;
+      },
       getUsers: function(){
         var that = this;
         $.ajax({
@@ -106,7 +323,7 @@
         });
       },
       createRole: function(){
-        if (!Boolean(this.newRole.name)){
+        if (!Boolean(this.cache.name)){
           appendAlert('Please give the new role a name');
           return false;
         }
@@ -114,22 +331,49 @@
         var that = this;
         $.ajax({
           method: 'POST',
-          data: {role: that.newRole},
+          data: {role: that.cache},
           url: '/organizations/<%= @organization.id %>/roles.json',
           success: function(res){
             that.roles.push(res);
             that.toggleNewRoleModal();
-            that.newRole = roleTemplate;
+            that.cache = roleTemplate;
           },
           error: function(err){displayAlert(err)}
+        });
+      },
+      updateRole: function(){
+        if (!Boolean(this.cache.name)){
+          appendAlert('Please give the role a name');
+          return false;
+        }
+
+        var that = this;
+        $.ajax({
+          method: 'PATCH',
+          data: {role: that.cache},
+          url: '/organizations/<%= @organization.id %>/roles/'+ that.cache.id +'.json',
+          success: function(res){
+            //that.roles.push(res);
+            // update current role in the javascript
+            that.findRoleAndUpdate(res)
+            that.toggleEditRoleModal();
+            that.cache = roleTemplate;
+          },
+          error: function(err){displayAlert(err)}
+        });
+      },
+      findRoleAndUpdate(newRole){
+        this.roles.find(function(role, pos){
+          if (role.id == newRole.id){
+            console.log("found")
+            role = newRole;
+            return true;
+          }
         });
       },
       setUserInfo: function(user){
         this.userInfo = user;
         //$('#user-info-modal.modal').modal('show');
-      },
-      toggleNewRoleModal: function(){
-        $('#new-role-modal.modal').modal('toggle');
       },
       addRole: function(role){
         var that = this;
@@ -145,6 +389,16 @@
           },
           error: function(err){displayAlert(err)}
         });
+      },
+      toggleNewRoleModal: function(){
+        $('#new-role-modal.modal').modal('toggle');
+      },
+      toggleEditRoleModal(){
+        $('#edit-role-modal.modal').modal('toggle');
+        var that = this;
+        setTimeout(function(){
+          that.checkAll();
+        }, 500);      
       },
       toggleNewUserModal: function(){
         $('#new-user-modal').modal('toggle');
@@ -174,6 +428,10 @@
   userRole.getUsers();
   userRole.getRoles();
 
+  function checkElement(id){
+    $(id).prop("checked", true);
+  }
+
   $('.item').on('click', function(){
     $('.item').each(function(){
       $(this).removeClass('active');
@@ -187,4 +445,5 @@
   $('.ui.accordion')
     .accordion()
   ;
+
 </script>

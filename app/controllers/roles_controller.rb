@@ -1,5 +1,7 @@
 class RolesController < ApplicationController
   before_filter :set_organization
+  before_filter :set_role, except: [:index, :create]
+
   def index
     authorize @organization
     respond_to do |format|
@@ -21,6 +23,20 @@ class RolesController < ApplicationController
     end
   end
 
+  def update
+    authorize @role
+
+    respond_to do |format|
+      if @role.update(role_params)
+        format.html { redirect_to [@organization, @role], notice: 'Role was successfully updated.' }
+        format.json { render json: @role, status: :ok}
+      else
+        format.html { render :edit }
+        format.json { render json: @role.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   def add_role
     @role = Role.find(params[:role_id])
     @user = User.find(params[:user_id])
@@ -37,6 +53,10 @@ class RolesController < ApplicationController
   private
     def set_organization
       @organization = Organization.find_by(id: params[:organization_id])
+    end
+
+    def set_role
+      @role = Role.find(params[:id])
     end
 
     def role_params
