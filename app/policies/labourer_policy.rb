@@ -1,6 +1,5 @@
 class LabourerPolicy
 	attr_reader :current_user, :model
-  before_filter :set_organization, except: [:index?]
 
 	def initialize(current_user, model)
     @current_user = current_user
@@ -8,7 +7,6 @@ class LabourerPolicy
   end
 
   def index?
-    #verify {"index"}
     @organization = @labourer
     (@organization.user == @current_user) || @current_user.is_member?(@organization)
   end
