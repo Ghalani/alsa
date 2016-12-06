@@ -299,7 +299,7 @@
           if (Boolean(data.permissions[attrname]))
             this.cache.permissions[attrname] = (data.permissions[attrname]); 
           else
-            this.cache.permissions[attrname] = [];
+            this.cache.permissions[attrname] = {};
         }
         // this.cache.permissions = Object.assign(this.cache.permissions, data.permissions);
         this.cache.name = data.name;
