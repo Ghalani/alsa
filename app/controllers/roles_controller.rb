@@ -1,6 +1,6 @@
 class RolesController < ApplicationController
   before_filter :set_organization
-  before_filter :set_role, except: [:index, :create]
+  before_filter :set_role, except: [:index, :create, :add_role]
 
   def index
     authorize @organization
@@ -34,6 +34,16 @@ class RolesController < ApplicationController
         format.html { render :edit }
         format.json { render json: @role.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def destroy
+    authorize @role
+    
+    @role.destroy
+    respond_to do |format|
+      #format.html { redirect_to roles_url, notice: 'Farm was successfully destroyed.' }
+      format.json { head :no_content }
     end
   end
 

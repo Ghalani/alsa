@@ -292,8 +292,16 @@
       },
       setCache(data){
         //this.cache = data
-        this.cache = roleTemplate;
-        for (var attrname in data.permissions) { this.cache.permissions[attrname] = data.permissions[attrname]; }
+        //this.cache = roleTemplate;
+        this.cache = Object.assign({}, roleTemplate);
+        //this.cache = Object.create(roleTemplate);
+        for (var attrname in roleTemplate.permissions) { 
+          if (Boolean(data.permissions[attrname]))
+            this.cache.permissions[attrname] = (data.permissions[attrname]); 
+          else
+            this.cache.permissions[attrname] = [];
+        }
+        // this.cache.permissions = Object.assign(this.cache.permissions, data.permissions);
         this.cache.name = data.name;
         this.cache.id = data.id;
       },
@@ -366,7 +374,8 @@
         this.roles.find(function(role, pos){
           if (role.id == newRole.id){
             console.log("found")
-            role = newRole;
+            role.name = newRole.name;
+            role.permissions = newRole.permissions;
             return true;
           }
         });
@@ -390,15 +399,49 @@
           error: function(err){displayAlert(err)}
         });
       },
+      deleteRole(){
+        var that = this;
+        var user = this.userInfo;
+        var role = this.cache;
+        $.ajax({
+          method: 'DELETE',
+          url: '/organizations/<%= @organization.id %>/roles/'+role.id+'.json',
+          success: function(res){
+            // refresh page OR DELETE from list
+            that.roles.splice(that.roles.find(function(el, pos){
+              if (el.id == role.id)
+                return pos;
+            }), 1);
+            appendAlert('Role deleted successfully')
+            that.toggleDeleteRoleModal();
+
+          },
+          error: function(err){displayAlert(err)}
+        });
+      },
       toggleNewRoleModal: function(){
         $('#new-role-modal.modal').modal('toggle');
       },
       toggleEditRoleModal(){
         $('#edit-role-modal.modal').modal('toggle');
         var that = this;
-        setTimeout(function(){
-          that.checkAll();
-        }, 500);      
+          setTimeout(function(){
+            if($('#edit-role-modal.modal').is(':visible')){
+              //that.uncheckAll();
+              that.checkAll();
+            } else {
+              //this.uncheckAll();
+            }
+          }, 500);      
+      },
+      toggleDeleteRoleModal(){
+        $('#delete-role-modal.modal').modal('toggle');
+      },
+      uncheckAll(){
+        $('#edit-role-modal input').each(function(){
+          if ($(this).prop('checked'))
+            $(this).prop('checked', false)
+        })
       },
       toggleNewUserModal: function(){
         $('#new-user-modal').modal('toggle');

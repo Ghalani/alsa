@@ -29,6 +29,7 @@
           </div>
           <div v-for="role in roles" class="list-item" v-on:click="selectRole(role)">
             <span class="right-icon-grey" @click="setCache(role); toggleEditRoleModal();"><i class="write icon"></i></span>
+            <span class="right-icon-grey" @click="setCache(role); toggleDeleteRoleModal();"><i class="trash red icon"></i></span>
             {{role.name}}
           </div>
           <div class="ui button green-bg" v-on:click="toggleNewRoleModal()">
@@ -61,20 +62,25 @@
           </div>
         </div>
         <div class="column">
-          <p>Permissions</p>
+          <p>Permissions <span v-if="selectedRole.name"><strong>{{selectedRole.name}}</strong></span></p>
           <!--<p>{{selectedRole.permissions}}</p>-->
           <div class="ui styled fluid accordion">
-            <div v-for="module in permissions" class="">
-              <div class="active title"><i class="dropdown icon"></i> {{module.name}}</div>
-              <div class="active content" >
+            <div v-for="(module, pos) in permissions" class="">
+              <div class="title" v-bind:class="{active : (pos == 0)}">
+                <i class="dropdown icon"></i> {{module.name}}
+              </div>
+              <div class="content" v-bind:class="{active : (pos == 0)}">
                 <div v-for="model in module.models">
                   <!--<div v-if="!(selectedRole.permissions[model.name])">
                     Not permitted
                   </div>-->
-                  <div v-if="selectedRole.permissions[model.name]">
+                  <div v-if="selectedRole.permissions[model.name] && selectedRole.permissions[model.name][model.method]">
                     {{model.message}} <i class="check icon"></i>
                   </div>
                 </div>
+                <!--<div v-if="selectedRole.permissions[model.name].length < 1">
+                  None
+                </div>-->
               </div>
             </div>
           </div>
@@ -112,11 +118,11 @@
       <p>Permissions</p>
       <p>By checking a property, you are giving a role the ability to do what is checked</p>
       <div class="ui styled fluid accordion">
-        <div class="" v-for="permission in permissions">
-          <div class="active title">
+        <div class="" v-for="(permission, pos) in permissions">
+          <div class="title" v-bind:class="{active : (pos == 0)}">
             <i class="dropdown icon"></i> {{permission.name}}
           </div>
-          <div class="active content h400-max scroll-y">
+          <div class="content h400-max scroll-y" v-bind:class="{active : (pos == 0)}">
             <div class="ui stackable doubling three column grid">
               <div class="column" v-for="model in permission.models">
                 <span class="">
@@ -379,11 +385,11 @@
       <p>Permissions</p>
       <p>By checking a property, you are giving a role the ability to do what is checked</p>
       <div class="ui styled fluid accordion">
-        <div class="" v-for="permission in permissions">
-          <div class="active title">
+        <div class="" v-for="(permission, pos) in permissions">
+          <div class="title" v-bind:class="{active : (pos == 0)}">
             <i class="dropdown icon"></i> {{permission.name}}
           </div>
-          <div class="active content h400-max scroll-y">
+          <div class="content h400-max scroll-y" v-bind:class="{active : (pos == 0)}">
             <div class="ui stackable doubling three column grid">
               <div class="column" v-for="model in permission.models" 
                 v-if="Boolean(cache.permissions) && Boolean(cache.permissions[model.name])">
@@ -403,6 +409,17 @@
     <div class="actions">
       <div class="ui button accent-bg" v-on:click="updateRole()">Approve</div>
       <div class="ui cancel button red-bg">Cancel</div>
+    </div>
+  </div>
+  <div id="delete-role-modal" class="ui small modal">
+    <div class="content">
+      <p>Are you sure you want to delete this role?</p> 
+      <p></p><h1>All members with this role will have no role in this Organization</h1>
+      <p></p>
+    </div>
+    <div class="actions">
+      <div class="ui accent-bg button" @click="deleteRole()">Yes</div> 
+      <div class="ui red-bg button">No</div>
     </div>
   </div>
 </div>
