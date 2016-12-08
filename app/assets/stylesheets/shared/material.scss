@@ -1,12 +1,4 @@
-$theme-color: #39b54a;
-$theme-color-dark: #00a651;
-$theme-color-dark2: #388E3C;
-$theme-white: #edffe6;
-
-$grey-highlight: #ededed;
-$theme-accent: #0176ff;
-$dark-green-text: #245013;
-$theme-red: #db2828;
+@import "../partials/variables";
 
 .green-bg{  background: $theme-color !important; color: $theme-white !important;}
 .dark-green-bg{  background: $theme-color-dark !important; color: #fff !important;}

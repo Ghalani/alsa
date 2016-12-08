@@ -3,7 +3,7 @@
  *= require_self
  */
 
-
+@import "partials/variables";
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900');
 
 html,body{
@@ -16,15 +16,6 @@ a{
     text-decoration: none !important;
   }
 }
-
-$theme-color: #39b54a;
-$theme-color2: #3ad45f;
-$theme-color-dark: #00a651;
-$theme-color-dark2: #388E3C;
-$grey-highlight: #ededed;
-$grey1: #ededed;
-$theme-accent: #0176ff;
-$dark-green-text: #245013;
 
 .grey-hr1{border: 1px solid #ebebeb;}
 .dark-text1{color: #333 !important;}
