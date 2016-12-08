@@ -1,0 +1,91 @@
+<script type="text/javascript" >
+  var farmerShow = new Vue({
+    el: "#farmer-show",
+    data: {
+      farmer: <%= @farmer.to_json.html_safe %>,
+      farmerCopy: <%= @farmer.to_json.html_safe %>,
+      newFarm: {
+        farmer_id: <%= @farmer.id %>,
+        name: "",
+        size: 0
+      },
+      farms: []
+    },
+    methods: {
+      getFarms: function(){
+        var that = this;
+        $.ajax({
+          url: '/organizations/<%= @organization.id %>/farms.json?farmer_id=<%= @farmer.id %>',
+          success: function(res){
+            that.farms = res;
+            //that.filteredFarms = res
+          }
+        })
+      },
+      createNewFarm: function(){
+        var that = this;
+        $.ajax({
+          url: '/organizations/<%= @organization.id %>/farms.json',
+          data: {farm: that.newFarm},
+          method: "POST",
+          success: function(res){
+            that.farms.push(res)
+            that.hideFabShowNewFarm();
+          }, 
+          error: function(err){ 
+            farmNew.error = err.message;
+            console.log(err.message);
+          }
+        });
+      },
+      hideFabShowNewFarm: function(){
+        $('#new-farm-modal').modal('toggle');        
+      },
+      toggleEditModal: function(){
+        $('#edit_form.modal').modal("toggle");
+      },
+      showDeleteModal: function(){
+        $('#farmer-delete.modal').modal('toggle');
+      },
+      deleteFarmer: function(){
+        $.ajax({
+          url: '/organizations/<%= @organization.id %>/farmers/<%= @farmer.id %>.json',
+          method: "DELETE",
+          success: function(res){
+            if(Boolean(document.referrer)){
+              window.location = document.referrer;
+            }else{
+              window.history.back();
+            }
+          }, 
+          error: function(err){ console.log(err.message)}
+        });
+      },
+      updateFarmer: function(){
+        var that = this;
+        $.ajax({
+          url: '/organizations/<%= @organization.id %>/farmers/<%= @farmer.id %>.json',
+          data: {farmer: this.farmerCopy},
+          method: "PUT",
+          success: function(res){
+            that.farmer = that.farmerCopy;
+            that.toggleEditModal();
+          }, 
+          error: function(err){ console.log(err.message)}
+        });
+      },
+    }
+  });
+  farmerShow.getFarms();
+
+  $('.item').on('click', function(){
+    $('.item').each(function(){
+      $(this).removeClass('active');
+      $("#"+$(this).attr('id')+"-panel").removeClass('active');      
+    });
+
+    $(this).addClass('active');
+    $("#"+$(this).attr('id')+"-panel").addClass('active');
+
+  });
+</script>

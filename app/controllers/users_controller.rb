@@ -3,8 +3,6 @@ class UsersController < ApplicationController
   before_action :set_organization
   skip_before_filter :ensure_authenticated_user, only: [:new, :create]
 
-  # GET /users
-  # GET /users.json
   def index
     @users = User.all
     authorize current_user
@@ -26,24 +24,18 @@ class UsersController < ApplicationController
     end
   end
 
-  # GET /users/1
-  # GET /users/1.json
   def show
     @user = User.find(params[:id])
     authorize @user
   end
 
-  # GET /users/new
   def new
     @user = User.new
   end
 
-  # GET /users/1/edit
   def edit
   end
 
-  # POST /users
-  # POST /users.json
   def create
     @user = User.new(user_params)
 
@@ -64,14 +56,19 @@ class UsersController < ApplicationController
         format.html { redirect_to "/", notice: "User was successfully created. Please check your email #{@user.email} to verify account" }
         format.json { render json: @user, status: :created }
       else
-        format.html { render :new }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        # add user as member of organization if they already exist
+        if @organization
+          existing_user = User.find_by_email(@user.email)
+          @organization.members << existing_user if existing_user
+          format.json { render json: @user, status: :created }
+        else
+          format.html { render :new }
+          format.json { render json: @user.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
 
-  # PATCH/PUT /users/1
-  # PATCH/PUT /users/1.json
   def update
     respond_to do |format|
       if @user.update(user_params)

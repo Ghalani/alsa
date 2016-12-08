@@ -13,6 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree ./shared
+//= require intlTelInput
+//= require libphonenumber/utils
 
 function showModal(){
 	$('.ui.modal').modal('show');
@@ -94,8 +96,6 @@ function flattenNested(graph, props) {
   visited=[];
 
   function clone(n) {
-     // improve the function yourself I'm lazy
-         //props=["id","parentid","index","text"],
      var i,l,
          result={};
      for (i = 0, l = props.length; i < l; i++) { 
@@ -130,21 +130,11 @@ function prune(array, id) {
     for (var i = 0; i < array.length; ++i) {
         var obj = array[i];
         if (obj.id === id) {
-            // splice out 1 element starting at position i
             array.splice(i, 1);
             return true;
         }
         if (obj.children) {
             if (prune(obj.children, id)) {
-                // if (obj.children.length === 0) {
-                //     // delete children property when empty
-                //     delete obj.children;
-
-                //     // or, to delete this parent altogether
-                //     // as a result of it having no more children
-                //     // do this instead
-                //     array.splice(i, 1);
-                // }
                 return true;
             }
         }
@@ -155,4 +145,13 @@ function cancelParentEvent(){
   if (!e) var e = window.event;
   e.cancelBubble = true;
   if (e.stopPropagation) e.stopPropagation();
+}
+
+function initPhoneInput(id, countryCode = ''){
+    $(id).intlTelInput({
+        formatOnInit: true,
+        separateDialCode: true,
+        utilsScript: "assets/libphonenumber/utils.js",
+        initialCountry: countryCode,
+    });
 }

@@ -4,6 +4,7 @@
 .dark-green-bg{  background: $theme-color-dark !important; color: #fff !important;}
 .dark-green-bg2{  background: $theme-color-dark2 !important; color: #fff !important;}
 .accent-bg{  background: $theme-accent !important; color:#fff !important;}
+.accent-dark-bg{  background: $theme-dark-accent !important; color:#fff !important;}
 .red-bg{  background: $theme-red !important; color:#fff !important;}
 .grey-bg{ background: #ededed !important;}
 .no-bg{ 
@@ -98,6 +99,11 @@
 
 .raise-5 {
   box-shadow: 0 16px 24px 2px rgba(0,0,0,0.14),0 6px 30px 5px rgba(0,0,0,0.12),0 8px 10px -5px rgba(0,0,0,0.3);
+}
+
+.raise2-1{
+  box-shadow: 0 15px 30px -7px rgba(0, 0, 0, 0.14);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .btn{
@@ -216,6 +222,11 @@
   a{color: #fff;}
   i{margin: 0 !important;}
   transition: all 0.3s ease-in-out;
+  z-index: 3;
+  &.fab-overflow-right{
+    margin-right: -25px;
+  }
+
   &:hover{
     box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
   }

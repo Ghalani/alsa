@@ -5,6 +5,7 @@
 
 @import "partials/variables";
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900');
+@import "intlTelInput";
 
 html,body{
   font-family: 'Roboto', sans-serif;
@@ -382,3 +383,8 @@ body{background: #f5f5f5;}
 }
 
 .hand{ cursor: pointer ;}
+
+.item.active.bottom-border{
+  border: 0 !important;
+  border-bottom: 2px $theme-accent solid !important;
+}

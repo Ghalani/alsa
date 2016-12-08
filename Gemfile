@@ -32,6 +32,9 @@ gem "paperclip", "~> 5.0.0"
 gem 'active_model_serializers'
 gem 'acts_as_sane_tree', '~> 2.0', '>= 2.0.6' # https://github.com/chrisroberts/acts_as_sane_tree
 
+# country phone picker https://github.com/ispyropoulos/intl-tel-input-rails
+gem 'intl-tel-input-rails'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

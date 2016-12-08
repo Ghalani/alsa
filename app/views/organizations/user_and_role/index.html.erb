@@ -38,21 +38,21 @@
           <div id="new-user-modal" class="ui modal">
             <div class="content">              
               <h3>New User</h3>
-              <div class="form-group w100p-rounded">
+              <div class="form-group">
                 <label for="">First name</label><br>
-                <input type="text" v-model="newUser.fname">
+                <input type="text" v-model="newUser.fname" class="classic">
               </div>
-              <div class="form-group w100p-rounded">
+              <div class="form-group">
                 <label for="">Last name</label>
-                <input type="text" v-model="newUser.lname">              
+                <input type="text" v-model="newUser.lname" class="classic">              
               </div>
-              <div class="form-group w100p-rounded">
-                <label for="">Phone</label>
-                <input type="text" v-model="newUser.phone">              
+              <div class="form-group">
+                <label for="">Phone</label><br>
+                <input type="text" v-model="newUser.phone" id="phone" class="classic">              
               </div>
-              <div class="form-group w100p-rounded">
+              <div class="form-group">
                 <label for="">Email</label>
-                <input type="text" v-model="newUser.email">              
+                <input type="text" v-model="newUser.email" class="classic">              
               </div>
             </div>
             <div class="actions">

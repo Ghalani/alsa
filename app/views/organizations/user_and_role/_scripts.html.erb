@@ -447,6 +447,7 @@
         $('#new-user-modal').modal('toggle');
       },
       createUser: function(){
+        this.newUser.phone = $("#phone").intlTelInput("getNumber");
         var that = this;
         $.ajax({
           method: 'POST',
@@ -488,5 +489,7 @@
   $('.ui.accordion')
     .accordion()
   ;
+
+  initPhoneInput('#phone', '<%= @organization.country.iso.downcase %>');
 
 </script>
