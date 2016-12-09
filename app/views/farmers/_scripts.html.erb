@@ -78,14 +78,6 @@
   });
   farmerShow.getFarms();
 
-  $('.item').on('click', function(){
-    $('.item').each(function(){
-      $(this).removeClass('active');
-      $("#"+$(this).attr('id')+"-panel").removeClass('active');      
-    });
-
-    $(this).addClass('active');
-    $("#"+$(this).attr('id')+"-panel").addClass('active');
-
-  });
+  $('.tabular.menu .item').tab();
+  $('.ui.dropdown').dropdown();
 </script>

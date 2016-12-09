@@ -4,11 +4,16 @@
     <% if @organization %>
       <%= link_to "Org Home", @organization %>
     <% end %>
-    
   </div> 
-  <div class="right menu">
-    <%= link_to "/logout" do %>
-      <span><%= image_tag 'man32.png' %></span> Logout
-    <% end %>
+  <div class="right">
+    <div class="ui pointing dropdown link item pad04">
+      <span class="text">
+        <span><%= image_tag 'man32.png' %> </span> <%= current_user.email %>
+      </span>
+      <i class="dropdown icon"></i>
+      <div class="menu" style="height: inherit;">
+        <a href="/logout" class="item">logout</a>
+      </div>
+    </div>
   </div>
 </div>

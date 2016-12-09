@@ -5,7 +5,8 @@
 .dark-green-bg2{  background: $theme-color-dark2 !important; color: #fff !important;}
 .accent-bg{  background: $theme-accent !important; color:#fff !important;}
 .accent-dark-bg{  background: $theme-dark-accent !important; color:#fff !important;}
-.red-bg{  background: $theme-red !important; color:#fff !important;}
+.accent-text{ color: $theme-accent !important; }
+.red-bg{ background: $theme-red !important; color:#fff !important;}
 .grey-bg{ background: #ededed !important;}
 .no-bg{ 
   background: none !important;

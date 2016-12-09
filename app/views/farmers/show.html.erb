@@ -6,12 +6,12 @@
   <div id="farmer-card" class="card no-pad raise2-1 h400-min text12 dark-text1 w90p hcenter neg-marg-top3">        
     <div id="farmer-holder" class="ui grid h400-min">
       <div class="six wide computer sixteen wide tablet column">
-        <div class="card-menu-tr text15" v-on:click="showDeleteModal();"><i class="trash icon"></i></div>
-        <div class="ui top attached tabular menu">
-          <div id="item1" class="active item bottom-border">Info</div>
-          <div id="item2" class="item bottom-border">Farms</div>
+        <div class="card-menu-tr accent-text text15" v-on:click="showDeleteModal();"><i class="trash icon"></i></div>
+        <div class="farmer-menu ui top attached tabular menu">
+          <div class="active item bottom-border" data-tab="info-tab">Info</div>
+          <div class="item bottom-border" data-tab="farms-tab">Farms</div>
         </div><br>
-        <div id="item1-panel" class="ui bottom attached active tab">
+        <div class="ui bottom attached active tab" data-tab="info-tab">
           <div class="four wide column row text-center">
             <div class="four wide column">
               <%= image_tag @farmer.image.url(:thumb), class:"circle" %>
@@ -23,7 +23,7 @@
             </div>
           </div>
         </div>
-        <div id="item2-panel" class="ui bottom attached tab">
+        <div class="ui bottom attached tab" data-tab="farms-tab">
           <div v-if="farms.length < 1">This farmer has no farm</div>
           <div class="w200" v-for="farm in farms">   
             <a v-bind:href="'/organizations/<%= @organization.id %>/farms/' + farm.id" class="card raise-1" >        
