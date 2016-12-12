@@ -1,5 +1,5 @@
 class CreateActivities < ActiveRecord::Migration
-  def change
+  def up
     create_table :activities do |t|
       t.references  :organization, index: true
       t.references  :activity_type, index: true
@@ -8,5 +8,10 @@ class CreateActivities < ActiveRecord::Migration
       t.attachment  :image
       t.timestamps null: false
     end
+  end
+
+  def down
+    remove_attachment :activities, :image
+    drop_table :activities
   end
 end
