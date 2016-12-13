@@ -1,0 +1,44 @@
+<div id="task-management">
+  <%= render "static_pages/nav" %>
+  <div class="green-bg pad1 padb3">
+    <%= render 'organizations/task_management/stat_bar'%>
+  </div>
+  <div class="">
+    <div class="ui grid">
+      <div class="sixteen wide tablet four wide computer column">
+        <div class="ui grid">
+          <div class="eight wide tablet sixteen wide computer column">
+            <%= render 'organizations/task_management/task_type_card' %>
+            
+          </div>
+          <div class="eight wide tablet sixteen wide computer column">
+            <%= render 'organizations/task_management/task_card' %>                       
+          </div>
+        </div>
+      </div>
+      <div class="sixteen wide tablet twelve wide computer column">
+        <div class="card raise2-1 w100p marg-tb">
+          <div class="card-top cyan-bg">
+            <h4 class="ui tabular menu no-pad neg-marg-bottom08">
+              <a id="stored-item" class="white-tab active item pad1 menu-item no-border" data-tab="jobs">
+                Jobs
+              </a>
+              <a id="incoming-item" class="white-tab item pad1 menu-item no-border" data-tab="workers">
+                Workers
+              </a>
+            </h4>
+          </div> 
+          <div>
+            <div class="ui tab active" data-tab="jobs">
+              First
+            </div>
+            <div class="ui tab" data-tab="workers">
+              Second
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%= render 'organizations/task_management/scripts' %>

@@ -1,0 +1,92 @@
+<script>
+  var taskManagement = new Vue({
+    el: "#task-management",
+    data: {
+      cache: {},
+      organization: <%= @organization.to_json.html_safe %>,
+      taskTypes: [],
+      tasks: [],
+      jobs: [],
+    },
+    methods: {
+      setCache(object){
+        this.cache = object
+      },
+      getTaskTypes(){
+        var that = this;
+        $.ajax({
+          url: "/organizations/<%= @organization.id %>/task_types.json",
+          success: function(res){
+            that.taskTypes = res;
+          }, error: function(err){displayAlert(err)}
+        });
+      },
+      getTasks(){
+        var that = this;
+        $.ajax({
+          url: "/organizations/<%= @organization.id %>/tasks.json",
+          success: function(res){
+            that.tasks = res;
+          }, error: function(err){displayAlert(err)}
+        });
+      },
+      getJobs(){
+        var that = this;
+        $.ajax({
+          url: "/organizations/<%= @organization.id %>/jobs.json",
+          success: function(res){
+            that.jobs = res;
+          }, error: function(err){displayAlert(err)}
+        });
+      },
+      addTaskType(){
+        this.cache.organization_id = <%= @organization.id %>
+        var that = this;
+        $.ajax({
+          url: "/organizations/<%= @organization.id %>/task_types.json",
+          method: "POST",
+          data: { 
+            task_type: that.cache 
+          },
+          success: function(res){
+            that.taskTypes.push(res);
+            that.cache = {}
+            appendAlert("Task type was created succesfully", true)
+            that.toggleNewTaskTypeModal();
+          },
+          error: function(err){displayAlert(err)}
+        });
+      },
+      addTask(){
+        this.cache.organization_id = <%= @organization.id %>
+        var that = this;
+        $.ajax({
+          url: "/organizations/<%= @organization.id %>/tasks.json",
+          method: "POST",
+          data: { 
+            task: that.cache 
+          },
+          success: function(res){
+            that.tasks.push(res);
+            that.cache = {}
+            appendAlert("Task was created succesfully", true)
+            that.toggleNewTaskModal();
+          },
+          error: function(err){displayAlert(err)}
+        });
+      },
+      toggleNewTaskTypeModal(){
+        $('#new-task-type-modal').modal('toggle');
+      },
+      toggleNewTaskModal(){
+        $('#new-task-modal').modal('toggle');
+      },
+    },
+  });
+
+  taskManagement.getTaskTypes();
+  taskManagement.getTasks();
+  //taskManagement.getTaskTypes();
+
+  $('.tabular.menu .item').tab();
+</script>

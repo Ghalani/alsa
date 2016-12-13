@@ -2,8 +2,9 @@ class CreateJobs < ActiveRecord::Migration
   def change
     create_table :jobs do |t|
       t.references  :organization, index: true
-      t.references  :activity, index: true
+      t.references  :task, index: true
       t.references  :location, index: true
+      t.references  :worker, index: true
       t.integer     :recepient, default: 0
       t.integer     :recepient_id
       t.integer     :frequency, default: 0

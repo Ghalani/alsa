@@ -105,6 +105,15 @@
 						<% end %>
 					</div>
 					<div class="column">
+						<%= link_to organization_task_management_path(@organization), title:"Task management" do %>
+							<div class="card marg-bottom1 raise-1 card-module hover-raise w200 text-center ripple" data-ripple-color="#c4e5c9">
+								<%= image_tag "task64.png" %>
+								<hr>
+									Task management
+							</div>
+						<% end %>
+					</div>
+					<div class="column">
 						<%= link_to '#', title:"Coming soon" do %>
 							<div class="card marg-bottom1 raise-1 card-module hover-raise w200 text-center ripple" data-ripple-color="#c4e5c9">
 								<%= image_tag "finance64.png" %>
@@ -128,15 +137,6 @@
 								<%= image_tag "analytics64.png" %>
 								<hr>
 									Reporting and analytics
-							</div>
-						<% end %>
-					</div>
-					<div class="column">
-						<%= link_to '#', title:"Coming soon" do %>
-							<div class="card marg-bottom1 raise-1 card-module hover-raise w200 text-center ripple" data-ripple-color="#c4e5c9">
-								<%= image_tag "task64.png" %>
-								<hr>
-									Task management
 							</div>
 						<% end %>
 					</div>

@@ -6,7 +6,7 @@ class CreateJobRatings < ActiveRecord::Migration
       t.references  :worker, index: true
       t.references  :job_report, index: true
       t.string      :remark
-      t.int         :value # range e.g. [0, 0.25, 0.5, 0.75, 1]
+      t.integer     :value # range e.g. [0, 0.25, 0.5, 0.75, 1]
 
       t.timestamps null: false
     end

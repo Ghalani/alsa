@@ -1,6 +1,6 @@
-class CreateActivityTypes < ActiveRecord::Migration
+class CreateTaskTypes < ActiveRecord::Migration
   def change
-    create_table :activity_types do |t|
+    create_table :task_types do |t|
       t.references  :organization, index: true
       t.string      :name
       t.string      :description

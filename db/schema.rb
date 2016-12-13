@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161129113822) do
+ActiveRecord::Schema.define(version: 20161212163421) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -116,6 +116,89 @@ ActiveRecord::Schema.define(version: 20161129113822) do
   add_index "incoming_stocks", ["organization_id"], name: "index_incoming_stocks_on_organization_id", using: :btree
   add_index "incoming_stocks", ["stock_item_id"], name: "index_incoming_stocks_on_stock_item_id", using: :btree
   add_index "incoming_stocks", ["stock_source_id"], name: "index_incoming_stocks_on_stock_source_id", using: :btree
+
+  create_table "job_form_reports", force: :cascade do |t|
+    t.integer  "organization_id"
+    t.integer  "job_id"
+    t.integer  "worker_id"
+    t.integer  "task_form_id"
+    t.jsonb    "report"
+    t.datetime "datetime"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "job_form_reports", ["job_id"], name: "index_job_form_reports_on_job_id", using: :btree
+  add_index "job_form_reports", ["organization_id"], name: "index_job_form_reports_on_organization_id", using: :btree
+  add_index "job_form_reports", ["task_form_id"], name: "index_job_form_reports_on_task_form_id", using: :btree
+  add_index "job_form_reports", ["worker_id"], name: "index_job_form_reports_on_worker_id", using: :btree
+
+  create_table "job_ratings", force: :cascade do |t|
+    t.integer  "organization_id"
+    t.integer  "job_id"
+    t.integer  "worker_id"
+    t.integer  "job_report_id"
+    t.string   "remark"
+    t.integer  "value"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "job_ratings", ["job_id"], name: "index_job_ratings_on_job_id", using: :btree
+  add_index "job_ratings", ["job_report_id"], name: "index_job_ratings_on_job_report_id", using: :btree
+  add_index "job_ratings", ["organization_id"], name: "index_job_ratings_on_organization_id", using: :btree
+  add_index "job_ratings", ["worker_id"], name: "index_job_ratings_on_worker_id", using: :btree
+
+  create_table "job_reports", force: :cascade do |t|
+    t.integer  "organization_id"
+    t.integer  "job_id"
+    t.integer  "worker_id"
+    t.integer  "remark"
+    t.datetime "datetime"
+    t.integer  "status",          default: 0
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
+  add_index "job_reports", ["job_id"], name: "index_job_reports_on_job_id", using: :btree
+  add_index "job_reports", ["organization_id"], name: "index_job_reports_on_organization_id", using: :btree
+  add_index "job_reports", ["worker_id"], name: "index_job_reports_on_worker_id", using: :btree
+
+  create_table "jobs", force: :cascade do |t|
+    t.integer  "organization_id"
+    t.integer  "task_id"
+    t.integer  "location_id"
+    t.integer  "worker_id"
+    t.integer  "recepient",          default: 0
+    t.integer  "recepient_id"
+    t.integer  "frequency",          default: 0
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.integer  "status",             default: 0
+    t.text     "description"
+    t.integer  "cost_per_worker",    default: 0
+    t.integer  "leader_cost",        default: 0
+    t.integer  "max_worker",         default: 0
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  add_index "jobs", ["location_id"], name: "index_jobs_on_location_id", using: :btree
+  add_index "jobs", ["organization_id"], name: "index_jobs_on_organization_id", using: :btree
+  add_index "jobs", ["task_id"], name: "index_jobs_on_task_id", using: :btree
+  add_index "jobs", ["worker_id"], name: "index_jobs_on_worker_id", using: :btree
+
+  create_table "jobs_workers", id: false, force: :cascade do |t|
+    t.integer "job_id"
+    t.integer "worker_id"
+  end
+
+  add_index "jobs_workers", ["job_id"], name: "index_jobs_workers_on_job_id", using: :btree
+  add_index "jobs_workers", ["worker_id"], name: "index_jobs_workers_on_worker_id", using: :btree
 
   create_table "labourers", force: :cascade do |t|
     t.integer  "organization_id"
@@ -309,6 +392,44 @@ ActiveRecord::Schema.define(version: 20161129113822) do
   add_index "stored_stocks", ["organization_id"], name: "index_stored_stocks_on_organization_id", using: :btree
   add_index "stored_stocks", ["stock_item_id"], name: "index_stored_stocks_on_stock_item_id", using: :btree
 
+  create_table "task_forms", force: :cascade do |t|
+    t.integer  "organization_id"
+    t.integer  "task_id"
+    t.string   "name"
+    t.jsonb    "fields"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "task_forms", ["organization_id"], name: "index_task_forms_on_organization_id", using: :btree
+  add_index "task_forms", ["task_id"], name: "index_task_forms_on_task_id", using: :btree
+
+  create_table "task_types", force: :cascade do |t|
+    t.integer  "organization_id"
+    t.string   "name"
+    t.string   "description"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "task_types", ["organization_id"], name: "index_task_types_on_organization_id", using: :btree
+
+  create_table "tasks", force: :cascade do |t|
+    t.integer  "organization_id"
+    t.integer  "task_type_id"
+    t.string   "name"
+    t.string   "description"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  add_index "tasks", ["organization_id"], name: "index_tasks_on_organization_id", using: :btree
+  add_index "tasks", ["task_type_id"], name: "index_tasks_on_task_type_id", using: :btree
+
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
     t.string   "username"
@@ -335,5 +456,34 @@ ActiveRecord::Schema.define(version: 20161129113822) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["phone"], name: "index_users_on_phone", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "worker_types", force: :cascade do |t|
+    t.integer  "organization_id"
+    t.integer  "parent_id"
+    t.string   "name"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "worker_types", ["organization_id"], name: "index_worker_types_on_organization_id", using: :btree
+
+  create_table "workers", force: :cascade do |t|
+    t.integer  "organization_id"
+    t.integer  "worker_type_id"
+    t.string   "fname"
+    t.string   "lname"
+    t.string   "phone"
+    t.string   "salt"
+    t.string   "encrypted_pin"
+    t.string   "access_token"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  add_index "workers", ["organization_id"], name: "index_workers_on_organization_id", using: :btree
 
 end

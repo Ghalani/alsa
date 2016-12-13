@@ -1,0 +1,47 @@
+<div class="card raise-1 w100p">
+  <div class="card-top dark-green-bg2">
+    <h4>Tasks
+      <span class="right-icon-grey" @click="toggleNewTaskModal()" ><i class="plus icon"></i></span>
+    </h4>
+  </div>   
+  <div>
+    <div v-if="tasks.length < 1">
+      No Tasks on your system
+    </div>            
+    <div v-if="tasks.length > 0">
+      <div v-for="task in tasks" class="list-item" @click="setCache(task); ">
+      <div>{{task.name}}</div> 
+      <div class="text08 grey-text1">{{task.description}} </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="new-task-modal" class="ui small modal">
+  <div class="content">
+    <h4>New task </h4><hr>
+    <div class="form-group">
+      <label>Name</label><br>
+      <input class="classic" type="text" v-model="cache.name" 
+        placeholder="Spraying herbicide, Changing tires, Refuel truck">
+    </div>
+    <div class="form-group">
+      <label>Description </label><br>
+      <textarea class="classic" 
+        type="text" v-model="cache.description" 
+        placeholder="your description of this task"></textarea>
+    </div>    
+    <div class="form-group">
+      <label>Task type</label><br>
+      <div v-if="taskTypes.length < 1" class="ui button accent-bg" @click="toggleNewTaskTypeModal()">
+        Create new Task type
+      </div>
+      <select v-if="taskTypes.length > 0" v-model="cache.task_type_id" class="classic">
+        <option v-for="taskType in taskTypes" v-bind:value="taskType.id">{{taskType.name}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui button accent-bg" @click="addTask()">Create</div>
+    <div class="ui cancel button">Cancel</div>
+  </div>
+</div>

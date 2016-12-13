@@ -1,8 +1,8 @@
-class CreateActivities < ActiveRecord::Migration
+class CreateTasks < ActiveRecord::Migration
   def up
-    create_table :activities do |t|
+    create_table :tasks do |t|
       t.references  :organization, index: true
-      t.references  :activity_type, index: true
+      t.references  :task_type, index: true
       t.string      :name
       t.string      :description
       t.attachment  :image
@@ -11,7 +11,7 @@ class CreateActivities < ActiveRecord::Migration
   end
 
   def down
-    remove_attachment :activities, :image
-    drop_table :activities
+    remove_attachment :tasks, :image
+    drop_table :tasks
   end
 end

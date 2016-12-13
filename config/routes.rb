@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     get 'user_and_role' => 'organizations#user_and_role'
     get 'location_and_hierarchy' => 'organizations#location_and_hierarchy'
     get 'stock_management' => 'organizations#stock_management'
+    get 'task_management' => 'organizations#task_management'
     resources :farmers
     resources :labourers
     resources :farms
@@ -34,6 +35,10 @@ Rails.application.routes.draw do
     resources :outgoing_stocks
     resources :ordered_stocks
     resources :memberships, only: [:index, :create, :destroy]
+    resources :task_types
+    resources :tasks
+    resources :worker_types
+    resources :workers
   end
   
 

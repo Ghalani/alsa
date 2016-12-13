@@ -1,0 +1,38 @@
+<div class="card raise-1 w100p">
+  <div class="card-top dark-green-bg2">
+    <h4>Task types
+      <span class="right-icon-grey" @click="toggleNewTaskTypeModal()" ><i class="plus icon"></i></span>
+    </h4>
+  </div>   
+  <div>
+    <div v-if="taskTypes.length < 1">
+      No Task types on your system
+    </div>            
+    <div v-if="taskTypes.length > 0">
+      <div v-for="taskType in taskTypes" class="list-item" @click="setCache(taskType); ">
+      <div>{{taskType.name}}</div> 
+      <div class="text08 grey-text1">{{taskType.description}} </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="new-task-type-modal" class="ui small modal">
+  <div class="content">
+    <h4>New task type</h4><hr>
+    <div class="form-group">
+      <label>Name</label><br>
+      <input class="classic" type="text" v-model="cache.name" 
+        placeholder="Farm, Message, Repairs etc.">
+    </div>
+    <div class="form-group">
+      <label>Description </label><br>
+      <textarea class="classic" 
+        type="text" v-model="cache.description" 
+        placeholder="your description of this task-type"></textarea>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui button accent-bg" @click="addTaskType()">Create</div>
+    <div class="ui cancel button">Cancel</div>
+  </div>
+</div>

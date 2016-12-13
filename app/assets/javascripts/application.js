@@ -35,6 +35,9 @@ $(document).on('ready', function(){
         console.log('clicked');
         $(this).parent.remove();
     });
+
+    
+  $('#main-nav .ui.dropdown').dropdown();
 });
 
 function displayAlert(message){
@@ -57,8 +60,9 @@ function displayAlert(message){
     removeAlerts();
 }
 
-function appendAlert(msg){
+function appendAlert(msg, isTimed = false){
   $('#alert-holder').append('<div class="text-right pad1"><span class="alert"><span>' + msg + '</span> <i class="remove icon close-alert"></i></span></div>');
+  if (isTimed) removeAlerts();
 }
 
 

@@ -4,7 +4,7 @@ class CreateJobFormReports < ActiveRecord::Migration
       t.references  :organization, index: true
       t.references  :job, index: true
       t.references  :worker, index: true
-      t.references  :activity_form, index: true
+      t.references  :task_form, index: true
       t.jsonb       :report
       t.datetime    :datetime
 
